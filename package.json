@@ -1,0 +1,37 @@
+{
+  "name": "voting-vue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "assert": "^2.1.0",
+    "autoprefixer": "^10",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "core-js": "^3.8.3",
+    "crypto-browserify": "^3.12.1",
+    "firebase": "^8.10.1",
+    "http-browserify": "^1.7.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "postcss": "^8",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "tailwindcss": "^3",
+    "url": "^0.11.4",
+    "util": "^0.12.5",
+    "vm-browserify": "^1.1.2",
+    "vue": "^3.2.13",
+    "vue-router": "^4.0.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "vue-cli-plugin-tailwind": "~3.0.0"
+  }
+}
