@@ -8,6 +8,9 @@ import ProfileForm from '@/views/ProfileForm.vue'
 import LoginForm from '@/views/LoginForm.vue'
 import Vote from '@/views/Vote.vue'
 import Candidate from '@/views/Candidate.vue'
+import Policies from '@/views/Policies.vue'
+import Contact from '@/views/Contact.vue'
+
 
 const routes = [
   {
@@ -56,6 +59,16 @@ const routes = [
     name: 'candidate',
     component: Candidate,
     props: true,
+  },
+  {
+    path: '/policies',
+    name: 'policies',
+    component: Policies,
+  },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: Contact,
   }
 
 ]

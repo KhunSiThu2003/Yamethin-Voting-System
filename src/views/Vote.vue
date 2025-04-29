@@ -4,7 +4,7 @@
 
   <div
     v-if="currentUser"
-    class="bg-gray-100 text-center h-screen flex flex-col justify-center items-center text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
+    class="bg-gray-100 pt-16 text-center h-screen flex flex-col justify-center items-center text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
   >
     <div>
       <div class="md:w-40 w-20 mx-auto overflow-hidden object-cover">
@@ -34,7 +34,7 @@
       </h1>
     </div>
     <div
-      class="flex w-full md:w-1/2 mx-auto justify-evenly items-center md:space-x-8 py-10"
+      class="flex w-full md:w-1/2 mx-auto justify-evenly items-center md:space-x-8 pt-14"
     >
       <!-- King Card -->
       <div
@@ -53,6 +53,7 @@
         <router-link :to="{ name: 'candidate', params: { id: 'male' } }">
           <button 
             class="md:w-32 w-20 text-xs sm:text-sm md:text-base font-bold hover:text-white border rounded-lg py-2 transition text-blue-400 hover:bg-blue-400 border-blue-400 bg-blue-50 dark:border-blue-500 dark:bg-transparent dark:hover:bg-blue-400"
+            @click.prevent="checkVotingStatus('male')"
           >
             Vote King
           </button>
@@ -76,13 +77,14 @@
         <router-link :to="{ name: 'candidate', params: { id: 'female' } }">
           <button 
             class="md:w-32 w-20 text-xs sm:text-sm md:text-base font-bold hover:text-white border rounded-lg py-2 transition text-pink-400 hover:bg-pink-400 border-pink-400 bg-pink-50 dark:border-pink-500 dark:bg-transparent dark:hover:bg-pink-400"
+            @click.prevent="checkVotingStatus('female')"
           >
             Vote Queen
           </button>
         </router-link>
       </div>
     </div>
-    <div class="absolute left-0 bottom-0 p-2">
+    <div v-if="!votingEnd" class="absolute left-0 bottom-0 p-2">
       <h1
         class="text-sm sm:text-sm md:text-lg opacity-50 dark:text-gray-300 text-center"
       >
@@ -120,13 +122,8 @@
           <span class="text-xs">Seconds</span>
         </div>
       </div>
-      <p id="expired" class="hidden text-xl font-semibold text-red-500">
-        Voting has ended!
-      </p>
     </div>
-
   </div>
-
 
   <!-- Policy Modal -->
   <div
@@ -183,13 +180,14 @@
   </div>
 </template>
     
-    <script>
+<script>
 import NavBar from "@/components/NavBar.vue";
 import Loading from "@/components/Loading.vue";
 import { ref, onMounted } from "vue";
 import deadLine from "@/composables/deadLine";
 import getStudentById from "@/composables/getStudentById";
 import router from "@/router";
+import Swal from "sweetalert2";
 
 export default {
   components: {
@@ -202,15 +200,50 @@ export default {
     const showPolicyModal = ref(true);
     const accept = ref(localStorage.getItem("accept"));
     const currentUser = ref(null);
+    const votingEnded = ref(false);
 
     // Deadline
-    const { dayString, hourString, minString, secString, updateCountdown } =
+    const { dayString, hourString, minString, secString, updateCountdown, votingEnd } =
       deadLine();
 
     const acceptPolicy = () => {
       localStorage.setItem("accept", true);
       accept.value = true;
       showPolicyModal.value = false;
+    };
+
+    const checkVotingStatus = (gender) => {
+      if (votingEnd.value) {
+        showVotingEndedAlert();
+      } else {
+        router.push({ name: 'candidate', params: { id: gender } });
+      }
+    };
+
+    const showVotingEndedAlert = () => {
+      Swal.fire({
+        title: 'Voting Has Ended!',
+        html: `
+          <div class="text-center">
+
+            </div>
+            <p class="text-gray-600 dark:text-gray-300">The voting period has officially ended.</p>
+            <p class="text-gray-600 dark:text-gray-300 mt-2">You can now view the results.</p>
+          </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'View Results',
+        confirmButtonColor: '#3b82f6',
+        showCancelButton: true,
+        cancelButtonText: 'Close',
+        background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
+        color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#111827',
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push({ name: 'results' });
+        }
+      });
     };
 
     // Load user data
@@ -235,6 +268,11 @@ export default {
         router.push("/login");
         loading.value = false;
       }
+
+      // Check if voting has ended on mount
+      if (votingEnd.value) {
+        showVotingEndedAlert();
+      }
     });
 
     return {
@@ -247,9 +285,11 @@ export default {
       showPolicyModal,
       acceptPolicy,
       accept,
+      checkVotingStatus,
+      votingEnd
     };
   },
 };
 </script>
     
-    <style></style>
+<style></style>

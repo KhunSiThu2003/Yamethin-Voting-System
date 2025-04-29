@@ -1,294 +1,261 @@
 <template>
-    <div>
-        <h1>Results</h1>
-        <p>Here are the results of your query:</p>
-    </div>
-    <div
-      class="h-screen flex flex-col justify-center bg-gray-50 dark:bg-gray-900"
-    >
-        <!-- Countdown Timer Section -->
-        <section id="countdown" class="">
-          <div v-if="isLoading" role="status" class="flex justify-center h-full">
-            <svg
-              aria-hidden="true"
-              class="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-              viewBox="0 0 100 101"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                fill="currentColor"
-              />
-              <path
-                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                fill="currentFill"
-              />
-            </svg>
-            <span class="sr-only">Loading...</span>
-          </div>
-          <div
-            v-else-if="votingEnd"
-            class="flex flex-col items-center justify-center text-center px-6"
+  <NavBar :userData="userData"></NavBar>
+  <div
+    v-if="userData"
+    class=" text-gray-900 rounded-lg dark:text-gray-200 pt-16"
+  >
+    <!-- Hero Section -->
+    <section class="text-center p-10">
+      <div class="max-w-4xl mx-auto">
+        <h1
+          class="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-6 tracking-tight text-blue-500 dark:text-blue-400"
+        >
+          King & Queen Election Results
+        </h1>
+        <p
+          class="text-sm sm:text-base md:text-xl mb-10 prose text-justify text-gray-600 dark:text-gray-300"
+        >
+          Join us in celebrating the winners from each major. These exceptional
+          individuals have earned recognition for their leadership and
+          contributions to their communities.
+        </p>
+        <a
+          href="#major-results"
+          class="text-lg sm:text-xl md:text-2xl text-indigo-500 font-semibold inline-block px-6 py-3 border-2 border-indigo-200 rounded-full transition-all duration-300 hover:bg-indigo-200 dark:border-indigo-400 dark:text-indigo-400 hover:dark:bg-indigo-500"
+        >
+          View Major Results
+        </a>
+      </div>
+    </section>
+
+    <!-- Overall Winners Section -->
+    <section class="py-20 rounded-xl mx-5">
+      <div class="max-w-6xl mx-auto">
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl font-semibold mb-12 text-center text-gray-900 dark:text-gray-100"
+        >
+          Overall Winners
+        </h2>
+        <div
+          class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 md:gap-12 gap-3"
+        >
+          <ShowResults
+            :title="true"
+            :king="wholeKing"
+            :queen="wholeQueen"
+          ></ShowResults>
+        </div>
+      </div>
+    </section>
+
+    <!-- Major Results Sections -->
+    <section id="major-results" class="px-3 md:p-6">
+      <div class="max-w-6xl mx-auto">
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl font-semibold mb-12 text-center text-indigo-700 dark:text-indigo-400"
+        >
+          Major Results
+        </h2>
+
+        <!-- Electronic Engineering Section -->
+        <div class="mb-16">
+          <h3
+            class="text-2xl sm:text-3xl md:text-4xl font-semibold text-indigo-600 dark:text-indigo-400 mb-6"
           >
-            <div
-              class="bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-8 w-full max-w-md space-y-6 border border-gray-200 dark:border-gray-700"
-            >
-              <!-- Text Content -->
-              <div class="space-y-3">
-                <h1
-                  class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
-                >
-                  Voting Has Ended
-                </h1>
-                <p class="text-gray-600 dark:text-gray-400 text-base">
-                  The voting session is now closed. Thank you for participating!
-                </p>
-              </div>
-  
-            </div>
+            Electronic Engineering
+          </h3>
+          <p
+            class="text-sm sm:text-base md:text-xl text-gray-600 mb-6 dark:text-gray-300 prose text-justify"
+          >
+            These exceptional students have designed cutting-edge circuits and
+            systems, pushing the boundaries of modern technology. Their work
+            lays the foundation for the next wave of electronic innovation and
+            sustainability.
+          </p>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 md:gap-12 gap-3"
+          >
+            <ShowResults :king="ECKing" :queen="ECQueen"></ShowResults>
           </div>
-          <div v-else-if="!votingEnd" class="countdown-container text-center space-y-8">
-            <!-- Circular Progress Bars -->
-            <div
-              class="block md:flex sm:flex justify-between md:justify-center sm:justify-center gap-6"
-            >
-              <div class="flex gap-4 justify-evenly mb-5">
-                <!-- Days -->
-                <div class="circle">
-                  <svg width="80" height="80">
-                    <circle class="background" cx="40" cy="40" r="35"></circle>
-                    <circle
-                      :stroke-dasharray="remainingDays * 2.2 + ',' + 220"
-                      id="progress-days"
-                      class="progress"
-                      cx="40"
-                      cy="40"
-                      r="35"
-                      stroke="#8B5CF6"
-                    ></circle>
-                  </svg>
-                  <div class="label">
-                    <span
-                      id="days"
-                      class="text-xl text-indigo-700 dark:text-indigo-300"
-                      >{{ dayString }}</span
-                    ><br />
-                  </div>
-                  <small class="text-gray-600 dark:text-gray-300 text-xs"
-                    >Days</small
-                  >
-                </div>
-  
-                <!-- Hours -->
-                <div class="circle">
-                  <svg width="80" height="80">
-                    <circle class="background" cx="40" cy="40" r="35"></circle>
-                    <circle
-                      :stroke-dasharray="remainingHours * 2.2 + ',' + 220"
-                      id="progress-hours"
-                      class="progress"
-                      cx="40"
-                      cy="40"
-                      r="35"
-                      stroke="#3B82F6"
-                    ></circle>
-                  </svg>
-                  <div class="label">
-                    <span
-                      id="hours"
-                      class="text-xl text-indigo-700 dark:text-indigo-300"
-                      >{{ hourString }}</span
-                    ><br />
-                  </div>
-                  <small class="text-gray-600 dark:text-gray-300 text-xs"
-                    >Hours</small
-                  >
-                </div>
-              </div>
-  
-              <div class="flex gap-4 justify-evenly">
-                <!-- Minutes -->
-                <div class="circle">
-                  <svg width="80" height="80">
-                    <circle class="background" cx="40" cy="40" r="35"></circle>
-                    <circle
-                      :stroke-dasharray="remainingMinutes * 2.2 + ',' + 220"
-                      id="progress-minutes"
-                      class="progress"
-                      cx="40"
-                      cy="40"
-                      r="35"
-                      stroke="#10B981"
-                    ></circle>
-                  </svg>
-                  <div class="label">
-                    <span
-                      id="minutes"
-                      class="text-xl text-indigo-700 dark:text-indigo-300"
-                      >{{ minString }}</span
-                    ><br />
-                  </div>
-                  <small class="text-gray-600 dark:text-gray-300 text-xs"
-                    >Minutes</small
-                  >
-                </div>
-  
-                <!-- Seconds -->
-                <div class="circle">
-                  <svg width="80" height="80">
-                    <circle class="background" cx="40" cy="40" r="35"></circle>
-                    <circle
-                      :stroke-dasharray="remainingSeconds * 2.2 + ',' + 220"
-                      id="progress-seconds"
-                      class="progress"
-                      cx="40"
-                      cy="40"
-                      r="35"
-                      stroke="#EF4444"
-                    ></circle>
-                  </svg>
-                  <div class="label">
-                    <span
-                      id="seconds"
-                      class="text-xl text-indigo-700 dark:text-indigo-300"
-                      >{{ secString }}</span
-                    ><br />
-                  </div>
-                  <small class="text-gray-600 dark:text-gray-300 text-xs"
-                    >Seconds</small
-                  >
-                </div>
-              </div>
-            </div>
-            <h2
-              class="text-sm md:text-2xl font-bold text-center text-gray-800 dark:text-white mt-6"
-            >
-              Voting Period Countdown
-            </h2>
+        </div>
+
+        <!-- Electrical Power Engineering Section -->
+        <div class="mb-16">
+          <h3
+            class="text-2xl sm:text-3xl md:text-4xl font-semibold text-indigo-600 dark:text-indigo-400 mb-6"
+          >
+            Electrical Power Engineering
+          </h3>
+          <p
+            class="text-sm sm:text-base md:text-xl text-gray-600 mb-6 dark:text-gray-300 prose text-justify"
+          >
+            Students in this field are at the forefront of creating sustainable
+            energy solutions. Their work on power systems and renewable energy
+            sources is key to shaping a greener, more efficient future.
+          </p>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 md:gap-12 gap-3"
+          >
+            <ShowResults :king="EPKing" :queen="EPQueen"></ShowResults>
           </div>
-        </section>
-      
-    </div>
-  </template>
-    
-    <script>
-  import { watch } from "vue";
-  import deadLine from "@/composables/deadLine";
+        </div>
+
+        <!-- Mechanical Engineering Section -->
+        <div class="mb-16">
+          <h3
+            class="text-2xl sm:text-3xl md:text-4xl font-semibold text-indigo-600 dark:text-indigo-400 mb-6"
+          >
+            Mechanical Engineering
+          </h3>
+          <p
+            class="text-sm sm:text-base md:text-xl text-gray-600 mb-6 dark:text-gray-300 prose text-justify"
+          >
+            Mechanical engineers are innovators who design and build solutions
+            that improve lives. These students exemplify the core of
+            engineering, with breakthroughs in product design, robotics, and
+            energy efficiency.
+          </p>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 md:gap-12 gap-3"
+          >
+            <ShowResults :king="MECHKing" :queen="MECHQueen"></ShowResults>
+          </div>
+        </div>
+
+        <!-- Civil Engineering Section -->
+        <div class="">
+          <h3
+            class="text-2xl sm:text-3xl md:text-4xl font-semibold text-indigo-600 dark:text-indigo-400 mb-6"
+          >
+            Civil Engineering
+          </h3>
+          <p
+            class="text-sm sm:text-base md:text-xl text-gray-600 mb-6 dark:text-gray-300 prose text-justify"
+          >
+            These students have shown mastery in designing infrastructure that
+            is both durable and sustainable. From bridges to smart cities, their
+            projects represent the backbone of modern society and future
+            development.
+          </p>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 md:gap-12 gap-3"
+          >
+            <ShowResults :king="CKing" :queen="CQueen"></ShowResults>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
   
-  export default {
-    setup() {
-      const {
-        dayString,
-        hourString,
-        minString,
-        secString,
-        updateCountdown,
-        remainingDays,
-        remainingHours,
-        remainingMinutes,
-        remainingSeconds,
-        isLoading,
-        votingEnd,
-      } = deadLine();
-  
-      updateCountdown();
-  
-      return {
-        dayString,
-        hourString,
-        minString,
-        secString,
-        remainingDays,
-        remainingHours,
-        remainingMinutes,
-        remainingSeconds,
-        isLoading,
-        votingEnd,
-      };
-    },
-  };
-  </script>
-    
-    <style scoped>
-  #countdown {
-    font-family: "Poppins", sans-serif;
-  }
-  
-  .circle {
-    position: relative;
-    width: 80px;
-    height: 80px;
-  }
-  
-  .circle svg {
-    transform: rotate(-90deg);
-  }
-  
-  .circle .progress {
-    fill: none;
-    stroke-width: 8;
-    stroke-linecap: round;
-    transform-origin: center;
-    transition: stroke 0.3s ease;
-  }
-  
-  .circle .background {
-    fill: none;
-    stroke: rgba(0, 0, 0, 0.14);
-    stroke-width: 8;
-  }
-  
-  .circle .label {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    font-weight: bold;
-  }
-  
-  #progress-days {
-    stroke: #7134ff; /* Violet-500 */
-  }
-  
-  #progress-hours {
-    stroke: #0062ff; /* Blue-500 */
-  }
-  
-  #progress-minutes {
-    stroke: #2fff00; /* Emerald-500 */
-  }
-  
-  #progress-seconds {
-    stroke: #ff0000; /* Red-500 */
-  }
-  
-  .circle .label span:hover {
-    color: #7c3aed; /* Violet-600 */
-    transition: color 0.3s ease;
-  }
-  
-  .voting-ended-container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .dark .voting-ended-container {
-    background-color: rgba(31, 41, 55, 0.5);
-  }
-  
-  /* Animation for call-to-action buttons */
-  .router-link {
-    transition: all 0.3s ease;
-    transform: translateY(0);
-  }
-  
-  .router-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
-  </style>
+
+<script>
+import ShowResults from "../components/ShowResults";
+import { ref, onMounted, computed } from "vue";
+import NavBar from "@/components/NavBar.vue";
+import { db } from "@/firebase/config";
+
+export default {
+  components: {
+    ShowResults,
+    NavBar,
+  },
+
+  setup() {
+    const year = new Date().getFullYear().toString(); // Current year
+    const wholeKing = ref(null);
+    const wholeQueen = ref(null);
+    const ECKing = ref(null);
+    const ECQueen = ref(null);
+    const EPKing = ref(null);
+    const EPQueen = ref(null);
+    const CKing = ref(null);
+    const CQueen = ref(null);
+    const MECHKing = ref(null);
+    const MECHQueen = ref(null);
+
+    let userData = JSON.parse(localStorage.getItem("userData"));
+
+    function listenToResultsAndFilter() {
+      try {
+        // Set up real-time listener for the 'results' collection
+        const docRef = db.collection("results").doc(year);
+
+        // Use onSnapshot to listen for real-time updates
+        docRef.onSnapshot((docSnap) => {
+          if (docSnap.exists) {
+            const results = docSnap.data(); // All data from the document
+
+            // Filter specific objects (e.g., CKing, CQueen, ECKing)
+            Object.keys(results).forEach((key) => {
+              const obj = results[key];
+
+              if (key === "wholeKing") {
+                wholeKing.value = obj;
+              }
+
+              if (key === "wholeQueen") {
+                wholeQueen.value = obj;
+              }
+
+              if (key === "EPKing") {
+                EPKing.value = obj;
+              }
+
+              if (key === "EPQueen") {
+                EPQueen.value = obj;
+              }
+
+              if (key === "ECKing") {
+                ECKing.value = obj;
+              }
+
+              if (key === "ECQueen") {
+                ECQueen.value = obj;
+              }
+
+              if (key === "CKing") {
+                CKing.value = obj;
+              }
+
+              if (key === "CQueen") {
+                CQueen.value = obj;
+              }
+
+              if (key === "MECHKing") {
+                MECHKing.value = obj;
+              }
+
+              if (key === "MECHQueen") {
+                MECHQueen.value = obj;
+              }
+            });
+          } else {
+            console.log("No such document!");
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching document: ", error);
+      }
+    }
+
+    listenToResultsAndFilter();
+
+    return {
+      userData,
+      wholeKing,
+      wholeQueen,
+      ECKing,
+      ECQueen,
+      EPKing,
+      EPQueen,
+      CKing,
+      CQueen,
+      MECHKing,
+      MECHQueen,
+    };
+  },
+};
+</script>
+
+<style></style>

@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="p-4 shadow-lg absolute w-full top-0 z-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800"
+    class="p-4 shadow-lg w-full fixed top-0 z-50 bg-white dark:bg-gray-900/95 text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800"
   >
     <div class="container mx-auto flex justify-between items-center">
       <!-- Logo -->
@@ -48,7 +48,7 @@
             Vote
           </router-link>
         </li>
-        <li v-if="currentUser">
+        <li>
           <router-link
             to="/results"
             class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
@@ -59,11 +59,11 @@
         </li>
         <li>
           <router-link
-            to="/about"
+            to="/policies"
             class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
             active-class="text-primary-600 dark:text-primary-400 font-semibold"
           >
-            About
+            Policies
           </router-link>
         </li>
         <li>
@@ -72,7 +72,7 @@
             class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
             active-class="text-primary-600 dark:text-primary-400 font-semibold"
           >
-            Contact
+            Contact Us
           </router-link>
         </li>
       </ul>
@@ -86,6 +86,41 @@
             alt="Profile Image"
             class="w-10 h-10 rounded-full border border-blue-400"
           />
+        </button>
+        <button
+          @click="handleToggleTheme"
+          class="flex items-center justify-center space-x-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-primary-500 dark:text-primary-400"
+        >
+          <svg
+            v-if="theme === 'dark'"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 3v1m0 16v1m8.485-8.485h1M3.515 12h1m15.364 4.95l.707.707M4.222 5.636l.707.707m0 11.314l.707-.707m15.364-15.364l.707-.707M12 5a7 7 0 000 14 7 7 0 000-14z"
+            />
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"
+            />
+          </svg>
         </button>
       </div>
       <div v-else class="hidden md:flex items-center space-x-4">
@@ -101,6 +136,41 @@
         >
           Register
         </router-link>
+        <button
+          @click="handleToggleTheme"
+          class="flex items-center justify-center space-x-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-primary-500 dark:text-primary-400"
+        >
+          <svg
+            v-if="theme === 'dark'"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 3v1m0 16v1m8.485-8.485h1M3.515 12h1m15.364 4.95l.707.707M4.222 5.636l.707.707m0 11.314l.707-.707m15.364-15.364l.707-.707M12 5a7 7 0 000 14 7 7 0 000-14z"
+            />
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"
+            />
+          </svg>
+        </button>
       </div>
     </div>
 
@@ -129,7 +199,7 @@
         </svg>
       </button>
 
-      <ul class="flex flex-col space-y-4 text-lg">
+      <ul class="flex flex-col space-y-4 text-lg text-center">
         <li>
           <router-link
             to="/"
@@ -142,7 +212,7 @@
         </li>
         <li>
           <router-link
-            to="/about"
+            to="/vote"
             class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
             active-class="text-primary-600 dark:text-primary-400 font-semibold"
             @click="mobileMenuOpen = false"
@@ -162,12 +232,12 @@
         </li>
         <li>
           <router-link
-            to="/about"
+            to="/policies"
             class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
             active-class="text-primary-600 dark:text-primary-400 font-semibold"
             @click="mobileMenuOpen = false"
           >
-            About
+            Policies
           </router-link>
         </li>
         <li>
@@ -177,7 +247,7 @@
             active-class="text-primary-600 dark:text-primary-400 font-semibold"
             @click="mobileMenuOpen = false"
           >
-            Contact
+            Contact Us
           </router-link>
         </li>
       </ul>
@@ -247,13 +317,10 @@ import { db } from "@/firebase/config";
 import Swal from "sweetalert2";
 
 export default {
-  props:['currentUser'],
-  setup(props) {
+  setup() {
     const router = useRouter();
     const userId = localStorage.getItem("userId");
 
-    console.log(props.currentUser)
-    
     // Reactive state
     const theme = ref("light");
     const mobileMenuOpen = ref(false);
@@ -264,109 +331,313 @@ export default {
       if (!currentUser.value) return;
 
       Swal.fire({
-        title: `<span class="text-2xl font-bold text-gray-800 dark:text-white">User Profile</span>`,
         html: `
-          <div class="text-center max-w-md mx-auto">
-            <div class="relative mx-auto mb-6">
-              ${
-                currentUser.value.profileImage
-                  ? `<img src="${currentUser.value.profileImage}" alt="Profile" 
-                       class="w-32 h-32 rounded-full border-4 border-blue-100 dark:border-blue-900 object-cover shadow-md mx-auto">`
-                  : `<div class="w-32 h-32 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 
-                       border-4 border-blue-100 dark:border-blue-900 flex items-center justify-center text-4xl text-blue-400 dark:text-blue-300 font-bold shadow-md mx-auto">
-                       ${currentUser.value.name ? currentUser.value.name.charAt(0).toUpperCase() : '?'}
-                     </div>`
-              }
-            </div>
-            
-            <div class="space-y-3 text-left bg-gray-50 dark:bg-gray-800 rounded-xl p-5 shadow-inner">
-              <div class="flex items-start">
-                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                </svg>
-                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Name:</strong> 
-                <span class="text-gray-900 dark:text-white">${currentUser.value.name || "Not provided"}</span></span>
-              </div>
-              
-              <div class="flex items-start">
-                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
-                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Roll No:</strong> 
-                <span class="text-gray-900 dark:text-white">${currentUser.value.rollno || "Not provided"}</span></span>
-              </div>
-              
-              <div class="flex items-start">
-                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Year:</strong> 
-                <span class="text-gray-900 dark:text-white">${currentUser.value.year || "Not provided"}</span></span>
-              </div>
-              
-              <div class="flex items-start">
-                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                </svg>
-                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Major:</strong> 
-                <span class="text-gray-900 dark:text-white">${currentUser.value.major || "Not provided"}</span></span>
-              </div>
-              
-              <div class="flex items-start">
-                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                </svg>
-                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Status:</strong> 
-                <span class="px-2 py-1 text-xs rounded-full ${
-                  currentUser.value.status === 'active' 
-                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
-                    : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
-                }">${currentUser.value.status || "unknown"}</span></span>
-              </div>
-            </div>
+      <div class="text-center max-w-md mx-auto">
+        <div class="relative mx-auto mb-6">
+          ${
+            currentUser.value.profileImage
+              ? `<img src="${currentUser.value.profileImage}" alt="Profile" 
+                   class="w-32 h-32 rounded-full border-4 border-blue-100 dark:border-blue-900 object-cover shadow-md mx-auto">`
+              : `<div class="w-32 h-32 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 
+                   border-4 border-blue-100 dark:border-blue-900 flex items-center justify-center text-4xl text-blue-400 dark:text-blue-300 font-bold shadow-md mx-auto">
+                   ${
+                     currentUser.value.name
+                       ? currentUser.value.name.charAt(0).toUpperCase()
+                       : "?"
+                   }
+                 </div>`
+          }
+        </div>
+        
+        <div class="space-y-3 text-left bg-gray-50 dark:bg-gray-800 rounded-xl p-5 shadow-inner">
+          <div class="flex items-start">
+            <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Name : </strong> 
+            <span class="text-gray-900 dark:text-white">${
+              currentUser.value.name || "Not provided"
+            }</span></span>
           </div>
-        `,
+          
+          <div class="flex items-start">
+            <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+            <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Roll No : </strong> 
+            <span class="text-gray-900 dark:text-white">${
+              currentUser.value.rollno || "Not provided"
+            }</span></span>
+          </div>
+          
+          <div class="flex items-start">
+            <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Year : </strong> 
+            <span class="text-gray-900 dark:text-white">${
+              currentUser.value.year || "Not provided"
+            }</span></span>
+          </div>
+          
+          <div class="flex items-start">
+            <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+            <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Major : </strong> 
+            <span class="text-gray-900 dark:text-white">${
+              currentUser.value.major || "Not provided"
+            }</span></span>
+          </div>
+          
+          <div class="flex items-start">
+            <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+            <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Status : </strong> 
+            <span class="px-2 py-1 text-xs rounded-full ${
+              currentUser.value.status === "active"
+                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+            }">${currentUser.value.status || "unknown"}</span></span>
+          </div>
+        </div>
+      </div>
+    `,
         showCancelButton: true,
         confirmButtonText: `<span class="flex items-center">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-          </svg>
-          Edit Profile
-        </span>`,
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+      </svg>
+      Edit Profile
+    </span>`,
         cancelButtonText: `<span class="flex items-center">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-          Close
-        </span>`,
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+      Close
+    </span>`,
         confirmButtonColor: "#3b82f6",
         cancelButtonColor: "#6b7280",
         showDenyButton: true,
         denyButtonText: `<span class="flex items-center">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-          </svg>
-          Logout
-        </span>`,
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+      </svg>
+      Logout
+    </span>`,
         denyButtonColor: "#ef4444",
         width: "32rem",
         padding: "2rem",
-        background: "#ffffff",
+        background: "#ffffff dark:bg-gray-800",
         backdrop: `
-          rgba(0, 0, 0, 0.4)
-          url("/images/nyan-cat.gif")
-          left top
-          no-repeat
-        `,
+      rgba(0, 0, 0, 0.4)
+      url("/images/nyan-cat.gif")
+      left top
+      no-repeat
+    `,
         customClass: {
-          container: 'dark:bg-gray-900/80',
-          popup: 'rounded-xl shadow-2xl dark:bg-gray-800',
-          title: 'dark:text-white',
-          htmlContainer: 'dark:text-gray-300',
-        }
+          container: "dark:bg-gray-900/80",
+          popup: "rounded-xl shadow-2xl dark:bg-gray-800",
+          title: "dark:text-white",
+          htmlContainer: "dark:text-gray-300",
+          confirmButton: "dark:bg-blue-600 dark:hover:bg-blue-700",
+          cancelButton: "dark:bg-gray-600 dark:hover:bg-gray-700",
+          denyButton: "dark:bg-red-600 dark:hover:bg-red-700",
+        },
       }).then((result) => {
         if (result.isConfirmed) {
-          router.push("/ProfileForm");
+          // Show edit form with file upload for profile picture
+          Swal.fire({
+            title: "Edit Profile",
+            html: `
+          <div class="space-y-4 text-left">
+            <div class="mt-4 flex justify-center">
+              <img id="profile-image-preview" src="${
+                currentUser.value.profileImage || ""
+              }" class="w-24 h-24 rounded-full object-cover border border-gray-200 dark:border-gray-600 ${
+              !currentUser.value.profileImage ? "hidden" : ""
+            }" alt="Preview">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+              <input 
+                id="swal-input-name" 
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white" 
+                value="${currentUser.value.name || ""}"
+                placeholder="Enter your name">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Profile Image</label>
+              <div class="mt-1 flex items-center">
+                <label for="file-upload" class="cursor-pointer">
+                  <span class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <svg class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    ${
+                      currentUser.value.profileImage
+                        ? "Change Photo"
+                        : "Upload Photo"
+                    }
+                  </span>
+                  <input id="file-upload" name="file-upload" type="file" class="sr-only" accept="image/*">
+                </label>
+                <span id="file-name" class="ml-3 text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs">
+                  ${
+                    currentUser.value.profileImage
+                      ? "Current image set"
+                      : "No file selected"
+                  }
+                </span>
+              </div>
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                Recommended size: 500x500 pixels (2MB max)
+              </p>
+            </div>
+
+          </div>
+        `,
+            focusConfirm: false,
+            preConfirm: async () => {
+              const name = document.getElementById("swal-input-name").value;
+              const fileInput = document.getElementById("file-upload");
+              let profileImage = currentUser.value.profileImage || "";
+
+              // If a new file was uploaded
+              if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+
+                // Validate file size (2MB max)
+                if (file.size > 2 * 1024 * 1024) {
+                  Swal.showValidationMessage(
+                    "File size should be less than 2MB"
+                  );
+                  return false;
+                }
+
+                // Convert image to Base64
+                try {
+                  profileImage = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => resolve(event.target.result);
+                    reader.onerror = (error) => reject(error);
+                    reader.readAsDataURL(file);
+                  });
+                } catch (error) {
+                  console.error("Error converting image:", error);
+                  Swal.showValidationMessage("Failed to process image");
+                  return false;
+                }
+              }
+
+              return { name, profileImage };
+            },
+            showCancelButton: true,
+            confirmButtonText: "Save Changes",
+            cancelButtonText: "Cancel",
+            didOpen: () => {
+              const fileInput = document.getElementById("file-upload");
+              const fileNameDisplay = document.getElementById("file-name");
+              const preview = document.getElementById("profile-image-preview");
+
+              fileInput.addEventListener("change", (e) => {
+                if (e.target.files.length > 0) {
+                  const file = e.target.files[0];
+
+                  // Validate file type
+                  if (!file.type.match("image.*")) {
+                    fileNameDisplay.textContent = "Invalid file type";
+                    return;
+                  }
+
+                  // Validate file size
+                  if (file.size > 2 * 1024 * 1024) {
+                    fileNameDisplay.textContent = "File too large (max 2MB)";
+                    return;
+                  }
+
+                  fileNameDisplay.textContent = file.name;
+
+                  // Create a preview of the selected image
+                  const reader = new FileReader();
+                  reader.onload = (event) => {
+                    preview.src = event.target.result;
+                    preview.classList.remove("hidden");
+                  };
+                  reader.readAsDataURL(file);
+                } else {
+                  fileNameDisplay.textContent = currentUser.value.profileImage
+                    ? "Current image set"
+                    : "No file selected";
+                  if (!currentUser.value.profileImage) {
+                    preview.classList.add("hidden");
+                  }
+                }
+              });
+            },
+            background: "#ffffff dark:bg-gray-800",
+            customClass: {
+              popup: "dark:bg-gray-800",
+              title: "dark:text-white",
+              htmlContainer: "dark:text-gray-300",
+            },
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              const { name, profileImage } = result.value;
+              try {
+                // Show loading state
+                Swal.fire({
+                  title: "Updating profile...",
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                    Swal.showLoading();
+                  },
+                  background: "#ffffff dark:bg-gray-800",
+                  customClass: {
+                    popup: "dark:bg-gray-800",
+                    title: "dark:text-white",
+                  },
+                });
+
+                await db.collection("students").doc(userId).update({
+                  name: name,
+                  profileImage: profileImage,
+                });
+
+                // Update local state
+                currentUser.value.name = name;
+                currentUser.value.profileImage = profileImage;
+
+                Swal.fire({
+                  title: "Success!",
+                  text: "Profile updated successfully",
+                  icon: "success",
+                  confirmButtonColor: "#3b82f6",
+                  background: "#ffffff dark:bg-gray-800",
+                  customClass: {
+                    popup: "dark:bg-gray-800",
+                    title: "dark:text-white",
+                    content: "dark:text-gray-300",
+                  },
+                });
+              } catch (error) {
+                console.error("Error updating profile:", error);
+                Swal.fire({
+                  title: "Error!",
+                  text: "Failed to update profile",
+                  icon: "error",
+                  confirmButtonColor: "#ef4444",
+                  background: "#ffffff dark:bg-gray-800",
+                  customClass: {
+                    popup: "dark:bg-gray-800",
+                    title: "dark:text-white",
+                    content: "dark:text-gray-300",
+                  },
+                });
+              }
+            }
+          });
         } else if (result.isDenied) {
           handleLogout();
         }
@@ -374,27 +645,133 @@ export default {
     };
 
     const handleLogout = async () => {
-      Swal.fire({
-        title: "Logout",
-        text: "Are you sure you want to logout?",
+      const confirmButton = `
+    px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700
+    text-white shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5
+    dark:from-red-600 dark:to-red-700 dark:hover:from-red-700 dark:hover:to-red-800 flex items-center justify-center
+  `;
+      const cancelButton = `
+    px-4 py-2 rounded-lg bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300
+    text-gray-800 shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5
+    dark:from-gray-700 dark:to-gray-600 dark:hover:from-gray-600 dark:hover:to-gray-500 dark:text-gray-200
+    flex items-center justify-center
+  `;
+      const popupBaseClass =
+        "rounded-xl shadow-2xl dark:bg-gray-800 border border-gray-200 dark:border-gray-700";
+      const backgroundStyle =
+        "rgba(255,255,255,0.9) dark:bg-gray-800/90 backdrop-blur-sm";
+
+      const { isConfirmed } = await Swal.fire({
+        title: `<span class="text-gray-800 dark:text-white">Logout</span>`,
+        html: `<div class="text-gray-600 dark:text-gray-300">Are you sure you want to logout?</div>`,
         icon: "question",
         showCancelButton: true,
-        confirmButtonText: "Yes, logout",
-        cancelButtonText: "Cancel",
-        confirmButtonColor: "#ef4444",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          await db.collection("students").doc(userId).set({
-            status: "logout"
-          }, {
-            merge: true
-          });
-
-          localStorage.removeItem("userId");
-          currentUser.value = null;
-          window.location.href = "/";
-        }
+        confirmButtonText: `
+      <span class="flex items-center justify-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+        </svg> Logout
+      </span>`,
+        cancelButtonText: `
+      <span class="flex items-center justify-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg> Cancel
+      </span>`,
+        buttonsStyling: false,
+        customClass: {
+          confirmButton,
+          cancelButton,
+          popup: popupBaseClass,
+          actions: "gap-3 mt-4",
+        },
+        background: backgroundStyle,
+        backdrop: `rgba(0,0,0,0.2) url("/images/nyan-cat.gif") left top no-repeat`,
+        allowOutsideClick: false,
+        showCloseButton: true,
+        closeButtonHtml: `
+      <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>`,
       });
+
+      if (!isConfirmed) return;
+
+      try {
+        await Swal.fire({
+          title: `<span class="text-gray-800 dark:text-white">Signing Out</span>`,
+          html: `
+        <div class="flex flex-col items-center">
+          <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p class="text-gray-600 dark:text-gray-300 mt-2">Updating your status...</p>
+        </div>`,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          background: backgroundStyle,
+          customClass: { popup: popupBaseClass },
+        });
+
+        await db
+          .collection("students")
+          .doc(userId)
+          .set({ status: "logout" }, { merge: true });
+
+        await Swal.fire({
+          title: `<span class="text-gray-800 dark:text-white">Successfully Logged Out</span>`,
+          text: "You have been signed out securely",
+          icon: "success",
+          confirmButtonText: `
+        <span class="flex items-center justify-center">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg> Continue
+        </span>`,
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: `
+          px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700
+          text-white shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5
+          dark:from-blue-600 dark:to-blue-700 dark:hover:from-blue-700 dark:hover:to-blue-800
+          flex items-center justify-center
+        `,
+            popup: popupBaseClass,
+          },
+          background: backgroundStyle,
+          timer: 2000,
+          timerProgressBar: true,
+        });
+
+        // Final cleanup
+        localStorage.removeItem("userId");
+        currentUser.value = null;
+        window.location.href = "/";
+      } catch (error) {
+        console.error("Logout error:", error);
+        await Swal.fire({
+          title: `<span class="text-gray-800 dark:text-white">Logout Error</span>`,
+          html: `
+        <div class="flex flex-col items-center">
+          <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-red-500 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300">Failed to update your status. Please try again.</p>
+        </div>`,
+          confirmButtonText: `
+        <span class="flex items-center justify-center">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg> Okay
+        </span>`,
+          buttonsStyling: false,
+          customClass: {
+            confirmButton,
+            popup: popupBaseClass,
+          },
+          background: backgroundStyle,
+        });
+      }
     };
 
     const toggleMobileMenu = () => {
@@ -403,8 +780,25 @@ export default {
 
     const handleToggleTheme = () => {
       theme.value = theme.value === "light" ? "dark" : "light";
+      localStorage.setItem("theme", theme.value);
       document.documentElement.classList.toggle("dark", theme.value === "dark");
     };
+
+    // Load theme on mounted
+    onMounted(() => {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        theme.value = savedTheme;
+        document.documentElement.classList.toggle(
+          "dark",
+          theme.value === "dark"
+        );
+      } else {
+        theme.value = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+      }
+    });
 
     // Lifecycle hooks
     onMounted(async () => {
@@ -429,8 +823,8 @@ export default {
       showUserDetails,
       handleLogout,
       toggleMobileMenu,
-      handleToggleTheme
+      handleToggleTheme,
     };
-  }
+  },
 };
 </script>
