@@ -1,490 +1,436 @@
 <template>
-      <nav
-      class="p-4 shadow-lg sticky top-0 z-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800"
-    >
-      <div class="container mx-auto flex justify-between items-center">
-        <!-- Logo -->
-        <h1
-          class="text-2xl font-extrabold tracking-wide text-primary-600 dark:text-primary-400"
-        >
-          TU
-        </h1>
-
-        <!-- Mobile menu button -->
-        <button @click="toggleMobileMenu" class="md:hidden focus:outline-none">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-primary-600 dark:text-primary-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-
-        <!-- Navigation Links - Desktop -->
-        <ul class="hidden md:flex space-x-8 text-lg">
-          <li>
-            <router-link
-              to="/"
-              class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
-              active-class="text-primary-600 dark:text-primary-400 font-semibold"
-            >
-              Home
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/about"
-              class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
-              active-class="text-primary-600 dark:text-primary-400 font-semibold"
-            >
-              Vote
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/results"
-              class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
-              active-class="text-primary-600 dark:text-primary-400 font-semibold"
-            >
-              Results
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/about"
-              class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
-              active-class="text-primary-600 dark:text-primary-400 font-semibold"
-            >
-              About
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/contact"
-              class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
-              active-class="text-primary-600 dark:text-primary-400 font-semibold"
-            >
-              Contact
-            </router-link>
-          </li>
-        </ul>
-
-        <!-- Right section: Auth Buttons + Theme Toggle -->
-        <div class="hidden md:flex items-center space-x-4">
-          <button
-            @click.prevent="openLoginModal"
-            class="px-4 py-2 border border-primary-500 dark:border-primary-400 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-800 transition-all duration-300 text-sm font-medium"
-          >
-            Login
-          </button>
-          <router-link
-            to="/selectyear"
-            class="px-4 py-2 bg-primary-500 text-white dark:bg-primary-600 dark:text-gray-100 rounded-lg hover:bg-primary-600 dark:hover:bg-primary-500 transition-all duration-300 text-sm font-semibold shadow-sm"
-          >
-            Register
-          </router-link>
-
-
-        </div>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div v-if="mobileMenuOpen" class="md:hidden mt-4 pb-4 space-y-4">
-        <ul class="flex flex-col space-y-4 text-lg">
-          <li>
-            <router-link
-              to="/"
-              class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
-              active-class="text-primary-600 dark:text-primary-400 font-semibold"
-              @click="mobileMenuOpen = false"
-            >
-              Home
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/about"
-              class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
-              active-class="text-primary-600 dark:text-primary-400 font-semibold"
-              @click="mobileMenuOpen = false"
-            >
-              About
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/contact"
-              class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
-              active-class="text-primary-600 dark:text-primary-400 font-semibold"
-              @click="mobileMenuOpen = false"
-            >
-              Contact
-            </router-link>
-          </li>
-        </ul>
-
-        <div class="flex flex-col space-y-4">
-          <router-link
-            to="/login"
-            class="px-4 py-2 border border-primary-500 dark:border-primary-400 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-800 transition-all duration-300 text-sm font-medium text-center"
-            @click="mobileMenuOpen = false"
-          >
-            Login
-          </router-link>
-          <router-link
-            to="/register"
-            class="px-4 py-2 bg-primary-500 text-white dark:bg-primary-600 dark:text-gray-100 rounded-lg hover:bg-primary-600 dark:hover:bg-primary-500 transition-all duration-300 text-sm font-semibold text-center shadow-sm"
-            @click="mobileMenuOpen = false"
-          >
-            Register
-          </router-link>
-
-          <button
-            @click="handleToggleTheme"
-            class="flex items-center justify-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-primary-500 dark:text-primary-400"
-          >
-            <svg
-              v-if="theme === 'dark'"
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 3v1m0 16v1m8.485-8.485h1M3.515 12h1m15.364 4.95l.707.707M4.222 5.636l.707.707m0 11.314l.707-.707m15.364-15.364l.707-.707M12 5a7 7 0 000 14 7 7 0 000-14z"
-              />
-            </svg>
-            <svg
-              v-else
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"
-              />
-            </svg>
-            <span>Toggle Theme</span>
-          </button>
-        </div>
-      </div>
-    </nav>
-        <!-- Login Modal Backdrop -->
-        <div
-      v-if="showLoginModal"
-      class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-    >
-      <!-- Login Modal Content -->
-      <div
-        class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden w-full max-w-md transform transition-all"
+  <nav
+    class="p-4 shadow-lg absolute w-full top-0 z-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800"
+  >
+    <div class="container mx-auto flex justify-between items-center">
+      <!-- Logo -->
+      <h1
+        class="text-2xl font-extrabold tracking-wide text-primary-600 dark:text-primary-400"
       >
-        <div class="p-6">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
-              Welcome back
-            </h2>
-            <button
-              @click="closeLoginModal"
-              class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300 focus:outline-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 text-gray-500 dark:text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
+        TU
+      </h1>
 
-          <form @submit.prevent="handleLogin">
-            <div class="mb-4">
-              <label
-                for="login-email"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                >Email</label
-              >
-              <input
-                id="login-email"
-                v-model="loginForm.email"
-                type="email"
-                class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                placeholder="your@email.com"
-                required
-              />
-            </div>
+      <!-- Mobile menu button -->
+      <button @click="toggleMobileMenu" class="md:hidden focus:outline-none">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-primary-600 dark:text-primary-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
 
-            <div class="mb-6">
-              <label
-                for="login-password"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                >Password</label
-              >
-              <div class="relative">
-                <input
-                  id="login-password"
-                  v-model="loginForm.password"
-                  :type="showPassword ? 'text' : 'password'"
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all pr-10"
-                  placeholder="••••••••"
-                  required
-                />
-                <button
-                  type="button"
-                  @click="showPassword = !showPassword"
-                  class="absolute right-3 top-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                >
-                  <svg
-                    v-if="showPassword"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                  <svg
-                    v-else
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
+      <!-- Navigation Links - Desktop -->
+      <ul class="hidden md:flex space-x-8 text-lg">
+        <li>
+          <router-link
+            to="/"
+            class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+          >
+            Home
+          </router-link>
+        </li>
+        <li v-if="currentUser">
+          <router-link
+            to="/vote"
+            class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+          >
+            Vote
+          </router-link>
+        </li>
+        <li v-if="currentUser">
+          <router-link
+            to="/results"
+            class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+          >
+            Results
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            to="/about"
+            class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+          >
+            About
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            to="/contact"
+            class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+          >
+            Contact
+          </router-link>
+        </li>
+      </ul>
 
-            <div class="flex items-center justify-between mb-6">
-              <div class="flex items-center">
-                <input
-                  id="remember-me"
-                  v-model="loginForm.rememberMe"
-                  type="checkbox"
-                  class="h-4 w-4 text-primary-600 dark:text-primary-400 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
-                />
-                <label
-                  for="remember-me"
-                  class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
-                  >Remember me</label
-                >
-              </div>
-
-              <a
-                href="#"
-                class="text-sm text-primary-600 dark:text-primary-400 hover:underline"
-                >Forgot password?</a
-              >
-            </div>
-
-            <button
-              type="submit"
-              class="w-full py-3 px-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-75"
-              :disabled="isLoggingIn"
-            >
-              <span v-if="!isLoggingIn">Sign In</span>
-              <span v-else class="flex items-center justify-center">
-                <svg
-                  class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Signing in...
-              </span>
-            </button>
-
-            <div class="mt-6">
-              <div class="relative">
-                <div class="absolute inset-0 flex items-center">
-                  <div
-                    class="w-full border-t border-gray-300 dark:border-gray-600"
-                  ></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-                  <span
-                    class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-                    >Or continue with</span
-                  >
-                </div>
-              </div>
-
-              <div class="mt-6 grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  @click="loginWithGoogle"
-                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800"
-                >
-                  <svg
-                    class="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                    />
-                  </svg>
-                </button>
-
-                <button
-                  type="button"
-                  @click="loginWithGithub"
-                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800"
-                >
-                  <svg
-                    class="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div class="mt-6 text-center">
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                Don't have an account?
-                <button
-                  type="button"
-                  @click="openRegisterModal"
-                  class="text-primary-600 dark:text-primary-400 font-medium hover:underline focus:outline-none"
-                >
-                  Sign up
-                </button>
-              </p>
-            </div>
-          </form>
-        </div>
+      <!-- User Profile or Auth Buttons -->
+      <div v-if="currentUser" class="flex items-center space-x-2">
+        <button @click="showUserDetails" class="flex items-center space-x-2">
+          <img
+            v-if="currentUser.profileImage"
+            :src="currentUser.profileImage"
+            alt="Profile Image"
+            class="w-10 h-10 rounded-full border border-blue-400"
+          />
+        </button>
+      </div>
+      <div v-else class="hidden md:flex items-center space-x-4">
+        <router-link
+          to="/login"
+          class="px-4 py-2 border border-primary-500 dark:border-primary-400 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-800 transition-all duration-300 text-sm font-medium"
+        >
+          Login
+        </router-link>
+        <router-link
+          to="/selectyear"
+          class="px-4 py-2 bg-primary-500 text-white dark:bg-primary-600 dark:text-gray-100 rounded-lg hover:bg-primary-600 dark:hover:bg-primary-500 transition-all duration-300 text-sm font-semibold shadow-sm"
+        >
+          Register
+        </router-link>
       </div>
     </div>
+
+    <!-- Mobile Menu -->
+    <div
+      v-if="mobileMenuOpen"
+      class="md:hidden fixed inset-0 z-50 w-screen h-screen p-4 bg-gray-50 dark:bg-gray-900 space-y-4 pt-20"
+    >
+      <button
+        @click="mobileMenuOpen = false"
+        class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
+      <ul class="flex flex-col space-y-4 text-lg">
+        <li>
+          <router-link
+            to="/"
+            class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+            @click="mobileMenuOpen = false"
+          >
+            Home
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            to="/about"
+            class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+            @click="mobileMenuOpen = false"
+          >
+            Vote
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            to="/results"
+            class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+            @click="mobileMenuOpen = false"
+          >
+            Results
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            to="/about"
+            class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+            @click="mobileMenuOpen = false"
+          >
+            About
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            to="/contact"
+            class="block hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
+            active-class="text-primary-600 dark:text-primary-400 font-semibold"
+            @click="mobileMenuOpen = false"
+          >
+            Contact
+          </router-link>
+        </li>
+      </ul>
+
+      <div v-if="!currentUser" class="flex flex-col space-y-4">
+        <router-link
+          to="/login"
+          class="px-4 py-2 border border-primary-500 dark:border-primary-400 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-800 transition-all duration-300 text-sm font-medium text-center"
+          @click="mobileMenuOpen = false"
+        >
+          Login
+        </router-link>
+        <router-link
+          to="/selectyear"
+          class="px-4 py-2 bg-primary-500 text-white dark:bg-primary-600 dark:text-gray-100 rounded-lg hover:bg-primary-600 dark:hover:bg-primary-500 transition-all duration-300 text-sm font-semibold text-center shadow-sm"
+          @click="mobileMenuOpen = false"
+        >
+          Register
+        </router-link>
+      </div>
+
+      <button
+        @click="handleToggleTheme"
+        class="flex items-center justify-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-primary-500 dark:text-primary-400"
+      >
+        <svg
+          v-if="theme === 'dark'"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 3v1m0 16v1m8.485-8.485h1M3.515 12h1m15.364 4.95l.707.707M4.222 5.636l.707.707m0 11.314l.707-.707m15.364-15.364l.707-.707M12 5a7 7 0 000 14 7 7 0 000-14z"
+          />
+        </svg>
+        <svg
+          v-else
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"
+          />
+        </svg>
+        <span>Toggle Theme</span>
+      </button>
+    </div>
+  </nav>
 </template>
 
-<script setup>
-import { ref,onMounted } from "vue";
+<script>
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import getStudentById from "@/composables/getStudentById";
+import { db } from "@/firebase/config";
+import Swal from "sweetalert2";
 
+export default {
+  props:['currentUser'],
+  setup(props) {
+    const router = useRouter();
+    const userId = localStorage.getItem("userId");
 
+    console.log(props.currentUser)
+    
+    // Reactive state
+    const theme = ref("light");
+    const mobileMenuOpen = ref(false);
+    const currentUser = ref(null);
 
-// Login modal state
-const showLoginModal = ref(false);
-const showPassword = ref(false);
-const isLoggingIn = ref(false);
+    // Methods
+    const showUserDetails = () => {
+      if (!currentUser.value) return;
 
-// Login form data
-const loginForm = ref({
-  email: "",
-  password: "",
-  rememberMe: false,
-});
+      Swal.fire({
+        title: `<span class="text-2xl font-bold text-gray-800 dark:text-white">User Profile</span>`,
+        html: `
+          <div class="text-center max-w-md mx-auto">
+            <div class="relative mx-auto mb-6">
+              ${
+                currentUser.value.profileImage
+                  ? `<img src="${currentUser.value.profileImage}" alt="Profile" 
+                       class="w-32 h-32 rounded-full border-4 border-blue-100 dark:border-blue-900 object-cover shadow-md mx-auto">`
+                  : `<div class="w-32 h-32 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 
+                       border-4 border-blue-100 dark:border-blue-900 flex items-center justify-center text-4xl text-blue-400 dark:text-blue-300 font-bold shadow-md mx-auto">
+                       ${currentUser.value.name ? currentUser.value.name.charAt(0).toUpperCase() : '?'}
+                     </div>`
+              }
+            </div>
+            
+            <div class="space-y-3 text-left bg-gray-50 dark:bg-gray-800 rounded-xl p-5 shadow-inner">
+              <div class="flex items-start">
+                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Name:</strong> 
+                <span class="text-gray-900 dark:text-white">${currentUser.value.name || "Not provided"}</span></span>
+              </div>
+              
+              <div class="flex items-start">
+                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Roll No:</strong> 
+                <span class="text-gray-900 dark:text-white">${currentUser.value.rollno || "Not provided"}</span></span>
+              </div>
+              
+              <div class="flex items-start">
+                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Year:</strong> 
+                <span class="text-gray-900 dark:text-white">${currentUser.value.year || "Not provided"}</span></span>
+              </div>
+              
+              <div class="flex items-start">
+                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Major:</strong> 
+                <span class="text-gray-900 dark:text-white">${currentUser.value.major || "Not provided"}</span></span>
+              </div>
+              
+              <div class="flex items-start">
+                <svg class="w-5 h-5 mt-0.5 text-blue-500 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                <span class="ml-3"><strong class="text-gray-700 dark:text-gray-300">Status:</strong> 
+                <span class="px-2 py-1 text-xs rounded-full ${
+                  currentUser.value.status === 'active' 
+                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+                    : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                }">${currentUser.value.status || "unknown"}</span></span>
+              </div>
+            </div>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: `<span class="flex items-center">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+          </svg>
+          Edit Profile
+        </span>`,
+        cancelButtonText: `<span class="flex items-center">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+          Close
+        </span>`,
+        confirmButtonColor: "#3b82f6",
+        cancelButtonColor: "#6b7280",
+        showDenyButton: true,
+        denyButtonText: `<span class="flex items-center">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+          </svg>
+          Logout
+        </span>`,
+        denyButtonColor: "#ef4444",
+        width: "32rem",
+        padding: "2rem",
+        background: "#ffffff",
+        backdrop: `
+          rgba(0, 0, 0, 0.4)
+          url("/images/nyan-cat.gif")
+          left top
+          no-repeat
+        `,
+        customClass: {
+          container: 'dark:bg-gray-900/80',
+          popup: 'rounded-xl shadow-2xl dark:bg-gray-800',
+          title: 'dark:text-white',
+          htmlContainer: 'dark:text-gray-300',
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/ProfileForm");
+        } else if (result.isDenied) {
+          handleLogout();
+        }
+      });
+    };
 
-// Open login modal
-const openLoginModal = () => {
-  showLoginModal.value = true;
-};
+    const handleLogout = async () => {
+      Swal.fire({
+        title: "Logout",
+        text: "Are you sure you want to logout?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, logout",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#ef4444",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await db.collection("students").doc(userId).set({
+            status: "logout"
+          }, {
+            merge: true
+          });
 
-// Close login modal
-const closeLoginModal = () => {
-  showLoginModal.value = false;
-};
+          localStorage.removeItem("userId");
+          currentUser.value = null;
+          window.location.href = "/";
+        }
+      });
+    };
 
-// Login handler
-const handleLogin = async () => {
-  isLoggingIn.value = true;
-  try {
-    console.log("Logging in with:", loginForm.value);
-    // Add your actual login logic here
-    // await authStore.login(loginForm.value)
-    await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate API call
-    closeLoginModal();
-  } catch (error) {
-    console.error("Login error:", error);
-  } finally {
-    isLoggingIn.value = false;
+    const toggleMobileMenu = () => {
+      mobileMenuOpen.value = !mobileMenuOpen.value;
+    };
+
+    const handleToggleTheme = () => {
+      theme.value = theme.value === "light" ? "dark" : "light";
+      document.documentElement.classList.toggle("dark", theme.value === "dark");
+    };
+
+    // Lifecycle hooks
+    onMounted(async () => {
+      if (userId) {
+        try {
+          const { userData, load } = getStudentById(userId);
+          await load();
+          if (userData.value && userData.value.status === "active") {
+            currentUser.value = userData.value;
+          }
+        } catch (error) {
+          console.error("Error loading user data:", error);
+        }
+      }
+    });
+
+    // Return all reactive properties and methods
+    return {
+      theme,
+      mobileMenuOpen,
+      currentUser,
+      showUserDetails,
+      handleLogout,
+      toggleMobileMenu,
+      handleToggleTheme
+    };
   }
 };
-
-// Social login methods
-const loginWithGoogle = () => {
-  console.log("Login with Google");
-  // Implement Google OAuth
-};
-
-const loginWithGithub = () => {
-  console.log("Login with GitHub");
-  // Implement GitHub OAuth
-};
-
-// If you want to keep the register option
-const openRegisterModal = () => {
-  closeLoginModal();
-  // You could open a register modal here if needed
-  console.log("Open register modal");
-};
 </script>
-
-<style>
-
-</style>

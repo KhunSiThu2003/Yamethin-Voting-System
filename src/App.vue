@@ -1,7 +1,7 @@
 <template>
   <div :class="theme === 'dark' ? 'dark' : ''">
     <!-- Page Content -->
-    <main class="bg-gray-50 dark:bg-gray-900">
+    <main class="bg-gray-50 dark:bg-gray-900 min-h-screen">
       <router-view />
     </main>
     <!-- Theme toggle button using SVG -->
