@@ -24,5 +24,5 @@ module.exports = defineConfig({
       return [options];
     });
   },
-  
+
 });
