@@ -4,7 +4,7 @@
 
   <div
     v-if="currentUser"
-    class="bg-gray-100 pt-16 text-center h-screen flex flex-col justify-center items-center text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
+    class="bg-gray-100 pt-16 pb-3 text-center h-screen flex flex-col justify-center items-center text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
   >
     <div>
       <div class="md:w-40 w-20 mx-auto overflow-hidden object-cover">
@@ -29,64 +29,13 @@
           alt="Civil Engineering"
         />
       </div>
-      <h1 class="text-blue-500 text-2xl font-bold">
+      <h1 class="text-blue-500 text-2xl font-bold mb-4 dark:text-blue-400">
         {{ currentUser.major }}
       </h1>
     </div>
-    <div
-      class="flex w-full md:w-1/2 mx-auto justify-evenly items-center md:space-x-8 pt-14"
-    >
-      <!-- King Card -->
-      <div
-        class="p-5 w-36 md:w-1/2 rounded-lg shadow-xl bg-white dark:bg-gray-800 dark:text-gray-200"
-      >
-        <h3
-          class="text-sm sm:text-base md:text-lg text-blue-500 dark:text-blue-400 mb-4"
-        >
-          Major King
-        </h3>
-        <img
-          src="https://cdn-icons-png.freepik.com/512/9321/9321521.png"
-          alt="University King"
-          class="w-32 sm:w-40 md:w-48 border border-blue-400 mx-auto rounded-full mb-6 shadow-md transition-all duration-300 hover:scale-110 bg-gray-50 dark:bg-gray-700"
-        />
-        <router-link :to="{ name: 'candidate', params: { id: 'male' } }">
-          <button 
-            class="md:w-32 w-20 text-xs sm:text-sm md:text-base font-bold hover:text-white border rounded-lg py-2 transition text-blue-400 hover:bg-blue-400 border-blue-400 bg-blue-50 dark:border-blue-500 dark:bg-transparent dark:hover:bg-blue-400"
-            @click.prevent="checkVotingStatus('male')"
-          >
-            Vote King
-          </button>
-        </router-link>
-      </div>
-
-      <!-- Queen Card -->
-      <div
-        class="p-5 w-36 md:w-1/2 rounded-lg shadow-xl bg-white dark:bg-gray-800 dark:text-gray-200"
-      >
-        <h3
-          class="text-sm sm:text-base md:text-lg text-pink-400 dark:text-pink-400 mb-4"
-        >
-          Major Queen
-        </h3>
-        <img
-          src="https://cdn-icons-png.freepik.com/512/9321/9321521.png"
-          alt="University Queen"
-          class="w-32 sm:w-40 md:w-48 mx-auto border border-pink-400 rounded-full mb-6 shadow-md transition-all duration-300 hover:scale-110 bg-gray-50 dark:bg-gray-700"
-        />
-        <router-link :to="{ name: 'candidate', params: { id: 'female' } }">
-          <button 
-            class="md:w-32 w-20 text-xs sm:text-sm md:text-base font-bold hover:text-white border rounded-lg py-2 transition text-pink-400 hover:bg-pink-400 border-pink-400 bg-pink-50 dark:border-pink-500 dark:bg-transparent dark:hover:bg-pink-400"
-            @click.prevent="checkVotingStatus('female')"
-          >
-            Vote Queen
-          </button>
-        </router-link>
-      </div>
-    </div>
-    <div v-if="!votingEnd" class="absolute left-0 bottom-0 p-2">
+    <div v-if="!votingEnd" class="p-2 border rounded border-gray-300 dark:border-gray-700">
       <h1
-        class="text-sm sm:text-sm md:text-lg opacity-50 dark:text-gray-300 text-center"
+        class="text-sm mb-2 opacity-50 dark:text-gray-300 text-center"
       >
         Voting Ends In
       </h1>
@@ -123,6 +72,58 @@
         </div>
       </div>
     </div>
+    <div
+      class="flex w-full md:w-1/2 mx-auto justify-evenly items-center md:space-x-8 pt-14"
+    >
+      <!-- King Card -->
+      <div
+        class="p-5 w-36 md:w-1/3 rounded-lg shadow-xl bg-white dark:bg-gray-800 dark:text-gray-200"
+      >
+        <h3
+          class="text-sm sm:text-base md:text-lg text-blue-500 dark:text-blue-400 mb-4"
+        >
+          Major King
+        </h3>
+        <img
+          src="https://cdn-icons-png.freepik.com/512/9321/9321521.png"
+          alt="University King"
+          class="w-32  border border-blue-400 mx-auto rounded-full mb-6 shadow-md transition-all duration-300 hover:scale-110 bg-gray-50 dark:bg-gray-700"
+        />
+        <router-link :to="{ name: 'candidate', params: { id: 'male' } }">
+          <button 
+            class="md:w-32 w-20 text-xs sm:text-sm md:text-base font-bold hover:text-white border rounded-lg py-2 transition text-blue-400 hover:bg-blue-400 border-blue-400 bg-blue-50 dark:border-blue-500 dark:bg-transparent dark:hover:bg-blue-400"
+            @click.prevent="checkVotingStatus('male')"
+          >
+            Vote King
+          </button>
+        </router-link>
+      </div>
+
+      <!-- Queen Card -->
+      <div
+        class="p-5 w-36 md:w-1/3 rounded-lg shadow-xl bg-white dark:bg-gray-800 dark:text-gray-200"
+      >
+        <h3
+          class="text-sm sm:text-base md:text-lg text-pink-400 dark:text-pink-400 mb-4"
+        >
+          Major Queen
+        </h3>
+        <img
+          src="https://cdn-icons-png.freepik.com/512/9321/9321521.png"
+          alt="University Queen"
+          class="w-32 mx-auto border border-pink-400 rounded-full mb-6 shadow-md transition-all duration-300 hover:scale-110 bg-gray-50 dark:bg-gray-700"
+        />
+        <router-link :to="{ name: 'candidate', params: { id: 'female' } }">
+          <button 
+            class="md:w-32 w-20 text-xs sm:text-sm md:text-base font-bold hover:text-white border rounded-lg py-2 transition text-pink-400 hover:bg-pink-400 border-pink-400 bg-pink-50 dark:border-pink-500 dark:bg-transparent dark:hover:bg-pink-400"
+            @click.prevent="checkVotingStatus('female')"
+          >
+            Vote Queen
+          </button>
+        </router-link>
+      </div>
+    </div>
+
   </div>
 
   <!-- Policy Modal -->
@@ -160,7 +161,7 @@
       <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
         Read the full policy
         <router-link
-          to="/policy"
+          to="/policies"
           class="text-blue-600 dark:text-blue-400 hover:underline"
         >
           here </router-link

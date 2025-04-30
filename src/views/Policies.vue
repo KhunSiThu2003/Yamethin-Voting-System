@@ -3,13 +3,13 @@
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 pb-12 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <div class="text-center mb-12">
-          <h1 class="text-4xl font-bold text-gray-900 dark:text-white my-4">Policies</h1>
-          <p class="text-xl text-gray-600 dark:text-gray-300">Rules and guidelines for the TU Yamethin Major King & Queen Elections</p>
+          <h1 class="md:text-4xl text-2xl font-bold text-gray-900 dark:text-white my-4">Policies</h1>
+          <p class="md:text-xl text-base text-justify text-gray-600 dark:text-gray-300">Rules and guidelines for the TU Yamethin Major King & Queen Elections</p>
         </div>
   
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8 mb-8">
           <h2 class="text-2xl font-semibold text-primary-600 dark:text-primary-400 mb-4">Election Guidelines</h2>
-          <div class="space-y-4 text-gray-700 dark:text-gray-300">
+          <div class="space-y-4 text-justify text-gray-700 dark:text-gray-300">
             <p>All participants in the TU Yamethin Major King & Queen Elections must adhere to the following policies:</p>
             
             <ul class="space-y-3 list-disc pl-5">
@@ -24,7 +24,7 @@
   
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8 mb-8">
           <h2 class="text-2xl font-semibold text-primary-600 dark:text-primary-400 mb-4">Code of Conduct</h2>
-          <div class="space-y-4 text-gray-700 dark:text-gray-300">
+          <div class="space-y-4 text-gray-700 dark:text-gray-300 text-justify">
             <p>All candidates and voters are expected to maintain the highest standards of behavior:</p>
             
             <ul class="space-y-3 list-disc pl-5">
@@ -39,7 +39,7 @@
   
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8">
           <h2 class="text-2xl font-semibold text-primary-600 dark:text-primary-400 mb-4">Privacy Policy</h2>
-          <div class="space-y-4 text-gray-700 dark:text-gray-300">
+          <div class="space-y-4 text-gray-700 dark:text-gray-300 text-justify">
             <p>Your privacy is important to us. This policy explains how we handle your information:</p>
             
             <ul class="space-y-3 list-disc pl-5">

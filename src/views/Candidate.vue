@@ -16,7 +16,7 @@
                         </div>
                     </div>
         
-                    <div class="max-w-8xl mx-auto px-10">
+                    <div class="max-w-8xl mx-auto md:px-10">
         
                         <div class="h3 flex justify-center items-center my-10" :class="king_queen === 'KING' ? 'text-blue-400' : 'text-pink-400'">
                             <h3 class="text-xl md:text-4xl sm:text-4xl font-bold mr-5">Candidates For {{ king_queen }}
@@ -55,7 +55,7 @@
                         </div>
         
                         <!-- Contestants Grid for King -->
-                        <div v-else id="filter_king" class="grid grid-cols-2 gap-3 md:gap-16 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4  p-4 border dark:border-gray-700 rounded-lg">
+                        <div v-else id="filter_king" class="grid grid-cols-2 gap-3 md:gap-16 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4  p-4 md:border dark:border-gray-700 rounded-lg">
                             <div v-if="error">
                                 <p class="text-red-500">{{ error }}</p>
                             </div>
@@ -219,14 +219,14 @@
     
             const showConfirmationAlert = (candidate) => {
                 Swal.fire({
-                    title: `Vote for ${candidate.name}?`,
+                   
                     html: `
                         <div class="text-center">
                             <img src="${candidate.profileImage}" 
                                  class="w-32 h-32 mx-auto rounded-full object-cover border-4 ${candidate.gender === 'male' ? 'border-blue-400' : 'border-pink-400'}" 
                                  alt="${candidate.name}">
                             <h3 class="text-xl font-bold mt-4">${candidate.name}</h3>
-                            <p class="text-gray-600 mt-2">Every vote matters. Make sure your choice is final!</p>
+                            <p class="text-gray-600 mt-2 text-sm md:text-base">Every vote matters. Make sure your choice is final!</p>
                         </div>
                     `,
                     showCancelButton: true,
@@ -264,7 +264,7 @@
     
             const showSuccessAlert = (candidate) => {
                 Swal.fire({
-                    title: 'Vote Successful!',
+                    
                     html: `
                         <div class="text-center">
                             <div class="flex justify-center">

@@ -78,7 +78,7 @@
       </ul>
 
       <!-- User Profile or Auth Buttons -->
-      <div v-if="currentUser" class="flex items-center space-x-2">
+      <div v-if="currentUser" class="md:flex hidden items-center space-x-2">
         <button @click="showUserDetails" class="flex items-center space-x-2">
           <img
             v-if="currentUser.profileImage"
@@ -86,6 +86,14 @@
             alt="Profile Image"
             class="w-10 h-10 rounded-full border border-blue-400"
           />
+          <span
+            v-else
+            class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-semibold"
+          >
+            {{
+              currentUser.name ? currentUser.name.charAt(0).toUpperCase() : "U"
+            }}
+          </span>
         </button>
         <button
           @click="handleToggleTheme"
@@ -314,7 +322,6 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import getStudentById from "@/composables/getStudentById";
 import { db } from "@/firebase/config";
-import Swal from "sweetalert2";
 
 export default {
   setup() {
@@ -645,132 +652,65 @@ export default {
     };
 
     const handleLogout = async () => {
-      const confirmButton = `
-    px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700
-    text-white shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5
-    dark:from-red-600 dark:to-red-700 dark:hover:from-red-700 dark:hover:to-red-800 flex items-center justify-center
-  `;
-      const cancelButton = `
-    px-4 py-2 rounded-lg bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300
-    text-gray-800 shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5
-    dark:from-gray-700 dark:to-gray-600 dark:hover:from-gray-600 dark:hover:to-gray-500 dark:text-gray-200
-    flex items-center justify-center
-  `;
-      const popupBaseClass =
-        "rounded-xl shadow-2xl dark:bg-gray-800 border border-gray-200 dark:border-gray-700";
-      const backgroundStyle =
-        "rgba(255,255,255,0.9) dark:bg-gray-800/90 backdrop-blur-sm";
+      // Determine current theme (you might get this from your app's state)
+      const currentTheme = localStorage.getItem("theme") || "light"; // default to light
 
-      const { isConfirmed } = await Swal.fire({
-        title: `<span class="text-gray-800 dark:text-white">Logout</span>`,
-        html: `<div class="text-gray-600 dark:text-gray-300">Are you sure you want to logout?</div>`,
+      const result = await Swal.fire({
+        title: "Logout",
+        text: "Are you sure you want to logout?",
         icon: "question",
         showCancelButton: true,
-        confirmButtonText: `
-      <span class="flex items-center justify-center">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-        </svg> Logout
-      </span>`,
-        cancelButtonText: `
-      <span class="flex items-center justify-center">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg> Cancel
-      </span>`,
-        buttonsStyling: false,
-        customClass: {
-          confirmButton,
-          cancelButton,
-          popup: popupBaseClass,
-          actions: "gap-3 mt-4",
-        },
-        background: backgroundStyle,
-        backdrop: `rgba(0,0,0,0.2) url("/images/nyan-cat.gif") left top no-repeat`,
-        allowOutsideClick: false,
-        showCloseButton: true,
-        closeButtonHtml: `
-      <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>`,
+        confirmButtonText: "Yes, logout",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#ef4444",
+        reverseButtons: true,
+        focusCancel: true,
+        background: currentTheme === "dark" ? "#1e293b" : "#ffffff",
+        color: currentTheme === "dark" ? "#f8fafc" : "#0f172a",
       });
 
-      if (!isConfirmed) return;
-
-      try {
-        await Swal.fire({
-          title: `<span class="text-gray-800 dark:text-white">Signing Out</span>`,
-          html: `
-        <div class="flex flex-col items-center">
-          <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-          <p class="text-gray-600 dark:text-gray-300 mt-2">Updating your status...</p>
-        </div>`,
-          showConfirmButton: false,
+      if (result.isConfirmed) {
+        // Show loading state
+        Swal.fire({
+          title: "Logging out...",
+          html: "Please wait while we secure your session",
           allowOutsideClick: false,
-          background: backgroundStyle,
-          customClass: { popup: popupBaseClass },
-        });
-
-        await db
-          .collection("students")
-          .doc(userId)
-          .set({ status: "logout" }, { merge: true });
-
-        await Swal.fire({
-          title: `<span class="text-gray-800 dark:text-white">Successfully Logged Out</span>`,
-          text: "You have been signed out securely",
-          icon: "success",
-          confirmButtonText: `
-        <span class="flex items-center justify-center">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg> Continue
-        </span>`,
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: `
-          px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700
-          text-white shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5
-          dark:from-blue-600 dark:to-blue-700 dark:hover:from-blue-700 dark:hover:to-blue-800
-          flex items-center justify-center
-        `,
-            popup: popupBaseClass,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          background: currentTheme === "dark" ? "#1e293b" : "#ffffff",
+          color: currentTheme === "dark" ? "#f8fafc" : "#0f172a",
+          willOpen: () => {
+            Swal.showLoading();
           },
-          background: backgroundStyle,
-          timer: 2000,
-          timerProgressBar: true,
         });
 
-        // Final cleanup
-        localStorage.removeItem("userId");
-        currentUser.value = null;
-        window.location.href = "/";
-      } catch (error) {
-        console.error("Logout error:", error);
-        await Swal.fire({
-          title: `<span class="text-gray-800 dark:text-white">Logout Error</span>`,
-          html: `
-        <div class="flex flex-col items-center">
-          <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-red-500 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <p class="text-gray-600 dark:text-gray-300">Failed to update your status. Please try again.</p>
-        </div>`,
-          confirmButtonText: `
-        <span class="flex items-center justify-center">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg> Okay
-        </span>`,
-          buttonsStyling: false,
-          customClass: {
-            confirmButton,
-            popup: popupBaseClass,
-          },
-          background: backgroundStyle,
-        });
+        try {
+          // Update user status in database
+          await db
+            .collection("students")
+            .doc(userId)
+            .set({ status: "logout" }, { merge: true });
+
+          // Clear local storage and state
+          localStorage.removeItem("userId");
+          currentUser.value = null;
+
+          // Close loading state before redirect
+          Swal.close();
+
+          // Redirect to home page
+          window.location.href = "/";
+        } catch (error) {
+          console.error("Logout failed:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Logout Failed",
+            text: "Could not complete logout. Please try again.",
+            confirmButtonColor: "#ef4444",
+            background: currentTheme === "dark" ? "#1e293b" : "#ffffff",
+            color: currentTheme === "dark" ? "#f8fafc" : "#0f172a",
+          });
+        }
       }
     };
 

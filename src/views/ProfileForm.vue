@@ -62,21 +62,9 @@
             />
           </div>
 
-          <!-- Displaying User's Name -->
-          <div class="mb-6 text-center">
-            <p class="text-lg dark:text-white font-medium text-gray-700">
-              {{ userData.name }}
-            </p>
-          </div>
-
           <!-- Upload Button (Disabled if no image) -->
-          <div class="text-center flex justify-center items-center gap-4">
-            <button
-              type="submit"
-              class="w-full px-6 py-3 dark:text-white border border-primary-500 dark:border-primary-400 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-800 transition-all duration-300 text-sm font-medium"
-            >
-              Skip
-            </button>
+          <div class="text-center md:flex justify-center items-center gap-4">
+
             <button
               type="submit"
               class="w-full px-6 py-3 bg-blue-400 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none transition duration-300"
@@ -84,6 +72,14 @@
             >
               Upload Profile Picture
             </button>
+
+            <button
+              type="submit"
+              class="w-full px-6 py-3 mt-3 md:mt-0 dark:text-white border border-primary-500 dark:border-primary-400 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-800 transition-all duration-300 text-sm font-medium"
+            >
+              Skip
+            </button>
+
           </div>
         </form>
 

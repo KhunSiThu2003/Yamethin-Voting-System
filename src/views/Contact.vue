@@ -3,14 +3,14 @@
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 pb-12 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <div class="text-center mb-12">
-          <h1 class="text-4xl font-bold text-gray-900 dark:text-white my-4">Contact Us</h1>
-          <p class="text-xl text-gray-600 dark:text-gray-300">Get in touch with the election committee</p>
+          <h1 class="md:text-4xl text-2xl font-bold text-gray-900 dark:text-white my-4">Contact Us</h1>
+          <p class="md:text-xl text-base text-gray-600 dark:text-gray-300">Get in touch with the election committee</p>
         </div>
   
         <div class="grid md:grid-cols-2 gap-8">
           <!-- Contact Information -->
           <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8">
-            <h2 class="text-2xl font-semibold text-primary-600 dark:text-primary-400 mb-6">Committee Information</h2>
+            <h2 class="text-xl font-semibold text-primary-600 dark:text-primary-400 mb-6">Committee Information</h2>
             
             <div class="space-y-6">
               <div class="flex items-start">
@@ -20,7 +20,7 @@
                   </svg>
                 </div>
                 <div class="ml-4">
-                  <h3 class="text-lg font-medium text-gray-900 dark:text-white">Phone</h3>
+                  <h3 class="text-xl font-medium text-gray-900 dark:text-white">Phone</h3>
                   <p class="text-gray-600 dark:text-gray-300">+95 9 123 456 789</p>
                   <p class="text-gray-600 dark:text-gray-300">+95 9 987 654 321</p>
                 </div>
@@ -33,7 +33,7 @@
                   </svg>
                 </div>
                 <div class="ml-4">
-                  <h3 class="text-lg font-medium text-gray-900 dark:text-white">Email</h3>
+                  <h3 class="text-xl font-medium text-gray-900 dark:text-white">Email</h3>
                   <p class="text-gray-600 dark:text-gray-300">election@tuym.edu.mm</p>
                   <p class="text-gray-600 dark:text-gray-300">support@tuym.edu.mm</p>
                 </div>
@@ -47,32 +47,19 @@
                   </svg>
                 </div>
                 <div class="ml-4">
-                  <h3 class="text-lg font-medium text-gray-900 dark:text-white">Address</h3>
+                  <h3 class="text-xl font-medium text-gray-900 dark:text-white">Address</h3>
                   <p class="text-gray-600 dark:text-gray-300">Technological University (Yamethin)</p>
                   <p class="text-gray-600 dark:text-gray-300">Yamethin Township, Mandalay Region</p>
                   <p class="text-gray-600 dark:text-gray-300">Myanmar</p>
                 </div>
               </div>
   
-              <div class="flex items-start">
-                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-500 dark:text-primary-400">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div class="ml-4">
-                  <h3 class="text-lg font-medium text-gray-900 dark:text-white">Office Hours</h3>
-                  <p class="text-gray-600 dark:text-gray-300">Monday - Friday: 9:00 AM - 4:00 PM</p>
-                  <p class="text-gray-600 dark:text-gray-300">Saturday: 9:00 AM - 12:00 PM</p>
-                  <p class="text-gray-600 dark:text-gray-300">Sunday: Closed</p>
-                </div>
-              </div>
             </div>
           </div>
   
           <!-- Contact Form -->
           <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8">
-            <h2 class="text-2xl font-semibold text-primary-600 dark:text-primary-400 mb-6">Send Us a Message</h2>
+            <h2 class="md:text-2xl text-base font-semibold text-primary-600 dark:text-primary-400 mb-6">Send Us a Message</h2>
             
             <form @submit.prevent="submitForm" class="space-y-4">
               <div>

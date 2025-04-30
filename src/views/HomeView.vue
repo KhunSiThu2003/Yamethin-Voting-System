@@ -1,6 +1,6 @@
 <template>
   <NavBar></NavBar>
-  <div class="h-screen flex flex-col justify-center bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 lg:px-8 pt-16">
+  <div class="h-screen flex flex-col justify-center bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 lg:px-8 pt-40 md:pt-16">
     <!-- Loading State -->
     <section v-if="isLoading" class="text-center mb-20">
       <p class="text-xl text-gray-600 dark:text-gray-300">Loading election information...</p>
@@ -8,12 +8,12 @@
 
     <!-- Main Content -->
     <section v-else class="text-center mb-20">
-      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+      <h1 class="text-2xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
         <span class="text-primary-600 dark:text-primary-400">TU Yamethin</span>
-        Major King & Queen Elections 2024
+        Major King & Queen Elections
       </h1>
       
-      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
+      <p class="text-base md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8 text-justify">
         Cast your vote for the most deserving candidates to represent your
         department as this year's Major King and Queen. Your voice matters in
         shaping student leadership!
