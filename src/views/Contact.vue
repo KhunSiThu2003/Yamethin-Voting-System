@@ -21,8 +21,8 @@
                 </div>
                 <div class="ml-4">
                   <h3 class="text-xl font-medium text-gray-900 dark:text-white">Phone</h3>
-                  <p class="text-gray-600 dark:text-gray-300">+95 9 123 456 789</p>
-                  <p class="text-gray-600 dark:text-gray-300">+95 9 987 654 321</p>
+                  <p class="text-gray-600 dark:text-gray-300">+95 9 440 974 981</p>
+                  <p class="text-gray-600 dark:text-gray-300">+95 9 763 618 306</p>
                 </div>
               </div>
   
@@ -34,8 +34,8 @@
                 </div>
                 <div class="ml-4">
                   <h3 class="text-xl font-medium text-gray-900 dark:text-white">Email</h3>
-                  <p class="text-gray-600 dark:text-gray-300">election@tuym.edu.mm</p>
-                  <p class="text-gray-600 dark:text-gray-300">support@tuym.edu.mm</p>
+                  <p class="text-gray-600 dark:text-gray-300">khunsithuaung65@gmail.com</p>
+                  <p class="text-gray-600 dark:text-gray-300">khunsithu350@gmail.com</p>
                 </div>
               </div>
   
@@ -139,7 +139,11 @@
   
   <script>
   import NavBar from "@/components/NavBar.vue";
+import { db } from "@/firebase/config";
+import firebase from "firebase/app";
+import "firebase/firestore";
   import { ref } from "vue";
+
   
   export default {
     name: "ContactUs",
@@ -157,17 +161,36 @@
       const successMessage = ref('');
       const errorMessage = ref('');
   
-      const submitForm = () => {
+      const submitForm = async () => {
+        // Validate form
+        if (!form.value.name || !form.value.email || !form.value.subject || !form.value.message) {
+          errorMessage.value = 'Please fill in all fields';
+          return;
+        }
+  
         loading.value = true;
         errorMessage.value = '';
         successMessage.value = '';
         
-        // Simulate form submission
-        setTimeout(() => {
-          loading.value = false;
+        try {
+
+          // Add a new document with a generated id
+          await db.collection("contacts").add({
+            name: form.value.name,
+            email: form.value.email,
+            subject: form.value.subject,
+            message: form.value.message,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          
           successMessage.value = 'Your message has been sent successfully! We will get back to you soon.';
           form.value = { name: '', email: '', subject: '', message: '' };
-        }, 1500);
+        } catch (e) {
+          console.error("Error adding document: ", e);
+          errorMessage.value = 'There was an error sending your message. Please try again.';
+        } finally {
+          loading.value = false;
+        }
       };
   
       return {

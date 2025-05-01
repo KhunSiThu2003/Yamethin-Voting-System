@@ -4,7 +4,7 @@
 
   <div
     v-if="currentUser"
-    class="bg-gray-100 pt-16 pb-3 text-center h-screen flex flex-col justify-center items-center text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
+    class="bg-gray-100 pt-16 pb-3 text-center  flex flex-col justify-center items-center text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
   >
     <div>
       <div class="md:w-40 w-20 mx-auto overflow-hidden object-cover">
@@ -79,11 +79,6 @@
       <div
         class="p-5 w-36 md:w-1/3 rounded-lg shadow-xl bg-white dark:bg-gray-800 dark:text-gray-200"
       >
-        <h3
-          class="text-sm sm:text-base md:text-lg text-blue-500 dark:text-blue-400 mb-4"
-        >
-          Major King
-        </h3>
         <img
           src="https://cdn-icons-png.freepik.com/512/9321/9321521.png"
           alt="University King"
@@ -103,11 +98,7 @@
       <div
         class="p-5 w-36 md:w-1/3 rounded-lg shadow-xl bg-white dark:bg-gray-800 dark:text-gray-200"
       >
-        <h3
-          class="text-sm sm:text-base md:text-lg text-pink-400 dark:text-pink-400 mb-4"
-        >
-          Major Queen
-        </h3>
+
         <img
           src="https://cdn-icons-png.freepik.com/512/9321/9321521.png"
           alt="University Queen"

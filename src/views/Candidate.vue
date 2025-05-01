@@ -55,7 +55,7 @@
                         </div>
         
                         <!-- Contestants Grid for King -->
-                        <div v-else id="filter_king" class="grid grid-cols-2 gap-3 md:gap-16 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4  p-4 md:border dark:border-gray-700 rounded-lg">
+                        <div v-else id="filter_king" class="grid grid-cols-2 gap-3 md:gap-16 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4  p-2 md:p-5 md:border dark:border-gray-700 rounded-lg">
                             <div v-if="error">
                                 <p class="text-red-500">{{ error }}</p>
                             </div>

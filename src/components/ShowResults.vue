@@ -8,7 +8,7 @@
             <div class="relative w-full h-24 md:h-60 rounded overflow-hidden shadow-lg ">
                 <img :src="king.profileImage" alt="king Name" class="w-full h-full object-cover ">
             </div>
-            <div class="absolute left-4 bottom-3 md:-bottom-8 items-center text-sm">
+            <div class="absolute left-1 bottom-1 md:-bottom-8 items-center text-sm">
                 <span
                     class="md:w-16 md:h-16 w-6 h-6 md:text-3xl text-xs font-bold text-white flex items-center justify-center rounded-full mr-3 bg-blue-500">
                     {{ king.number }}
@@ -34,7 +34,7 @@
             <div class="relative w-full h-24 md:h-60 rounded overflow-hidden shadow-lg">
                 <img :src="queen.profileImage" alt="queen Name" class="w-full h-full object-cover">
             </div>
-            <div class="absolute left-4 bottom-3 md:-bottom-8 items-center text-sm">
+            <div class="absolute left-1 bottom-1 md:-bottom-8 items-center text-sm">
                 <span
                     class="md:w-16 md:h-16 w-6 h-6 md:text-3xl text-xs font-bold text-white flex items-center justify-center rounded-full mr-3 bg-pink-400">
                     {{ queen.number }}
@@ -43,7 +43,7 @@
         </div>
         <h2 class="text-xs sm:text-base md:text-2xl font-bold text-blue-800 dark:text-white mt-4 mb-2">{{ queen.name }}</h2>
         <p class="w-full text-left font-bold text-xs sm:text-sm md:text-base text-gray-700 dark:text-gray-300">Total Votes - {{ queen.voterCount }}</p>
-        <p class="w-full text-left font-bold text-xs sm:text-sm md:text-base text-gray-700 dark:text-gray-300">Major - {{ queen.major }}</p>
+        <p class="w-full text-left font-bold text-xs sm:text-sm md:text-base text-gray-700 dark:text-gray-300">{{ queen.major }} Major</p>
     </div>
 
     <div v-if="!queen" id="overallQueen"
