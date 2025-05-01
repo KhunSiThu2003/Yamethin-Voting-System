@@ -1,7 +1,7 @@
 <template>
-  <NavBar :userData="userData"></NavBar>
+  <NavBar></NavBar>
   <div
-    v-if="userData"
+    
     class=" text-gray-900 rounded-lg dark:text-gray-200 pt-16"
   >
     <!-- Hero Section -->

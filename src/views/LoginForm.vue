@@ -58,6 +58,7 @@
     import { useRouter } from "vue-router";
     import { db } from "@/firebase/config";
     
+    
     export default {
         components: {
             Loading

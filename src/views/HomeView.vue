@@ -19,13 +19,8 @@
         shaping student leadership!
       </p>
 
-
-      <!-- Voting Ended Message -->
-      <div v-if="votingEnd" class="mb-8">
-        <p class="text-xl text-gray-600 dark:text-gray-300">
-          Voting has ended. Thank you for participating!
-        </p>
-      </div>
+      <!-- Countdown Timer -->
+       <CountDown></CountDown>
 
       <!-- Call to Action -->
       <div class="flex flex-col sm:flex-row justify-center gap-4 mt-14">
@@ -52,12 +47,14 @@
 import { ref, onMounted } from "vue";
 import deadLine from "@/composables/deadLine";
 import NavBar from "@/components/NavBar.vue";
+import CountDown from "@/components/CountDown.vue";
 import { getStudentById } from "@/composables/getStudentById";
 
 export default {
   name: "HomeView",
   components: {
     NavBar,
+    CountDown,
   },
   setup() {
 
