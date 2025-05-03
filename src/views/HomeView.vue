@@ -1,6 +1,6 @@
 <template>
   <NavBar></NavBar>
-  <div class="h-screen flex flex-col justify-center bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 lg:px-8 pt-40 md:pt-16">
+  <div class="h-screen flex flex-col justify-center bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 lg:px-8 pt-44 md:pt-16">
     <!-- Loading State -->
     <section v-if="isLoading" class="text-center mb-20">
       <p class="text-xl text-gray-600 dark:text-gray-300">Loading election information...</p>

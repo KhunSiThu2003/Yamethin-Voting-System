@@ -7,7 +7,7 @@
       <h1
         class="text-2xl font-extrabold tracking-wide text-primary-600 dark:text-primary-400"
       >
-        TU <span class="text-xs">Tamethin</span>
+        TU <span class="text-xs">Yamethin</span>
       </h1>
 
       <!-- Mobile menu button -->
