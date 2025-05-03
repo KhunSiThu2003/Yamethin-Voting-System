@@ -250,14 +250,14 @@ export default {
             currentUser.value = userData.value;
             loading.value = false;
           } else {
-            router.push("/login");
+            router.push("/role");
             loading.value = false;
           }
         } catch (error) {
           console.error("Error loading user data:", error);
         }
       } else {
-        router.push("/login");
+        router.push("/role");
         loading.value = false;
       }
 

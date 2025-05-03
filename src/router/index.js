@@ -10,11 +10,18 @@ import Vote from '@/views/Vote.vue'
 import Candidate from '@/views/Candidate.vue'
 import Policies from '@/views/Policies.vue'
 import Contact from '@/views/Contact.vue'
+import Role from '@/views/Role.vue'
+import TeacherForm from '@/views/TeacherForm.vue'
 
 
 const routes = [
   {
     path: '/',
+    name: 'role',
+    component: Role
+  },
+  {
+    path: '/home',
     name: 'home',
     component: HomeView
   },
@@ -37,6 +44,12 @@ const routes = [
     path: '/studentform',
     name: 'studentform',
     component: StudentForm,
+  },
+  ,
+  {
+    path: '/teacherform',
+    name: 'teacherform',
+    component: TeacherForm,
   },
   {
     path: '/profileform',

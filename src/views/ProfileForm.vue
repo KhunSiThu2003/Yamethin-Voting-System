@@ -100,7 +100,7 @@ import { ref } from "vue";
 import Loading from "../components/Loading";
 import { db } from "@/firebase/config"; // Import Firestore
 import { useRouter } from "vue-router";
-import getStudentById from "@/composables/getStudentById";
+import getUserById from "@/composables/getUserById";
 import imageCompression from "browser-image-compression"; // Import the compression library
 
 export default {
@@ -108,16 +108,18 @@ export default {
     Loading,
   },
 
-  setup(props) {
+  setup() {
     const imageFile = ref(null);
     const imagePreview = ref(null);
     const uploadStatus = ref("");
     const clickSubmit = ref(false);
 
     const userId = localStorage.getItem("userId");
+    const role = localStorage.getItem("userRole");
+    const collectionName = role === "teacher" ? "teachers" : "students";
     const router = useRouter();
 
-    let { userData, error, load } = getStudentById(userId);
+    let { userData, error, load } = getUserById(userId);
     load();
 
     // Function to preview the image before upload
@@ -175,14 +177,14 @@ export default {
         }
 
         // Save image to Firestore
-        await db.collection("students").doc(userId).set(
+        await db.collection(collectionName).doc(userId).set(
           {
             profileImage,
           },
           { merge: true }
         );
 
-        router.push("/");
+        router.push("/home");
         resetForm();
       } catch (error) {
         console.error("Error uploading image:", error);
