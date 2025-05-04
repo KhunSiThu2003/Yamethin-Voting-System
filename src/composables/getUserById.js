@@ -26,7 +26,11 @@ const getUserById = (id) => {
     try {
       // Determine the collection based on role
       const role = localStorage.getItem("userRole");
-      const collectionName = role === "teacher" ? "teachers" : "students";
+      const collectionName = role === "teacher"
+      ? "teachers"
+      : role === "student"
+      ? "students"
+      : "otherStaff";    
       
       // Fetch the user data from Firestore
       const doc = await db.collection(collectionName).doc(id).get();

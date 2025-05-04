@@ -116,7 +116,11 @@ export default {
 
     const userId = localStorage.getItem("userId");
     const role = localStorage.getItem("userRole");
-    const collectionName = role === "teacher" ? "teachers" : "students";
+    const collectionName = role === "teacher"
+  ? "teachers"
+  : role === "student"
+  ? "students"
+  : "otherStaff";
     const router = useRouter();
 
     let { userData, error, load } = getUserById(userId);

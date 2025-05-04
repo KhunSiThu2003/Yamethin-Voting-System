@@ -12,6 +12,7 @@ import Policies from '@/views/Policies.vue'
 import Contact from '@/views/Contact.vue'
 import Role from '@/views/Role.vue'
 import TeacherForm from '@/views/TeacherForm.vue'
+import OtherForm from '@/views/OtherForm.vue'
 
 
 const routes = [
@@ -50,6 +51,11 @@ const routes = [
     path: '/teacherform',
     name: 'teacherform',
     component: TeacherForm,
+  },
+  {
+    path: '/otherform',
+    name: 'otherform',
+    component: OtherForm,
   },
   {
     path: '/profileform',
