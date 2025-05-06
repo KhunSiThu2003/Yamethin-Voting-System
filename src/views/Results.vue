@@ -87,6 +87,7 @@
       </div>
     </section>
   </div>
+  <Footer></Footer>
 </template>
 
 <script>
@@ -94,11 +95,13 @@ import ShowResults from "../components/ShowResults";
 import { ref, onMounted } from "vue";
 import NavBar from "@/components/NavBar.vue";
 import { db } from "@/firebase/config";
+import Footer from "@/components/Footer.vue";
 
 export default {
   components: {
     ShowResults,
     NavBar,
+    Footer
   },
 
   setup() {

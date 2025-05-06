@@ -141,19 +141,6 @@
               Can Vote
             </span>
           </button>
-
-          <!-- Confirmation Button (shown only when a role is selected) -->
-          <div v-if="selectedRole" class="pt-4">
-            <button
-              @click="confirmRole"
-              class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300"
-            >
-              Confirm as {{ roleDisplayName }}
-              <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 -mr-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
     </main>
@@ -161,6 +148,7 @@
 </template>
 
 <script>
+
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
@@ -181,17 +169,11 @@ export default {
     });
 
     const selectRole = (role) => {
-      selectedRole.value = role;
-    };
-
-    const confirmRole = () => {
-      if (selectedRole.value) {
-        // Store the selected role in localStorage
-        localStorage.setItem("userRole", selectedRole.value);
-        
-        // Navigate to the home page
-        router.push("/home");
-      }
+      // Store the selected role in localStorage
+      localStorage.setItem("userRole", role);
+      
+      // Navigate to the home page
+      router.push("/home");
     };
 
     onMounted(() => {
@@ -207,8 +189,7 @@ export default {
     return {
       selectedRole,
       roleDisplayName,
-      selectRole,
-      confirmRole
+      selectRole
     };
   },
 };

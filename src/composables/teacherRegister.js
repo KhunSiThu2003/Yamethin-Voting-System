@@ -32,9 +32,12 @@ const teacherRegister = () => {
                 throw new Error("Registration ID already used");
             }
 
-            // Create new teacher
+            // Create new teacher with major included
             const newTeacher = {
-                ...teacherData,
+                name: teacherData.name,
+                registerId: teacherData.registerId,
+                major: teacherData.major,
+                password: teacherData.password,
                 createdAt: new Date(),
                 status: "active",
                 role: "teacher",

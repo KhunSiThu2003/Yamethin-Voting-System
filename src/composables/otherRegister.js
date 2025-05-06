@@ -35,7 +35,7 @@ const otherRegister = () => {
                 }
                 
                 // For other staff, we might want different validation rules
-                if (regIdDoc.data()) {
+                if (!regIdDoc.data()) {
                     throw new Error("This ID is not valid for staff registration");
                 }
 

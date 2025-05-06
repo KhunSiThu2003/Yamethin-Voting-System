@@ -1,33 +1,38 @@
 import { db } from "@/firebase/config";
 
-const getEndDate = (callback) => {
+const getEndDate = (type, callback) => {
+    const docName = type === 'major' ? 'majorDeadline' : 'universityDeadline';
+    
     try {
-        const unsubscribe = db.collection("admin").doc("deadline").onSnapshot(
+        const unsubscribe = db.collection("admin").doc(docName).onSnapshot(
             (docSnap) => {
                 if (docSnap.exists) {
                     const timestamp = docSnap.data().deadline; // Retrieved value
 
                     let date;
                     if (timestamp?.toDate) {
+                        // Firestore Timestamp
                         date = new Date(timestamp.toDate());
                     } else if (typeof timestamp === "string" || typeof timestamp === "number") {
+                        // String or UNIX timestamp
                         date = new Date(timestamp);
                     } else {
-                        console.error("Invalid timestamp format:", typeof timestamp, timestamp);
-                        if (callback) callback(null, new Error("Invalid timestamp format"));
+                        console.error("Invalid timestamp format:", timestamp);
+                        if (callback) callback(null);
                         return;
                     }
 
                     const isoDate = date.toISOString();
-                    console.log(isoDate);
-                    // localStorage.setItem("endDate", isoDate);
+                    localStorage.setItem(`${type}EndDate`, isoDate);
+
+                    return isoDate; // Return the ISO date
 
                     if (callback) {
-                        callback(isoDate);
+                        callback(isoDate); // Pass the ISO date to the callback
                     }
                 } else {
                     console.error("No such document!");
-                    if (callback) callback(null, new Error("Document does not exist"));
+                    if (callback) callback(null);
                 }
             },
             (error) => {
@@ -36,7 +41,7 @@ const getEndDate = (callback) => {
             }
         );
 
-        return unsubscribe;
+        return unsubscribe; // Allow caller to unsubscribe
     } catch (error) {
         console.error("Error initializing onSnapshot:", error);
         if (callback) callback(null, error);

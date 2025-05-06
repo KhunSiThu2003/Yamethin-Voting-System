@@ -33,13 +33,12 @@
           :class="king_queen === 'KING' ? 'text-blue-400' : 'text-pink-400'"
         >
           <h3 class="text-xl md:text-4xl sm:text-4xl font-bold mr-5">
-            Candidates For {{ king_queen }}
+            Candidates For University {{ king_queen }}
           </h3>
           <i class="fas fa-crown cursor-pointer text-3xl" id="kingIcon"></i>
         </div>
 
         <!-- Loading -->
-
         <div
           v-if="loading"
           class="flex items-center justify-center w-full py-20"
@@ -90,10 +89,9 @@
           </div>
         </div>
 
-        <!-- Contestants Grid for King -->
+        <!-- Contestants Grid -->
         <div
           v-else
-          id="filter_king"
           class="grid grid-cols-2 gap-3 md:gap-16 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 p-2 md:p-5 md:border dark:border-gray-700 rounded-lg"
         >
           <div v-if="error">
@@ -106,9 +104,9 @@
             :key="candidate.rollno"
             class="p-3 md:p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border dark:border-gray-700"
             :class="
-              candidate.rollno === userData.voteMajorKing
+              candidate.rollno === userData.voteUniversityKing
                 ? 'bg-blue'
-                : candidate.rollno === userData.voteMajorQueen
+                : candidate.rollno === userData.voteUniversityQueen
                 ? 'bg-pink'
                 : 'bg-white dark:bg-gray-800'
             "
@@ -186,14 +184,14 @@
 
   <Loading v-else></Loading>
 </template>
-    
-    <script>
+  
+  <script>
 import Swal from "sweetalert2";
 import Loading from "../components/Loading";
 import NavBar from "../components/NavBar";
 import { ref, computed, onMounted } from "vue";
 import getUserData from "@/composables/getUserData";
-import getAllCandidates from "@/composables/getAllCandidates";
+import getUniversityCandidates from "@/composables/getUniversityCandidates";
 import checkVote from "@/composables/checkVote";
 import addVoter from "@/composables/addVoter";
 import deadLine from "@/composables/deadLine";
@@ -226,7 +224,7 @@ export default {
     const isLoading = ref(true);
 
     // Candidates
-    const { candidates, error, loadCan } = getAllCandidates();
+    const { candidates, error, loadCan } = getUniversityCandidates();
 
     // Deadline
     const {
@@ -236,20 +234,22 @@ export default {
       secString,
       updateCountdown,
       votingEnd,
-    } = deadLine("major");
+    } = deadLine("university");
     updateCountdown();
 
-    king_queen.value = select.value === "male" ? "KING" : "QUEEN";
+    king_queen.value = select.value === "university-king" ? "KING" : "QUEEN";
 
     const filterCandidates = computed(() => {
       const search = searchValue.value.toLowerCase();
       return candidates.value.filter((candidate) => {
+        const name = candidate.name || ""; // Fallback to empty string if name is undefined
         const matchesSearch =
-          candidate.name.toLowerCase().includes(search) ||
+          name.toLowerCase().includes(search) ||
           candidate.number.toString().includes(search);
         return (
-          candidate.gender === select.value &&
-          candidate.major === userData.value.major &&
+          (select.value === "university-king" && candidate.gender === "male") ||
+          (select.value === "university-queen" &&
+            candidate.gender === "female") ||
           matchesSearch
         );
       });
@@ -258,7 +258,9 @@ export default {
     const openModal = async (candidate) => {
       const voterId = userData.value.id;
       const collectionName =
-        candidate.gender === "male" ? "voteMajorKing" : "voteMajorQueen";
+        candidate.gender === "male"
+          ? "voteUniversityKing"
+          : "voteUniversityQueen";
 
       try {
         if (votingEnd.value) {
@@ -288,20 +290,18 @@ export default {
     const showConfirmationAlert = (candidate) => {
       Swal.fire({
         html: `
-                        <div class="text-center">
-                            <img src="${candidate.profileImage}" 
-                                 class="w-32 h-32 mx-auto rounded-full object-cover border-4 ${
-                                   candidate.gender === "male"
-                                     ? "border-blue-400"
-                                     : "border-pink-400"
-                                 }" 
-                                 alt="${candidate.name}">
-                            <h3 class="text-xl font-bold mt-4">${
-                              candidate.name
-                            }</h3>
-                            <p class="text-gray-600 mt-2 text-sm md:text-base">Every vote matters. Make sure your choice is final!</p>
-                        </div>
-                    `,
+            <div class="text-center">
+                <img src="${candidate.profileImage}" 
+                     class="w-32 h-32 mx-auto rounded-full object-cover border-4 ${
+                       candidate.gender === "male"
+                         ? "border-blue-400"
+                         : "border-pink-400"
+                     }" 
+                     alt="${candidate.name}">
+                <h3 class="text-xl font-bold mt-4">${candidate.name}</h3>
+                <p class="text-gray-600 mt-2 text-sm md:text-base">Every vote matters. Make sure your choice is final!</p>
+            </div>
+          `,
         showCancelButton: true,
         confirmButtonText: "Confirm Vote",
         cancelButtonText: "Cancel",
@@ -313,12 +313,6 @@ export default {
         color: document.documentElement.classList.contains("dark")
           ? "#ffffff"
           : "#111827",
-        backdrop: `
-                        rgba(0,0,0,0.5)
-                        url("/images/nyan-cat.gif")
-                        left top
-                        no-repeat
-                    `,
         showLoaderOnConfirm: true,
         preConfirm: async () => {
           try {
@@ -340,16 +334,16 @@ export default {
     const showSuccessAlert = (candidate) => {
       Swal.fire({
         html: `
-                        <div class="text-center">
-                            <div class="flex justify-center">
-                                <svg class="w-24 h-24 text-green-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold mt-4">Thank you for voting!</h3>
-                            <p class="text-gray-600 mt-2">Your vote for <span class="font-semibold">${candidate.name}</span> has been recorded.</p>
-                        </div>
-                    `,
+            <div class="text-center">
+                <div class="flex justify-center">
+                    <svg class="w-24 h-24 text-green-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mt-4">Thank you for voting!</h3>
+                <p class="text-gray-600 mt-2">Your vote for <span class="font-semibold">${candidate.name}</span> has been recorded.</p>
+            </div>
+          `,
         confirmButtonText: "Close",
         confirmButtonColor: "#10b981",
         background: document.documentElement.classList.contains("dark")
@@ -368,10 +362,10 @@ export default {
         icon: "error",
         title: "Cannot Vote",
         html: `
-                        <div class="text-center">
-                            <p>You have already voted for a ${king_queen.value.toLowerCase()}.</p>
-                        </div>
-                    `,
+            <div class="text-center">
+                <p>You have already voted for a University ${king_queen.value.toLowerCase()}.</p>
+            </div>
+          `,
         confirmButtonText: "OK",
         confirmButtonColor: "#ef4444",
         background: document.documentElement.classList.contains("dark")
@@ -389,11 +383,11 @@ export default {
       Swal.fire({
         title: "🚫 Voting is Closed",
         html: `
-                        <div class="text-center">
-                            <p class="text-gray-600 mb-4">Sorry, the voting period has ended. Thank you for your interest!</p>
-                            <p class="text-gray-600">Stay tuned for the final results.</p>
-                        </div>
-                    `,
+            <div class="text-center">
+                <p class="text-gray-600 mb-4">Sorry, the voting period has ended. Thank you for your interest!</p>
+                <p class="text-gray-600">Stay tuned for the final results.</p>
+            </div>
+          `,
         confirmButtonText: "View Results",
         confirmButtonColor: "#3b82f6",
         showCancelButton: true,
@@ -415,8 +409,8 @@ export default {
       const voterId = userData.value.id;
       const collectionName =
         selectedCandidate.gender === "male"
-          ? "voteMajorKing"
-          : "voteMajorQueen";
+          ? "voteUniversityKing"
+          : "voteUniversityQueen";
 
       try {
         const result = await addVoter(
@@ -501,8 +495,8 @@ export default {
   },
 };
 </script>
-    
-    <style>
+  
+  <style>
 .bg-blue {
   background-color: rgba(0, 0, 255, 0.084);
 }

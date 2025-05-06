@@ -1,10 +1,7 @@
-import { onMounted, ref } from "vue";
-import getEndDate from "./getEndDate";
+import { ref } from "vue";
+import getEndDate from "@/composables/getEndDate";
 
-let deadLine = () => {
-
-    let endDate = ref(null);
-
+let deadLine = (type) => {
     let dayString = ref("");
     let hourString = ref("");
     let minString = ref("");
@@ -13,44 +10,48 @@ let deadLine = () => {
     let remainingHours = ref("");
     let remainingMinutes = ref("");
     let remainingSeconds = ref("");
-
-    let votingEnd = ref(false);  
-    const isLoading = ref(true); 
-
-    // Fetch end date asynchronously
-    getEndDate((isoDate, error) => {
-        if (error) {
-            console.error("Error retrieving end date:", error);
-        } else if (isoDate) {
-            endDate.value = new Date(isoDate); // Store the end date as Date object
-            
-            isLoading.value = false;  // Mark as loaded
-        } else {
-            console.log("No end date found.");
-            isLoading.value = false;  // Mark as loaded even if there's no date
-        }
-    });
+    let votingEnd = ref(false);
 
     // Countdown function to update the timer
     const updateCountdown = () => {
-        if (isLoading.value || !endDate.value) {
-            return;  // Don't run countdown if loading or no date
+        let endDate;
+        if (type === "major") {
+            endDate = localStorage.getItem("majorEndDate");
+        } else if (type === "university") {
+            endDate = localStorage.getItem("universityEndDate");
+        }
+
+        if (!endDate) {
+            dayString.value = "00";
+            hourString.value = "00";
+            minString.value = "00";
+            secString.value = "00";
+            return;
         }
 
         const now = new Date().getTime();
-        const distance = endDate.value - now;
+        const distance = new Date(endDate) - now;
+
         // If countdown reaches zero, stop the timer
         if (distance <= 0) {
-            
+            dayString.value = "00";
+            hourString.value = "00";
+            minString.value = "00";
+            secString.value = "00";
             votingEnd.value = true;
 
-            dayString.value = 0;
-            hourString.value = 0;
-            minString.value = 0;
-            secString.value = 0;
+            if(type === "major") {
+                if (!localStorage.getItem("majorEnded")) {
+                    window.location.reload();
+                }
+                localStorage.setItem("majorEnded", true);
+            }
 
-            clearInterval(interval);
             return;
+        } else {
+            if (type === "major") {
+                localStorage.removeItem("majorEnded");
+            } 
         }
 
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -58,8 +59,8 @@ let deadLine = () => {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Opposite progress calculation
-        const totalDays = Math.ceil((endDate.value - new Date(endDate.value).setHours(0, 0, 0, 0)) / (1000 * 60 * 60 * 24));
+        // Progress calculation
+        const totalDays = Math.ceil((new Date(endDate) - new Date(new Date(endDate).setHours(0, 0, 0, 0)) / (1000 * 60 * 60 * 24)));
         remainingDays.value = (days / totalDays) * 100;
         remainingHours.value = (hours / 24) * 100;
         remainingMinutes.value = (minutes / 60) * 100;
@@ -72,10 +73,14 @@ let deadLine = () => {
         secString.value = seconds.toString().padStart(2, "0");
     };
 
+    // Initialize the countdown with the current deadline
+    getEndDate(type, () => {
+        updateCountdown();
+    });
+
     // Start the countdown timer
     const interval = setInterval(updateCountdown, 1000);
 
-    // Return the reactive values to the template
     return {
         dayString,
         hourString,
@@ -86,8 +91,7 @@ let deadLine = () => {
         remainingHours,
         remainingMinutes,
         remainingSeconds,
-        isLoading,
-        votingEnd
+        votingEnd,
     };
 }
 

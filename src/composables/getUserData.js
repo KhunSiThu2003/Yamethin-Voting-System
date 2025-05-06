@@ -7,16 +7,21 @@ const getUserData = () => {
 
   // Get the userId from localStorage
   const userId = localStorage.getItem("userId");
-  const role = localStorage.getItem("role");
 
-  let table = role ? "teachers" : "students";
+  // Determine the collection based on role
+  const role = localStorage.getItem("userRole");
+  const table = role === "teacher"
+    ? "teachers"
+    : role === "student"
+      ? "students"
+      : "otherStaff";
 
   // If no userId is found, return default empty values
   if (!userId) {
     return {
       userData: ref(null),
       error: ref("User ID not provided"),
-      load: () => {},
+      load: () => { },
     };
   }
 
