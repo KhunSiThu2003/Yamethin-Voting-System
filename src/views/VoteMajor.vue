@@ -4,7 +4,7 @@
   
     <div
       v-if="currentUser"
-      class="bg-gray-100 pt-16 pb-3 text-center  flex flex-col justify-center items-center text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
+      class="bg-gray-100 pt-20 pb-3 text-center  flex flex-col justify-center items-center text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
     >
       <div>
         <div class="md:w-40 w-20 mx-auto overflow-hidden object-cover">
@@ -29,8 +29,8 @@
             alt="Civil Engineering"
           />
         </div>
-        <h1 class="text-blue-500 text-2xl font-bold mb-4 dark:text-blue-400">
-          {{ currentUser.major }}
+        <h1 class="text-blue-500 text-xl font-bold mb-10 dark:text-blue-400">
+          {{ currentUser.major }} Major
         </h1>
       </div>
       <div v-if="!votingEnd" class="p-2 border rounded border-gray-300 dark:border-gray-700">

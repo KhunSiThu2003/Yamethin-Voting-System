@@ -188,7 +188,7 @@ export default {
           { merge: true }
         );
 
-        router.push("/home");
+        router.push("/");
         resetForm();
       } catch (error) {
         console.error("Error uploading image:", error);

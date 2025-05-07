@@ -53,10 +53,10 @@
             alt="University King"
             class="w-32 border border-blue-400 mx-auto rounded-full mb-6 shadow-md transition-all duration-300 hover:scale-110 bg-gray-50 dark:bg-gray-700"
           />
-          <router-link :to="{ name: 'universitycandidates', params: { id: 'university-king' } }">
+          <router-link :to="{ name: 'universitycandidates', params: { id: 'king' } }">
             <button 
               class="md:w-32 w-20 text-xs sm:text-sm md:text-base font-bold hover:text-white border rounded-lg py-2 transition text-blue-400 hover:bg-blue-400 border-blue-400 bg-blue-50 dark:border-blue-500 dark:bg-transparent dark:hover:bg-blue-400"
-              @click.prevent="checkVotingStatus('university-king')"
+              @click.prevent="checkVotingStatus('king')"
             >
               Vote King
             </button>
@@ -72,10 +72,10 @@
             alt="University Queen"
             class="w-32 mx-auto border border-pink-400 rounded-full mb-6 shadow-md transition-all duration-300 hover:scale-110 bg-gray-50 dark:bg-gray-700"
           />
-          <router-link :to="{ name: 'universitycandidates', params: { id: 'university-queen' } }">
+          <router-link :to="{ name: 'universitycandidates', params: { id: 'queen' } }">
             <button 
               class="md:w-32 w-20 text-xs sm:text-sm md:text-base font-bold hover:text-white border rounded-lg py-2 transition text-pink-400 hover:bg-pink-400 border-pink-400 bg-pink-50 dark:border-pink-500 dark:bg-transparent dark:hover:bg-pink-400"
-              @click.prevent="checkVotingStatus('university-queen')"
+              @click.prevent="checkVotingStatus('queen')"
             >
               Vote Queen
             </button>

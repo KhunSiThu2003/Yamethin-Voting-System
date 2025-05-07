@@ -253,6 +253,7 @@ export default {
                 localStorage.setItem("userId", teacherSnapshot.docs[0].id);
                 localStorage.setItem("userRole", "teacher");
                 localStorage.setItem("userMajor", teacher.major || "");
+                localStorage.setItem("userPassword", password.value);
 
                 // Update status
                 await db.collection("teachers").doc(teacherSnapshot.docs[0].id).set({

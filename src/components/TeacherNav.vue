@@ -436,7 +436,7 @@
               Login
             </router-link>
             <router-link
-              to="/selectyear"
+              to="/TeacherForm"
               class="px-4 py-3 text-center rounded-lg bg-blue-500 text-white dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-200 text-sm font-semibold shadow-sm"
               @click="mobileMenuOpen = false"
             >
@@ -480,14 +480,17 @@ import { db } from "@/firebase/config";
 import Swal from "sweetalert2";
 
 export default {
-  setup() {
+
+  props: ['userData'],
+
+  setup(props) {
     const router = useRouter();
     const userId = localStorage.getItem("userId");
-
+    const currentUser = ref(props.userData || JSON.parse(localStorage.getItem("userData")) || null);
     // Reactive state
     const theme = ref("light");
     const mobileMenuOpen = ref(false);
-    const currentUser = ref(null);
+
 
     const showUserDetails = () => {
       if (!currentUser.value) return;
@@ -852,7 +855,7 @@ export default {
             .collection("teachers")
             .doc(userId)
             .set({ status: "logout" }, { merge: true });
-          localStorage.removeItem("userId");
+          localStorage.clear();
           currentUser.value = null;
           Swal.close();
           window.location.href = "/";
@@ -1028,6 +1031,7 @@ export default {
 
             // Store user ID
             localStorage.setItem("userId", snapshot.docs[0].id);
+            localStorage.setItem("userPassword", password);
 
             // Update user status
             await db.collection("teachers").doc(snapshot.docs[0].id).update({
@@ -1037,7 +1041,7 @@ export default {
 
             // Close loading state and show success
             Swal.close();
-            window.location.reload();
+            router.push("/");
           } catch (error) {
             console.error("Login error:", error);
             Swal.fire({
@@ -1071,21 +1075,7 @@ export default {
           : "light";
       }
     });
-
-    // Lifecycle hooks
-    onMounted(async () => {
-      if (userId) {
-        try {
-          const { userData, load } = getUserById(userId);
-          await load();
-          if (userData.value && userData.value.status === "active") {
-            currentUser.value = userData.value;
-          }
-        } catch (error) {
-          console.error("Error loading user data:", error);
-        }
-      }
-    });
+ 
 
     // Return all reactive properties and methods
     return {

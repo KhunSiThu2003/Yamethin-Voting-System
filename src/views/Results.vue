@@ -1,3 +1,5 @@
+
+
 <template>
   <NavBar></NavBar>
   <div class="text-gray-900 rounded-lg dark:text-gray-200 pt-20">
@@ -8,10 +10,25 @@
           King & Queen Election Results
         </h1>
         <p class="text-sm sm:text-base md:text-xl prose text-justify text-gray-600 dark:text-gray-300">
-          Join us in celebrating the winners from each major. These exceptional
-          individuals have earned recognition for their leadership and
-          contributions to their communities.
+          Join us in celebrating the winners from each major and the university-wide winners.
         </p>
+      </div>
+    </section>
+
+    <!-- University Results Section -->
+    <section id="university-results" class="p-3 md:p-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-2xl sm:text-4xl md:text-5xl mb-4 font-semibold text-center text-purple-700 dark:text-purple-400">
+          University Winners
+        </h2>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 md:gap-12 gap-3">
+          <ShowResults 
+            :king="universityKing" 
+            :queen="universityQueen"
+            :title="true"
+          ></ShowResults>
+        </div>
       </div>
     </section>
 
@@ -105,7 +122,7 @@ export default {
   },
 
   setup() {
-    const year = new Date().getFullYear().toString(); // Current year
+    const year = new Date().getFullYear().toString();
     const ECKing = ref(null);
     const ECQueen = ref(null);
     const EPKing = ref(null);
@@ -114,54 +131,41 @@ export default {
     const CQueen = ref(null);
     const MECHKing = ref(null);
     const MECHQueen = ref(null);
+    const universityKing = ref(null);
+    const universityQueen = ref(null);
 
     function listenToResultsAndFilter() {
       try {
-        // Set up real-time listener for the 'results' collection
         const docRef = db.collection("results").doc(year);
 
-        // Use onSnapshot to listen for real-time updates
         docRef.onSnapshot((docSnap) => {
           if (docSnap.exists) {
-            const results = docSnap.data(); // All data from the document
+            const results = docSnap.data();
+            
+            // University results
+            universityKing.value = results.universityKing || null;
+            universityQueen.value = results.universityQueen || null;
 
-            // Filter specific objects
+            // Major results (existing code)
             Object.keys(results).forEach((key) => {
-              if (key === "EPKing") {
-                EPKing.value = results[key];
-              }
-              if (key === "EPQueen") {
-                EPQueen.value = results[key];
-              }
-              if (key === "ECKing") {
-                ECKing.value = results[key];
-              }
-              if (key === "ECQueen") {
-                ECQueen.value = results[key];
-              }
-              if (key === "CKing") {
-                CKing.value = results[key];
-              }
-              if (key === "CQueen") {
-                CQueen.value = results[key];
-              }
-              if (key === "MECHKing") {
-                MECHKing.value = results[key];
-              }
-              if (key === "MECHQueen") {
-                MECHQueen.value = results[key];
-              }
+              if (key === "EPKing") EPKing.value = results[key];
+              if (key === "EPQueen") EPQueen.value = results[key];
+              if (key === "ECKing") ECKing.value = results[key];
+              if (key === "ECQueen") ECQueen.value = results[key];
+              if (key === "CKing") CKing.value = results[key];
+              if (key === "CQueen") CQueen.value = results[key];
+              if (key === "MECHKing") MECHKing.value = results[key];
+              if (key === "MECHQueen") MECHQueen.value = results[key];
             });
           } else {
-            console.log("No such document!");
+            console.log("No results document found");
           }
         });
       } catch (error) {
-        console.error("Error fetching document: ", error);
+        console.error("Error fetching results:", error);
       }
     }
 
-    // Initialize the listener when component mounts
     onMounted(() => {
       listenToResultsAndFilter();
     });
@@ -175,6 +179,8 @@ export default {
       CQueen,
       MECHKing,
       MECHQueen,
+      universityKing,
+      universityQueen
     };
   },
 };

@@ -1,7 +1,7 @@
 <template>
-  <StudentNav v-if="isStudent"></StudentNav>
-  <TeacherNav v-if="isTeacher"></TeacherNav>
-  <OtherUserNav v-if="isOther"></OtherUserNav>
+  <StudentNav :userData="userData" v-if="isStudent"></StudentNav>
+  <TeacherNav :userData="userData" v-if="isTeacher"></TeacherNav>
+  <OtherUserNav :userData="userData" v-if="isOther"></OtherUserNav>
 </template>
 
 <script>
@@ -16,12 +16,16 @@ components: {
     TeacherNav,
     OtherUserNav,
   },
-  setup() {
+
+  props:['userData'],
+
+  setup(props) {
 
     const userRole = localStorage.getItem("userRole");
     const isStudent = ref(false);
     const isTeacher = ref(false);
     const isOther = ref(false);
+    const userData = props.userData || JSON.parse(localStorage.getItem("userData"));
 
     // check user role
     if (userRole === "student") {
@@ -37,6 +41,7 @@ components: {
       isStudent,
       isTeacher,
       isOther,
+      userData,
     };
   },
 }

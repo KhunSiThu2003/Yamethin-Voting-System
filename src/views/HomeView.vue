@@ -1,5 +1,5 @@
 <template>
-  <NavBar></NavBar>
+  <NavBar :userData="userData"></NavBar>
   <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-4 sm:px-6 lg:px-8 pt-24 pb-16">
     <!-- Loading State -->
     <section v-if="isLoading" class="flex flex-col items-center justify-center h-[60vh]">
@@ -117,6 +117,13 @@ export default {
     const isLoading = ref(false);
     const error = ref(null);
 
+    const userData = ref(null);
+    userData.value = JSON.parse(localStorage.getItem("userData"));
+
+    onMounted(() => {
+      userData.value = JSON.parse(localStorage.getItem("userData"));
+    });
+
     let {
       votingEnd,
     } = deadLine("university");
@@ -125,6 +132,7 @@ export default {
       isLoading,
       error,
       votingEnd,
+      userData,
     };
   },
 };

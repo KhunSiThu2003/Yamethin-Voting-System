@@ -30,7 +30,7 @@
       <div class="max-w-8xl mx-auto md:px-10">
         <div
           class="h3 flex justify-center items-center my-10"
-          :class="king_queen === 'KING' ? 'text-blue-400' : 'text-pink-400'"
+          :class="king_queen === 'male' ? 'text-blue-400' : 'text-pink-400'"
         >
           <h3 class="text-xl md:text-4xl sm:text-4xl font-bold mr-5">
             Candidates For University {{ king_queen }}
@@ -185,7 +185,7 @@
   <Loading v-else></Loading>
 </template>
   
-  <script>
+<script>
 import Swal from "sweetalert2";
 import Loading from "../components/Loading";
 import NavBar from "../components/NavBar";
@@ -234,22 +234,19 @@ export default {
       secString,
       updateCountdown,
       votingEnd,
-    } = deadLine("university");
+    } = deadLine();
     updateCountdown();
 
-    king_queen.value = select.value === "university-king" ? "KING" : "QUEEN";
+    king_queen.value = select.value === "king" ? "male" : "female";
 
     const filterCandidates = computed(() => {
       const search = searchValue.value.toLowerCase();
       return candidates.value.filter((candidate) => {
-        const name = candidate.name || ""; // Fallback to empty string if name is undefined
         const matchesSearch =
-          name.toLowerCase().includes(search) ||
+          candidate.name.toLowerCase().includes(search) ||
           candidate.number.toString().includes(search);
         return (
-          (select.value === "university-king" && candidate.gender === "male") ||
-          (select.value === "university-queen" &&
-            candidate.gender === "female") ||
+          candidate.gender === king_queen.value &&
           matchesSearch
         );
       });
@@ -495,8 +492,8 @@ export default {
   },
 };
 </script>
-  
-  <style>
+
+<style>
 .bg-blue {
   background-color: rgba(0, 0, 255, 0.084);
 }

@@ -1,5 +1,5 @@
 <template>
-    <nav
+    <nav 
       class="p-4 shadow-lg w-full fixed top-0 z-50 bg-white dark:bg-gray-900/95 text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800"
     >
       <div class="container mx-auto flex justify-between items-center">
@@ -472,18 +472,21 @@
   <script>
   import { ref, onMounted } from "vue";
   import { useRouter } from "vue-router";
-  import getStudentById from "@/composables/getStudentById";
   import { db } from "@/firebase/config";
+  import Swal from "sweetalert2";
   
   export default {
-    setup() {
+
+    props: ['userData'],
+
+    setup(props) {
       const router = useRouter();
       const userId = localStorage.getItem("userId");
-  
+
       // Reactive state
       const theme = ref("light");
       const mobileMenuOpen = ref(false);
-      const currentUser = ref(null);
+      const currentUser = ref(props.userData || JSON.parse(localStorage.getItem("userData")) || null);
   
       const showUserDetails = () => {
     if (!currentUser.value) return;
@@ -866,7 +869,7 @@
   
       try {
         await db.collection("students").doc(userId).set({ status: "logout" }, { merge: true });
-        localStorage.removeItem("userId");
+        localStorage.clear();
         currentUser.value = null;
         Swal.close();
         window.location.href = "/";
@@ -915,21 +918,7 @@
             : "light";
         }
       });
-  
-      // Lifecycle hooks
-      onMounted(async () => {
-        if (userId) {
-          try {
-            const { userData, load } = getStudentById(userId);
-            await load();
-            if (userData.value && userData.value.status === "active") {
-              currentUser.value = userData.value;
-            }
-          } catch (error) {
-            console.error("Error loading user data:", error);
-          }
-        }
-      });
+
   
       // Return all reactive properties and methods
       return {
