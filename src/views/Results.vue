@@ -2,7 +2,7 @@
 
 <template>
   <NavBar></NavBar>
-  <div class="text-gray-900 rounded-lg dark:text-gray-200 pt-20">
+  <div class="text-gray-900 rounded-lg dark:text-gray-200 pt-20 pb-10">
     <!-- Hero Section -->
     <section class="text-center p-3">
       <div class="max-w-4xl mx-auto">

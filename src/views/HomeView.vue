@@ -1,6 +1,6 @@
 <template>
   <NavBar :userData="userData"></NavBar>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+  <div class="min-h-screen px-4 sm:px-6 lg:px-8 pt-24 pb-16">
     <!-- Loading State -->
     <section v-if="isLoading" class="flex flex-col items-center justify-center h-[60vh]">
       <div class="animate-pulse flex flex-col items-center">
@@ -14,13 +14,11 @@
     <!-- Main Content -->
     <section v-else class="max-w-4xl mx-auto">
       <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500">
-            TU Yamethin
-          </span>
-          <br>King & Queen Elections
+        <h1 class="text-transparent font-extrabold tracking-wide text-base md:text-5xl bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500">
+          Technological University Yamethin
         </h1>
-        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <h2 class="font-extrabold tracking-wide text-2xl md:text-6xl my-4 text-gray-700 dark:text-gray-100">King & Queen Elections</h2>
+        <p class="md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           The official voting platform for TU Yamethin's King & Queen elections 2024.
           <span class="block mt-2 text-primary-500 dark:text-primary-400 font-medium">
             Make your voice heard!

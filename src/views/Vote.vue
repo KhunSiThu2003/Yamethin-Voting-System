@@ -51,19 +51,13 @@
                   <StarIcon
                     class="h-4 w-4 text-red-500 mt-1 mr-2 flex-shrink-0"
                   />
-                  <span>Open to all</span>
+                  <span>Open to all user</span>
                 </li>
                 <li class="flex items-start">
                   <StarIcon
                     class="h-4 w-4 text-red-500 mt-1 mr-2 flex-shrink-0"
                   />
                   <span>University competition</span>
-                </li>
-                <li class="flex items-start">
-                  <StarIcon
-                    class="h-4 w-4 text-red-500 mt-1 mr-2 flex-shrink-0"
-                  />
-                  <span>Voting ends May 15</span>
                 </li>
               </ul>
             </div>
@@ -116,12 +110,6 @@
                   />
                   <span>Department-specific competition</span>
                 </li>
-                <li class="flex items-start">
-                  <StarIcon
-                    class="h-4 w-4 text-blue-500 mt-1 mr-2 flex-shrink-0"
-                  />
-                  <span>Voting ends May 10</span>
-                </li>
               </ul>
             </div>
           </div>
@@ -129,10 +117,12 @@
       </router-link>
     </div>
   </div>
+  <Footer></Footer>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
 import getUserById from "@/composables/getUserById";
 import { StarIcon, TrophyIcon, UsersIcon } from "@heroicons/vue/24/solid";
 import { onMounted } from "vue";
@@ -145,6 +135,7 @@ export default {
     TrophyIcon,
     UsersIcon,
     NavBar,
+    Footer,
   },
 
   setup() {
@@ -153,10 +144,8 @@ export default {
     const isOther = ref(false);
 
     if (role === "other") {
-      isOther.value = true;
-    } else {
-      isOther.value = false;
-    }
+      router.push("/voteuniversity");
+    } 
 
     const userForm =
       role === "teacher"

@@ -41,7 +41,7 @@
         </li>
         <li v-if="currentUser">
           <router-link
-            to="/vote"
+            to="/voteuniversity"
             class="hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-300"
             active-class="text-primary-600 dark:text-primary-400 font-semibold"
           >

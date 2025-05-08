@@ -40,7 +40,7 @@
             Address
           </h4>
           <div class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-            <p>TU Yamethin, IT Department</p>
+            <p>Technological University Yamethin, IT Department</p>
             <p>Yamethin Township</p>
             <p>Mandalay Region, Myanmar</p>
           </div>
@@ -95,7 +95,7 @@
           </a>
         </div>
         <p class="text-gray-500 dark:text-gray-400 mb-4 md:mb-0">
-          &copy; 2024 TU Yamethin. All rights reserved.
+          &copy; 2024 Technological University Yamethin. All rights reserved.
         </p>
       </div>
     </div>

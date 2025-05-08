@@ -4,7 +4,7 @@
   
     <div
       v-if="currentUser"
-      class="bg-gray-100 pt-20 pb-3 text-center  flex flex-col justify-center items-center text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
+      class=" pt-20 pb-10 text-center  flex flex-col justify-center items-center text-gray-900 rounded-lg  dark:text-gray-200"
     >
       <div>
         <div class="md:w-40 w-20 mx-auto overflow-hidden object-cover">
@@ -170,10 +170,12 @@
         </div>
       </div>
     </div>
+    <Footer></Footer>
   </template>
       
   <script>
   import NavBar from "@/components/NavBar.vue";
+  import Footer from "@/components/Footer.vue";
   import Loading from "@/components/Loading.vue";
   import { ref, onMounted } from "vue";
   import deadLine from "@/composables/deadLine";
@@ -185,6 +187,7 @@
     components: {
       NavBar,
       Loading,
+      Footer,
     },
     setup() {
       const userId = localStorage.getItem("userId");
