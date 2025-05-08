@@ -4,7 +4,7 @@
   
     <div
       v-if="currentUser"
-      class=" pt-20 pb-10 text-center  flex flex-col justify-center items-center text-gray-900 rounded-lg  dark:text-gray-200"
+      class="min-h-screen pt-20 pb-10 text-center  flex flex-col justify-center items-center text-gray-900 rounded-lg  dark:text-gray-200"
     >
       <div>
         <div class="md:w-40 w-20 mx-auto overflow-hidden object-cover">

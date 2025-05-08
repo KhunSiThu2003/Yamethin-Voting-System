@@ -222,13 +222,14 @@
           </form>
         </div>
       </div>
+      
 
       <!-- Map -->
       <div
         class="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
       >
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3818.308070971456!2d96.14337231535365!3d16.85483798839862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c193f0b8b1f4a5%3A0x3e1e3e1e3e1e3e1e!2sTechnological%20University%20(Yamethin)!5e0!3m2!1sen!2smm!4v1620000000000!5m2!1sen!2smm"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1035.521436854051!2d96.14026270120138!3d20.410041113098334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c923d762a0058f%3A0xfbea51be3aae2fcc!2z4YCU4YCK4YC64YC44YCV4YCK4YCs4YCQ4YCA4YC54YCA4YCe4YCt4YCv4YCc4YC6ICjhgJvhgJnhgIrhgLrhgLjhgJ7hgIThgLrhgLgp!5e1!3m2!1smy!2smm!4v1746690082542!5m2!1smy!2smm"
           width="100%"
           height="450"
           style="border: 0"

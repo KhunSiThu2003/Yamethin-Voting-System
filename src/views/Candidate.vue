@@ -15,7 +15,7 @@
         </button>
 
         <div
-          class="w-3/4 md:w-1/4 flex items-center space-x-3 text-sm opacity-30 md:text-xl"
+          class="w-3/4 md:w-1/4 flex items-center dark:text-gray-100 space-x-3 text-sm opacity-30 md:text-xl"
         >
           <label for="searchInput">Search</label
           ><input

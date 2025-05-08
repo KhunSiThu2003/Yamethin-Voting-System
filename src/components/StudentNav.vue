@@ -75,6 +75,7 @@
               Contact Us
             </router-link>
           </li>
+
         </ul>
   
         <!-- User Profile or Auth Buttons -->
@@ -466,6 +467,8 @@
           </div>
         </div>
       </div>
+
+      
     </nav>
   </template>
   
@@ -487,6 +490,7 @@
       const theme = ref("light");
       const mobileMenuOpen = ref(false);
       const currentUser = ref(props.userData || JSON.parse(localStorage.getItem("userData")) || null);
+
   
       const showUserDetails = () => {
     if (!currentUser.value) return;
