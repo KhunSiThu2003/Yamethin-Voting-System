@@ -304,8 +304,14 @@ export default {
       // Store the selected role in localStorage
       localStorage.setItem("userRole", role);
 
+      if(role === "admin") {
+        router.push("/admin");
+      } else {
+        
       // Navigate to the home page
       router.push("/home");
+      }
+
     };
 
     onMounted(async () => {

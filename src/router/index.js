@@ -17,6 +17,15 @@ import VoteMajor from '@/views/VoteMajor.vue'
 import VoteUniversity from '@/views/VoteUniversity.vue'
 import UniversityCandidates from '@/views/UniversityCandidates.vue'
 
+import AdminForm from '@/adminViews/AdminForm.vue'
+import ManageUsers from '@/adminViews/ManageUsers.vue'
+import Candidates from '@/adminViews/Candidates.vue'
+import Deadline from '@/adminViews/Deadline.vue'
+import AddCandidates from '@/adminViews/AddCandidates.vue'
+import EditCandidate from '@/adminViews/EditCandidate.vue'
+import Messages from '@/adminViews/Messages.vue'
+
+
 
 const routes = [
   {
@@ -107,7 +116,50 @@ const routes = [
     path: '/contact',
     name: 'contact',
     component: Contact,
-  }
+  },
+  // For Admin
+  {
+    path: '/admin',
+    name: 'admin',
+    component: AdminForm,
+  },
+  {
+    path: '/ManageUsers',
+    name: 'ManageUsers',
+    component: ManageUsers
+  },
+  {
+    path: '/Candidates',
+    name: 'Candidates',
+    component: Candidates
+  },
+  {
+    path: '/Res',
+    name: 'Res',
+    component: () => import('@/adminViews/Results.vue')
+  },
+  {
+    path: '/Deadline',
+    name: 'Deadline',
+    component: Deadline
+  },
+  {
+    path: '/AddCandidates',
+    name: 'AddCandidates',
+    component: AddCandidates
+  },
+  {
+    path: '/EditCandidate/:id',
+    name: 'EditCandidate',
+    component: EditCandidate,
+    props: true
+  },
+  {
+    path: '/Messages',
+    name: 'Messages',
+    component: Messages
+  },
+  
 
 ]
 
