@@ -92,7 +92,7 @@
         <!-- Contestants Grid -->
         <div
           v-else
-          class="grid grid-cols-2 gap-3 md:gap-16 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 p-2 md:p-5 md:border dark:border-gray-700 rounded-lg"
+          class="grid grid-cols-1 gap-3 md:gap-16 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 p-2 md:p-5 md:border dark:border-gray-700 rounded-lg"
         >
           <div v-if="error">
             <p class="text-red-500">{{ error }}</p>
@@ -102,7 +102,7 @@
           <div
             v-for="candidate in filterCandidates"
             :key="candidate.rollno"
-            class="p-3 md:p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border dark:border-gray-700"
+            class="p-4 md:p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border dark:border-gray-700 transform hover:-translate-y-1"
             :class="
               candidate.rollno === userData.voteUniversityKing
                 ? 'bg-blue'
@@ -113,7 +113,7 @@
           >
             <div class="relative flex flex-col items-center">
               <div
-                class="relative w-full h-24 md:h-44 rounded overflow-hidden shadow-lg border"
+                class="relative w-full h-48 md:h-56 rounded-xl overflow-hidden shadow-lg border-2"
                 :class="
                   candidate.gender === 'male'
                     ? 'border-blue-500'
@@ -123,15 +123,15 @@
                 <img
                   :src="candidate.profileImage"
                   alt="Candidate Name"
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-cover hover:scale-105 transition duration-300"
                 />
               </div>
 
               <div
-                class="absolute left-2 -bottom-3 md:-bottom-8 items-center text-sm"
+                class="absolute left-4 -bottom-4 md:-bottom-6 items-center text-sm"
               >
                 <span
-                  class="md:w-14 md:h-14 w-6 h-6 md:text-3xl text-xs font-bold text-white flex items-center justify-center rounded-full mr-3"
+                  class="md:w-16 md:h-16 w-10 h-10 md:text-3xl text-lg font-bold text-white flex items-center justify-center rounded-full shadow-lg"
                   :class="
                     candidate.gender === 'male' ? 'bg-blue-500' : 'bg-pink-400'
                   "
@@ -141,14 +141,14 @@
               </div>
             </div>
             <h2
-              class="text-base md:text-2xl font-bold text-blue-800 dark:text-white mt-4 mb-2"
+              class="text-lg md:text-2xl font-bold text-blue-800 dark:text-white mt-8 mb-3 text-center"
             >
               {{ candidate.name }}
             </h2>
 
             <button
               @click="openModal(candidate)"
-              class="mt-3 md:mt-7 w-16 md:w-24 text-xs md:text-base font-bold hover:text-white border rounded-md md:py-2 py-1 transition"
+              class="mt-4 md:mt-6 w-full text-sm md:text-base font-bold hover:text-white border-2 rounded-lg md:py-2.5 py-2 transition-all duration-300"
               :class="[
                 candidate.gender === 'male'
                   ? 'text-blue-400 hover:bg-blue-400 border-blue-400 bg-blue-50 dark:border-blue-500 dark:bg-transparent dark:hover:bg-blue-400'
