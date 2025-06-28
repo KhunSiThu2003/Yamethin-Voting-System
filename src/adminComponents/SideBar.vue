@@ -129,6 +129,7 @@ export default {
     });
 
     const navItems = ref([
+      { name: 'Dashboard', route: 'Dashboard', icon: 'fa-solid fa-house' },
       { name: 'Manage Deadline', route: 'Deadline', icon: 'fa-solid fa-calendar-days' },
       { name: 'Manage Users', route: 'ManageUsers', icon: 'fa-solid fa-user-gear' },
       { name: 'Manage Candidates', route: 'Candidates', icon: 'fa-solid fa-users-gear' },

@@ -24,6 +24,7 @@ import Deadline from '@/adminViews/Deadline.vue'
 import AddCandidates from '@/adminViews/AddCandidates.vue'
 import EditCandidate from '@/adminViews/EditCandidate.vue'
 import Messages from '@/adminViews/Messages.vue'
+import Dashboard from '@/adminViews/Dashboard.vue'
 
 
 
@@ -122,6 +123,11 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: AdminForm,
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
   },
   {
     path: '/ManageUsers',

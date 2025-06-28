@@ -1,195 +1,89 @@
 <template>
-  <Loading v-if="clickSubmit"></Loading>
-  <SideBar></SideBar>
+  <Loading v-if="clickSubmit" />
+  <SideBar />
 
-  <div
-    class="sm:ml-64 bg-gray-100 text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
-  >
-    <!-- Main Content Container -->
-    <div class="max-w-2xl mx-auto px-4 py-8 space-y-8">
+  <div class="sm:ml-64 min-h-screen bbg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+    <!-- Header -->
+    <div class="flex items-center gap-4 px-8 py-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-b-3xl shadow-lg mb-8 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10"></div>
+      <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/10 rounded-full -ml-20 -mb-20"></div>
+      <div class="bg-white/20 backdrop-blur-sm rounded-full p-3 shadow-lg z-10">
+        <i class="fas fa-calendar-alt fa-2x text-white"></i>
+      </div>
+      <div class="z-10">
+        <h1 class="text-3xl font-bold text-white mb-1">Voting Deadlines</h1>
+        <p class="text-base text-blue-100/90">Set and manage voting end dates</p>
+      </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-4 py-8 space-y-10">
       <!-- Major Voting Card -->
-      <div
-        class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-20 transition-all duration-300 hover:shadow-lg"
-      >
-        <!-- Major Voting Section -->
-        <CountDown :type="'major'"></CountDown>
-
-        <h1
-          class="text-2xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6"
-        >
-          Set Major Voting End Date
-        </h1>
-
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl">
+        <CountDown :type="'major'" />
+        <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">Set Major Voting End Date</h2>
         <!-- Success Message -->
-        <div
-          v-if="majorSuccess"
-          class="mb-6 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg flex items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 mr-2"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-              clip-rule="evenodd"
-            />
+        <div v-if="majorSuccess" class="mb-6 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
           </svg>
           {{ majorSuccessMessage }}
         </div>
-
-        <!-- Form Section -->
-        <form
-          id="majorVotingForm"
-          @submit.prevent="showMajorOptionsModal = true"
-        >
+        <form id="majorVotingForm" @submit.prevent="showMajorOptionsModal = true">
           <div class="mb-6">
-            <label
-              for="majorVotingEndDate"
-              class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2"
-            >
-              Select Major Voting End Date
-              <span class="text-red-500">*</span>
+            <label for="majorVotingEndDate" class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+              Select Major Voting End Date <span class="text-red-500">*</span>
             </label>
-            <input
-              type="datetime-local"
-              v-model="majorEndDate"
-              id="majorVotingEndDate"
+            <input type="datetime-local" v-model="majorEndDate" id="majorVotingEndDate"
               class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
-              :class="{ 'border-red-500': majorErr }"
-              required
-            />
+              :class="{ 'border-red-500': majorErr }" required />
           </div>
-
-          <!-- Error Message -->
-          <div
-            v-if="majorErr"
-            class="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg flex items-center"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-2"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                clip-rule="evenodd"
-              />
+          <div v-if="majorErr" class="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
             </svg>
             {{ majorErr }}
           </div>
-
-          <!-- Submit Button -->
           <div class="flex justify-center">
-            <button
-              type="submit"
+            <button type="submit"
               class="bg-indigo-600 text-white py-3 px-8 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 flex items-center"
               :disabled="clickSubmit"
-              :class="{
-                'opacity-75 cursor-not-allowed': clickSubmit,
-                'hover:bg-indigo-600': clickSubmit,
-              }"
-            >
-              {{ clickSubmit ? "Processing..." : "Set Major Voting Deadline" }}
+              :class="{ 'opacity-75 cursor-not-allowed': clickSubmit, 'hover:bg-indigo-600': clickSubmit }">
+              {{ clickSubmit ? 'Processing...' : 'Set Major Voting Deadline' }}
             </button>
           </div>
         </form>
       </div>
-
       <!-- University Voting Card -->
-      <div v-if="majorEnded"
-        class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-20 transition-all duration-300 hover:shadow-lg"
-      >
-        <!-- University Voting Section -->
-        <CountDown :type="'university'"></CountDown>
-
-        <h1
-          class="text-2xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6"
-        >
-          Set University Voting End Date
-        </h1>
-
-        <!-- Success Message -->
-        <div
-          v-if="universitySuccess"
-          class="mb-6 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg flex items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 mr-2"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-              clip-rule="evenodd"
-            />
+      <div v-if="majorEnded" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl">
+        <CountDown :type="'university'" />
+        <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">Set University Voting End Date</h2>
+        <div v-if="universitySuccess" class="mb-6 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
           </svg>
           {{ universitySuccessMessage }}
         </div>
-
-        <!-- Form Section -->
-        <form
-          id="universityVotingForm"
-          @submit.prevent="showUniversityOptionsModal = true"
-        >
+        <form id="universityVotingForm" @submit.prevent="showUniversityOptionsModal = true">
           <div class="mb-6">
-            <label
-              for="universityVotingEndDate"
-              class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2"
-            >
-              Select University Voting End Date
-              <span class="text-red-500">*</span>
+            <label for="universityVotingEndDate" class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+              Select University Voting End Date <span class="text-red-500">*</span>
             </label>
-            <input
-              type="datetime-local"
-              v-model="universityEndDate"
-              id="universityVotingEndDate"
+            <input type="datetime-local" v-model="universityEndDate" id="universityVotingEndDate"
               class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
-              :class="{ 'border-red-500': universityErr }"
-              required
-            />
+              :class="{ 'border-red-500': universityErr }" required />
           </div>
-
-          <!-- Error Message -->
-          <div
-            v-if="universityErr"
-            class="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg flex items-center"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-2"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                clip-rule="evenodd"
-              />
+          <div v-if="universityErr" class="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
             </svg>
             {{ universityErr }}
           </div>
-
-          <!-- Submit Button -->
           <div class="flex justify-center">
-            <button
-              type="submit"
+            <button type="submit"
               class="bg-indigo-600 text-white py-3 px-8 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 flex items-center"
               :disabled="clickSubmit"
-              :class="{
-                'opacity-75 cursor-not-allowed': clickSubmit,
-                'hover:bg-indigo-600': clickSubmit,
-              }"
-            >
-              {{
-                clickSubmit ? "Processing..." : "Set University Voting Deadline"
-              }}
+              :class="{ 'opacity-75 cursor-not-allowed': clickSubmit, 'hover:bg-indigo-600': clickSubmit }">
+              {{ clickSubmit ? 'Processing...' : 'Set University Voting Deadline' }}
             </button>
           </div>
         </form>
@@ -326,7 +220,6 @@
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -365,8 +258,6 @@ export default {
 
     majorEnded.value = localStorage.getItem("majorEnded");
 
-    console.log(majorEnded)
-
     const setMajorEndDate = async (resetVoting) => {
       showMajorOptionsModal.value = false;
       majorErr.value = "";
@@ -397,18 +288,15 @@ export default {
           // Delete all major candidates and results if creating new voting
           const currentYear = new Date().getFullYear().toString();
 
-          // Delete major candidates
-          const candidatesSnapshot = await db
-            .collection("candidates")
-            .where("type", "==", "major")
-            .get();
-          const candidatesBatch = db.batch();
+          // Delete all candidates
+          const candidatesSnapshot = await db.collection("candidates").get();
+          const batch = db.batch();
           candidatesSnapshot.forEach((doc) => {
-            candidatesBatch.delete(doc.ref);
+            batch.delete(doc.ref);
           });
-          await candidatesBatch.commit();
+          await batch.commit();
 
-          // Delete major results
+          // Delete all major results
           const resultsDoc = await db
             .collection("results")
             .doc(`${currentYear}_major`)
@@ -417,8 +305,8 @@ export default {
             await db.collection("results").doc(`${currentYear}_major`).delete();
           }
 
-          // Delete major votes
-          const voteCollections = ["voteMajorKing", "voteMajorQueen"];
+          
+          const voteCollections = ["voteMajorKing", "voteMajorQueen", "voteUniversityKing", "voteUniversityQueen"];
           for (const collection of voteCollections) {
             const votesSnapshot = await db.collection(collection).get();
             const votesBatch = db.batch();
