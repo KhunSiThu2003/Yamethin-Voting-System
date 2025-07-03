@@ -100,7 +100,7 @@ export default {
             // Check if admin name and password match
             if (adminName.value === adminData.value.name && password.value === adminData.value.password) {
                 localStorage.setItem("adminData", JSON.stringify(adminData.value)); // Store admin name in local storage
-                router.push('/Deadline');  // Redirect to admin dashboard
+                router.push('/dashboard');  // Redirect to admin dashboard
             } else {
                 errorMessage.value = "Invalid Admin Name or Password!";
                 clickSubmit.value = false; // Reset loading state
