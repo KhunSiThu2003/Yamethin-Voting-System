@@ -191,7 +191,7 @@
             Just Update Deadline
           </button>
 
-          <button
+          <!-- <button
             @click="setUniversityEndDate(true)"
             class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-150 flex items-center justify-center"
           >
@@ -208,7 +208,7 @@
               />
             </svg>
             Create New University Voting (Delete All Data)
-          </button>
+          </button> -->
 
           <button
             @click="showUniversityOptionsModal = false"

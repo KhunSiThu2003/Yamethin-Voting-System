@@ -331,6 +331,12 @@
           <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-bold">All Students</h1>
             <div class="flex items-center space-x-4">
+              <input
+                v-model="searchQueryStudents"
+                type="text"
+                placeholder="Search by name or roll no..."
+                class="border rounded-md px-2 py-1 text-sm dark:bg-gray-700 mr-2"
+              />
               <div class="flex items-center">
                 <label for="itemsPerPage" class="mr-2 text-sm"
                   >Items per page:</label
@@ -488,6 +494,12 @@
           <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-bold">All Teachers</h1>
             <div class="flex items-center space-x-4">
+              <input
+                v-model="searchQueryTeachers"
+                type="text"
+                placeholder="Search by name or registration ID..."
+                class="border rounded-md px-2 py-1 text-sm dark:bg-gray-700 mr-2"
+              />
               <div class="flex items-center">
                 <label for="itemsPerPageTeachers" class="mr-2 text-sm"
                   >Items per page:</label
@@ -635,6 +647,12 @@
           <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-bold">Other Users</h1>
             <div class="flex items-center space-x-4">
+              <input
+                v-model="searchQueryOtherUsers"
+                type="text"
+                placeholder="Search by name or registration ID..."
+                class="border rounded-md px-2 py-1 text-sm dark:bg-gray-700 mr-2"
+              />
               <div class="flex items-center">
                 <label for="itemsPerPageOtherUsers" class="mr-2 text-sm"
                   >Items per page:</label
@@ -920,57 +938,88 @@ export default {
       "Mechanical Engineering": "MECH",
     };
 
-    // Computed properties for students
+    // Add search query refs
+    const searchQueryStudents = ref("");
+    const searchQueryTeachers = ref("");
+    const searchQueryOtherUsers = ref("");
+
+    // Computed properties for students (filtered)
+    const filteredStudents = computed(() => {
+      if (!searchQueryStudents.value) return students.value;
+      return students.value.filter((student) => {
+        const query = searchQueryStudents.value.toLowerCase();
+        return (
+          (student.name && student.name.toLowerCase().includes(query)) ||
+          (student.rollno && student.rollno.toLowerCase().includes(query))
+        );
+      });
+    });
     const totalPages = computed(() =>
-      Math.ceil(students.value.length / itemsPerPage.value)
+      Math.ceil(filteredStudents.value.length / itemsPerPage.value)
     );
     const paginatedStudents = computed(() => {
       const start = (currentPage.value - 1) * itemsPerPage.value;
       const end = start + itemsPerPage.value;
-      return students.value.slice(start, end);
+      return filteredStudents.value.slice(start, end);
     });
     const startItem = computed(
       () => (currentPage.value - 1) * itemsPerPage.value + 1
     );
     const endItem = computed(() => {
       const end = currentPage.value * itemsPerPage.value;
-      return end > students.value.length ? students.value.length : end;
+      return end > filteredStudents.value.length ? filteredStudents.value.length : end;
     });
-
-    // Computed properties for teachers
+    // Computed properties for teachers (filtered)
+    const filteredTeachers = computed(() => {
+      if (!searchQueryTeachers.value) return teachers.value;
+      return teachers.value.filter((teacher) => {
+        const query = searchQueryTeachers.value.toLowerCase();
+        return (
+          (teacher.name && teacher.name.toLowerCase().includes(query)) ||
+          (teacher.registerId && teacher.registerId.toLowerCase().includes(query))
+        );
+      });
+    });
     const totalPagesTeachers = computed(() =>
-      Math.ceil(teachers.value.length / itemsPerPageTeachers.value)
+      Math.ceil(filteredTeachers.value.length / itemsPerPageTeachers.value)
     );
     const paginatedTeachers = computed(() => {
-      const start =
-        (currentPageTeachers.value - 1) * itemsPerPageTeachers.value;
+      const start = (currentPageTeachers.value - 1) * itemsPerPageTeachers.value;
       const end = start + itemsPerPageTeachers.value;
-      return teachers.value.slice(start, end);
+      return filteredTeachers.value.slice(start, end);
     });
     const startItemTeachers = computed(
       () => (currentPageTeachers.value - 1) * itemsPerPageTeachers.value + 1
     );
     const endItemTeachers = computed(() => {
       const end = currentPageTeachers.value * itemsPerPageTeachers.value;
-      return end > teachers.value.length ? teachers.value.length : end;
+      return end > filteredTeachers.value.length ? filteredTeachers.value.length : end;
     });
-
-    // Computed properties for other users
+    // Computed properties for other users (filtered)
+    const filteredOtherUsers = computed(() => {
+      if (!searchQueryOtherUsers.value) return otherUsers.value;
+      return otherUsers.value.filter((user) => {
+        const query = searchQueryOtherUsers.value.toLowerCase();
+        return (
+          (user.name && user.name.toLowerCase().includes(query)) ||
+          (user.registerId && user.registerId.toLowerCase().includes(query))
+        );
+      });
+    });
     const totalPagesOtherUsers = computed(() =>
-      Math.ceil(otherUsers.value.length / itemsPerPageOtherUsers.value)
+      Math.ceil(filteredOtherUsers.value.length / itemsPerPageOtherUsers.value)
     );
     const paginatedOtherUsers = computed(() => {
-      const start =
-        (currentPageOtherUsers.value - 1) * itemsPerPageOtherUsers.value;
+      const start = (currentPageOtherUsers.value - 1) * itemsPerPageOtherUsers.value;
       const end = start + itemsPerPageOtherUsers.value;
-      return otherUsers.value.slice(start, end);
+      return filteredOtherUsers.value.slice(start, end);
     });
     const startItemOtherUsers = computed(
       () => (currentPageOtherUsers.value - 1) * itemsPerPageOtherUsers.value + 1
     );
     const endItemOtherUsers = computed(() => {
       const end = currentPageOtherUsers.value * itemsPerPageOtherUsers.value;
-      return end > otherUsers.value.length ? otherUsers.value.length : end;
+      return end > filteredOtherUsers.value.length ? filteredOtherUsers.value.length : end;
     });
 
     // Computed properties for registration IDs
@@ -1295,6 +1344,9 @@ export default {
       resetPaginationRegIds,
 
       totalUsers,
+      searchQueryStudents,
+      searchQueryTeachers,
+      searchQueryOtherUsers,
     };
   },
 };
