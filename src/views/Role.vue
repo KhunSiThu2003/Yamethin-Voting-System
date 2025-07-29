@@ -1,5 +1,17 @@
+<style>
+#role-selection {
+  background-image: url(../Images/photo_2025-07-29_21-15-15.jpg);
+  background-size: cover;
+
+  main {
+    background-color: rgba(0, 0, 0, 0.454);
+    backdrop-filter: blur(3px);
+  }
+}
+</style>
+
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+  <div id="role-selection" class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
     <main
       class="flex-grow flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8"
     >

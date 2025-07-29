@@ -19,7 +19,8 @@
         </h1>
         <h2 class="font-extrabold tracking-wide text-2xl md:text-6xl pb-4 text-gray-700 dark:text-gray-100">King & Queen Elections</h2>
         <p class="md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          The official voting platform for TU Yamethin's King & Queen elections 2024.
+          The official voting platform for TU Yamethin's King & Queen elections {{ currentYear }}. Participate in the democratic process and help choose your representatives.
+          <br />
           <span class="block mt-2 text-primary-500 dark:text-primary-400 font-medium">
             Make your voice heard!
           </span>
@@ -114,12 +115,13 @@ export default {
   setup() {
     const isLoading = ref(false);
     const error = ref(null);
-
+    const currentYear = ref(null);
     const userData = ref(null);
     userData.value = JSON.parse(localStorage.getItem("userData"));
 
     onMounted(() => {
       userData.value = JSON.parse(localStorage.getItem("userData"));
+      currentYear.value = new Date().getFullYear();
     });
 
     let {
@@ -131,6 +133,7 @@ export default {
       error,
       votingEnd,
       userData,
+      currentYear,
     };
   },
 };

@@ -48,7 +48,7 @@
                   Phone
                 </h3>
                 <p class="text-gray-600 dark:text-gray-300">
-                  +95 9 440 974 981
+                  +95 9 799 194 383
                 </p>
                 <p class="text-gray-600 dark:text-gray-300">
                   +95 9 763 618 306
@@ -79,7 +79,7 @@
                   Email
                 </h3>
                 <p class="text-gray-600 dark:text-gray-300">
-                  khunsithuaung65@gmail.com
+                  lwinkowin12@gmail.com
                 </p>
                 <p class="text-gray-600 dark:text-gray-300">
                   khunsithu350@gmail.com

@@ -52,14 +52,14 @@
             Contact Info
           </h4>
           <div class="text-sm text-gray-600 dark:text-gray-300 space-y-2">
-            <p>Phone: +95 9 123456789</p>
+            <p>Phone: +959799194383</p> 
             <p>
               Email :
               <a
-                href="mailto:khunsithuaung65@gmail.com"
+                href="mailto:lwinkowin12@gmail.com"
                 class="text-blue-500 hover:underline"
               >
-                khunsithuaung65@gmail.com
+                lwinkowin12@gmail.com
               </a>
             </p>
           </div>
@@ -86,17 +86,10 @@
         class="mt-10 border-t border-gray-200 dark:border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center text-sm"
       >
       <div class="text-gray-500 dark:text-gray-400 mb-2 md:mb-0">
-          <p>Developed by <em>Khun Si Thu</em></p>
-          <a
-            href="mailto:khunsithuaung65@gmail.com"
-            class="text-blue-500 hover:underline"
-          >
-            khunsithuaung65@gmail.com
-          </a>
-        </div>
-        <p class="text-gray-500 dark:text-gray-400 mb-4 md:mb-0">
-          &copy; 2024 Technological University Yamethin. All rights reserved.
-        </p>
+        <span class="text-gray-600 dark:text-gray-300">
+          &copy; {{ new Date().getFullYear() }} Technological University Yamethin. All rights reserved.
+        </span>
+      </div>
       </div>
     </div>
   </footer>
