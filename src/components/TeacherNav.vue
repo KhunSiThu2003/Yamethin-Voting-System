@@ -557,6 +557,19 @@ export default {
                   }">${currentUser.value.status || "unknown"}</span>
                 </span>
               </div>
+              
+              <!-- Logout Button -->
+              <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <button 
+                  id="logout-btn"
+                  class="w-full px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-300 flex items-center justify-center"
+                >
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                  </svg>
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
         `,
@@ -575,14 +588,14 @@ export default {
           </span>`,
         confirmButtonColor: "#3b82f6",
         cancelButtonColor: "#6b7280",
-        showDenyButton: true,
-        denyButtonText: `<span class="flex items-center">
-            <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-            </svg>
-            Logout
-          </span>`,
-        denyButtonColor: "#ef4444",
+              showDenyButton: true,
+      denyButtonText: `<span class="flex items-center">
+        <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+        </svg>
+        Change Password
+      </span>`,
+      denyButtonColor: "#10b981",
         width: "auto",
         padding: "1rem",
         background: "#ffffff dark:bg-gray-800",
@@ -603,7 +616,17 @@ export default {
           cancelButton:
             "dark:bg-gray-600 dark:hover:bg-gray-700 text-xs sm:text-sm",
           denyButton:
-            "dark:bg-red-600 dark:hover:bg-red-700 text-xs sm:text-sm",
+            "dark:bg-green-600 dark:hover:bg-green-700 text-xs sm:text-sm",
+        },
+        didOpen: () => {
+          // Add event listener for logout button
+          const logoutBtn = document.getElementById('logout-btn');
+          if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+              Swal.close();
+              handleLogout();
+            });
+          }
         },
       }).then((result) => {
         if (result.isConfirmed) {
@@ -801,9 +824,10 @@ export default {
               }
             }
           });
-        } else if (result.isDenied) {
-          handleLogout();
-        }
+              } else if (result.isDenied) {
+        // Navigate to change password page
+        router.push("/change-password");
+      }
       });
     };
 

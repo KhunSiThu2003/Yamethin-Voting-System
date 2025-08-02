@@ -16,6 +16,7 @@ import OtherForm from '@/views/OtherForm.vue'
 import VoteMajor from '@/views/VoteMajor.vue'
 import VoteUniversity from '@/views/VoteUniversity.vue'
 import UniversityCandidates from '@/views/UniversityCandidates.vue'
+import ChangePassword from '@/views/ChangePassword.vue'
 
 import AdminForm from '@/adminViews/AdminForm.vue'
 import ManageUsers from '@/adminViews/ManageUsers.vue'
@@ -117,6 +118,11 @@ const routes = [
     path: '/contact',
     name: 'contact',
     component: Contact,
+  },
+  {
+    path: '/change-password',
+    name: 'change-password',
+    component: ChangePassword,
   },
   // For Admin
   {

@@ -101,6 +101,17 @@
           >
             Other Users
           </button>
+          <button
+            @click="setActiveSection('searchPassword')"
+            :class="[
+              'px-6 py-2 rounded-md font-semibold transition-all',
+              activeSection === 'searchPassword'
+                ? 'bg-blue-600 text-white'
+                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-800',
+            ]"
+          >
+            Search User Password
+          </button>
         </div>
 
         <!-- Generate Registration ID Section -->
@@ -782,6 +793,176 @@
             </div>
           </div>
         </section>
+
+        <!-- Search User Password Section -->
+        <section
+          v-if="activeSection === 'searchPassword'"
+          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+        >
+          <h1 class="text-2xl font-bold mb-4">Search User Password</h1>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+            Search for user passwords by Roll Number (students) or Registration ID (teachers/others)
+          </p>
+
+          <!-- Search Form -->
+          <div class="mb-6">
+            <div class="flex flex-col sm:flex-row gap-4 mb-4">
+              <div class="flex-1">
+                <label class="block text-sm font-medium mb-2">User Type</label>
+                <select
+                  v-model="searchUserType"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select User Type</option>
+                  <option value="student">Student</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="other">Other Staff</option>
+                </select>
+              </div>
+              <div class="flex-1">
+                <label class="block text-sm font-medium mb-2">
+                  {{ searchUserType === 'student' ? 'Roll Number' : 'Registration ID' }}
+                </label>
+                <input
+                  v-model="searchIdentifier"
+                  type="text"
+                  :placeholder="searchUserType === 'student' ? 'Enter Roll Number' : 'Enter Registration ID'"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div class="flex items-end">
+                <button
+                  @click="searchUserPassword"
+                  :disabled="!searchUserType || !searchIdentifier || isSearching"
+                  class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition duration-300 flex items-center"
+                >
+                  <svg v-if="isSearching" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <svg v-else class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                  {{ isSearching ? 'Searching...' : 'Search' }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Results -->
+          <div v-if="searchResult" class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+            <h3 class="text-lg font-semibold mb-4 text-green-600 dark:text-green-400">
+              <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              User Found
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- User Information -->
+              <div class="space-y-3">
+                <h4 class="font-medium text-gray-700 dark:text-gray-300">User Information</h4>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-gray-600 dark:text-gray-400">Name:</span>
+                    <span class="font-medium">{{ searchResult.name || 'Not provided' }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-600 dark:text-gray-400">{{ searchUserType === 'student' ? 'Roll Number:' : 'Registration ID:' }}</span>
+                    <span class="font-medium">{{ searchResult.rollno || searchResult.registerId }}</span>
+                  </div>
+                  <div v-if="searchResult.major" class="flex justify-between">
+                    <span class="text-gray-600 dark:text-gray-400">Major:</span>
+                    <span class="font-medium">{{ searchResult.major }}</span>
+                  </div>
+                  <div v-if="searchResult.year" class="flex justify-between">
+                    <span class="text-gray-600 dark:text-gray-400">Year:</span>
+                    <span class="font-medium">{{ searchResult.year }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-600 dark:text-gray-400">Status:</span>
+                    <span class="px-2 py-1 text-xs rounded-full" :class="{
+                      'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200': searchResult.status === 'active',
+                      'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300': searchResult.status !== 'active'
+                    }">
+                      {{ searchResult.status || 'unknown' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Password Information -->
+              <div class="space-y-3">
+                <h4 class="font-medium text-gray-700 dark:text-gray-300">Password Information</h4>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 space-y-2">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-600 dark:text-gray-400">Password:</span>
+                    <div class="flex items-center space-x-2">
+                      <input
+                        :type="showPassword ? 'text' : 'password'"
+                        :value="searchResult.password"
+                        readonly
+                        class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      />
+                      <button
+                        @click="togglePasswordVisibility"
+                        class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                        type="button"
+                      >
+                        <svg v-if="showPassword" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+                        </svg>
+                        <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div v-if="searchResult.passwordUpdatedAt" class="flex justify-between">
+                    <span class="text-gray-600 dark:text-gray-400">Last Updated:</span>
+                    <span class="text-sm">{{ formatDate(searchResult.passwordUpdatedAt) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex flex-wrap gap-3">
+              <button
+                @click="copyPassword"
+                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300 flex items-center"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                Copy Password
+              </button>
+              <button
+                @click="resetSearch"
+                class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-300 flex items-center"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                New Search
+              </button>
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div v-if="searchError" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <div class="flex">
+              <svg class="w-5 h-5 text-red-400 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <div>
+                <h3 class="text-sm font-medium text-red-800 dark:text-red-200">User Not Found</h3>
+                <p class="text-sm text-red-700 dark:text-red-300 mt-1">{{ searchError }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </section>
     </div>
 
@@ -942,6 +1123,14 @@ export default {
     const searchQueryStudents = ref("");
     const searchQueryTeachers = ref("");
     const searchQueryOtherUsers = ref("");
+
+    // Search password functionality
+    const searchUserType = ref("");
+    const searchIdentifier = ref("");
+    const searchResult = ref(null);
+    const searchError = ref("");
+    const isSearching = ref(false);
+    const showPassword = ref(false);
 
     // Computed properties for students (filtered)
     const filteredStudents = computed(() => {
@@ -1272,6 +1461,88 @@ export default {
       localStorage.setItem("userBadgeCount", newStudents.length);
     });
 
+    // Search password functions
+    const searchUserPassword = async () => {
+      if (!searchUserType.value || !searchIdentifier.value) {
+        searchError.value = "Please select user type and enter identifier";
+        return;
+      }
+
+      isSearching.value = true;
+      searchError.value = "";
+      searchResult.value = null;
+
+      try {
+        let collectionName;
+        let fieldName;
+
+        switch (searchUserType.value) {
+          case "student":
+            collectionName = "students";
+            fieldName = "rollno";
+            break;
+          case "teacher":
+            collectionName = "teachers";
+            fieldName = "registerId";
+            break;
+          case "other":
+            collectionName = "otherStaff";
+            fieldName = "registerId";
+            break;
+          default:
+            throw new Error("Invalid user type");
+        }
+
+        const querySnapshot = await db
+          .collection(collectionName)
+          .where(fieldName, "==", searchIdentifier.value)
+          .limit(1)
+          .get();
+
+        if (querySnapshot.empty) {
+          searchError.value = `No ${searchUserType.value} found with ${searchUserType.value === 'student' ? 'roll number' : 'registration ID'} "${searchIdentifier.value}"`;
+          return;
+        }
+
+        const userDoc = querySnapshot.docs[0];
+        searchResult.value = {
+          id: userDoc.id,
+          ...userDoc.data()
+        };
+
+      } catch (error) {
+        console.error("Error searching for user:", error);
+        searchError.value = "An error occurred while searching. Please try again.";
+      } finally {
+        isSearching.value = false;
+      }
+    };
+
+    const togglePasswordVisibility = () => {
+      showPassword.value = !showPassword.value;
+    };
+
+    const copyPassword = async () => {
+      if (searchResult.value && searchResult.value.password) {
+        try {
+          await navigator.clipboard.writeText(searchResult.value.password);
+          // Show success message (you can use a toast notification here)
+          alert("Password copied to clipboard!");
+        } catch (error) {
+          console.error("Failed to copy password:", error);
+          alert("Failed to copy password to clipboard");
+        }
+      }
+    };
+
+    const resetSearch = () => {
+      searchUserType.value = "";
+      searchIdentifier.value = "";
+      searchResult.value = null;
+      searchError.value = "";
+      showPassword.value = false;
+    };
+
     return {
       click,
       isLoading,
@@ -1347,6 +1618,18 @@ export default {
       searchQueryStudents,
       searchQueryTeachers,
       searchQueryOtherUsers,
+      
+      // Search password functionality
+      searchUserType,
+      searchIdentifier,
+      searchResult,
+      searchError,
+      isSearching,
+      showPassword,
+      searchUserPassword,
+      togglePasswordVisibility,
+      copyPassword,
+      resetSearch,
     };
   },
 };
