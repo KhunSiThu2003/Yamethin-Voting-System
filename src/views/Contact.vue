@@ -50,9 +50,7 @@
                 <p class="text-gray-600 dark:text-gray-300">
                   +95 9 799 194 383
                 </p>
-                <p class="text-gray-600 dark:text-gray-300">
-                  +95 9 763 618 306
-                </p>
+
               </div>
             </div>
 
@@ -80,9 +78,6 @@
                 </h3>
                 <p class="text-gray-600 dark:text-gray-300">
                   lwinkowin12@gmail.com
-                </p>
-                <p class="text-gray-600 dark:text-gray-300">
-                  khunsithu350@gmail.com
                 </p>
               </div>
             </div>

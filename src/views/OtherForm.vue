@@ -112,7 +112,6 @@
 import Loading from "../components/Loading";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import otherRegister from "@/composables/otherRegister";
 import { db } from "@/firebase/config";
 
 export default {
@@ -135,7 +134,7 @@ export default {
         const matchError = ref("");
         const error = ref("");
 
-        const { registerOtherStaff, error: registerError, isPending } = otherRegister();
+        const isPending = ref(false);
         const router = useRouter();
 
         // Helper Functions
@@ -188,20 +187,37 @@ export default {
                 return;
             }
 
-            try {
-                const staffData = {
-                    name: fullname.value,
-                    registerId: registerId.value,
-                    password: password.value
-                };
+            // Check if staff already exists
+            const existingStaff = await db.collection("otherStaff")
+                .where("registerId", "==", registerId.value)
+                .limit(1)
+                .get();
 
-                const staffId = await registerOtherStaff(staffData);
-                if (staffId) {
+            if (!existingStaff.empty) {
+                error.value = "Registration ID already exists.";
+                return;
+            }
+
+            const staffData = {
+                name: fullname.value,
+                registerId: registerId.value,
+                password: password.value,
+                createdAt: new Date(),
+                status: "active",
+                role: "other",
+                lastLogin: null,
+                profileImage: null
+            };
+
+            try {
+                const docRef = await db.collection("otherStaff").add(staffData);
+                if (docRef.id) {
                     registeredUser.value = true;
                     isRegister.value = false;
                 }
             } catch (err) {
-                error.value = registerError.value || err.message;
+                error.value = "Registration failed. Please try again.";
+                console.error(err);
             }
         };
 
@@ -235,7 +251,8 @@ export default {
 
                 // Successful login: store user data in localStorage
                 localStorage.setItem("userId", staffSnapshot.docs[0].id);
-                localStorage.setItem("userRole", staff.role || "other");
+                localStorage.setItem("userRole", "other");
+                localStorage.setItem("userPassword", password.value);
 
                 // Update status
                 await db.collection("otherStaff").doc(staffSnapshot.docs[0].id).set({

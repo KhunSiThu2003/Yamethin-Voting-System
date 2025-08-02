@@ -473,8 +473,9 @@
 </template>
   
   <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
+import getUserById from "@/composables/getUserById";
 import { db } from "@/firebase/config";
 import Swal from "sweetalert2";
 
@@ -484,13 +485,26 @@ export default {
   setup(props) {
     const router = useRouter();
     const userId = localStorage.getItem("userId");
-    const currentUser = ref(
-      props.userData || JSON.parse(localStorage.getItem("userData")) || null
-    );
-
+    
+    // Use getUserById composable for proper user data loading
+    const { userData: userDataFromComposable, error, load } = getUserById();
+    const currentUser = ref(props.userData || userDataFromComposable.value || null);
+    
     // Reactive state
     const theme = ref("light");
     const mobileMenuOpen = ref(false);
+
+    // Load user data if userId exists
+    if (userId) {
+      load();
+    }
+
+    // Watch for changes in userData from composable
+    watch(userDataFromComposable, (newUserData) => {
+      if (newUserData) {
+        currentUser.value = newUserData;
+      }
+    }, { immediate: true });
 
     const showUserDetails = () => {
       if (!currentUser.value) return;
@@ -913,173 +927,7 @@ export default {
     };
 
     const showLoginForm = () => {
-      const currentTheme = theme.value;
-
-      Swal.fire({
-        title: "Welcome Back",
-        html: `
-        <div class="space-y-4">
-          <div>
-            <label class="block text-start text-sm font-medium mb-1 ${
-              currentTheme === "dark" ? "text-gray-300" : "text-gray-700"
-            }">Register ID</label>
-            <input 
-              id="swal-input-registerId" 
-              class="w-full px-4 py-2 text-sm border ${
-                currentTheme === "dark"
-                  ? "bg-gray-700 border-gray-600 text-white"
-                  : "bg-white border-gray-300"
-              } rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
-              placeholder="Enter your register ID"
-              autocomplete="username">
-          </div>
-          <div>
-            <label class="block text-start text-sm font-medium mb-1 ${
-              currentTheme === "dark" ? "text-gray-300" : "text-gray-700"
-            }">Password</label>
-            <input 
-              id="swal-input-password" 
-              type="password"
-              class="w-full px-4 py-2 text-sm border ${
-                currentTheme === "dark"
-                  ? "bg-gray-700 border-gray-600 text-white"
-                  : "bg-white border-gray-300"
-              } rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
-              placeholder="Enter your password"
-              autocomplete="current-password">
-          </div>
-          <div class="mt-4 text-center">
-            <span class="text-sm ${
-              currentTheme === "dark" ? "text-gray-400" : "text-gray-600"
-            }">Don't have an account? </span>
-            <a href="/otherform" class="text-sm ${
-              currentTheme === "dark"
-                ? "text-purple-400 hover:text-purple-300"
-                : "text-purple-600 hover:text-purple-800"
-            } font-medium">Register</a>
-          </div>
-        </div>
-      `,
-        showCancelButton: true,
-        confirmButtonText: "Sign In",
-        cancelButtonText: "Cancel",
-        focusConfirm: false,
-        preConfirm: () => {
-          const registerId = document.getElementById(
-            "swal-input-registerId"
-          ).value;
-          const password = document.getElementById("swal-input-password").value;
-
-          if (!registerId || !password) {
-            Swal.showValidationMessage("Please fill in all fields");
-            return false;
-          }
-
-          return { registerId, password };
-        },
-        width: "26rem",
-        padding: "1.5rem",
-        background: currentTheme === "dark" ? "#1f2937" : "#ffffff",
-        customClass: {
-          popup: "rounded-xl shadow-2xl",
-          title: `${
-            currentTheme === "dark" ? "text-white" : "text-gray-800"
-          } text-xl font-semibold`,
-          htmlContainer: `${
-            currentTheme === "dark" ? "text-gray-300" : "text-gray-600"
-          }`,
-          confirmButton: `px-5 py-2 rounded-lg ${
-            currentTheme === "dark"
-              ? "bg-purple-600 hover:bg-purple-700"
-              : "bg-purple-500 hover:bg-purple-600"
-          } text-white font-medium transition-colors duration-200`,
-          cancelButton: `px-5 py-2 rounded-lg ${
-            currentTheme === "dark"
-              ? "bg-gray-700 hover:bg-gray-600"
-              : "bg-gray-100 hover:bg-gray-200"
-          } ${
-            currentTheme === "dark" ? "text-gray-200" : "text-gray-700"
-          } font-medium transition-colors duration-200`,
-          validationMessage: "text-red-500 dark:text-red-400 mt-2 text-sm",
-        },
-        didOpen: () => {
-          document.getElementById("swal-input-registerId").focus();
-
-          // Handle register link click to prevent SweetAlert from closing
-          const registerLink = document.querySelector('a[href="/otherform"]');
-          if (registerLink) {
-            registerLink.addEventListener("click", (e) => {
-              e.preventDefault();
-              Swal.close();
-              router.push("/otherform");
-            });
-          }
-        },
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const { registerId, password } = result.value;
-
-          // Show loading state
-          Swal.fire({
-            title: "Authenticating...",
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-            background: currentTheme === "dark" ? "#1f2937" : "#ffffff",
-            customClass: {
-              popup: "rounded-xl",
-              title: currentTheme === "dark" ? "text-white" : "text-gray-800",
-            },
-          });
-
-          try {
-            // Check credentials
-            const otherStaffRef = db
-              .collection("otherStaff")
-              .where("registerId", "==", registerId);
-            const snapshot = await otherStaffRef.get();
-
-            if (snapshot.empty) {
-              throw new Error("Invalid credentials");
-            }
-
-            const otherStaffData = snapshot.docs[0].data();
-
-            // In a real app, use proper password hashing
-            if (otherStaffData.password !== password) {
-              throw new Error("Invalid credentials");
-            }
-
-            // Store user ID
-            localStorage.setItem("userId", snapshot.docs[0].id);
-            localStorage.setItem("userPassword", password);
-
-            // Update user status
-            await db.collection("otherStaff").doc(snapshot.docs[0].id).update({
-              status: "active",
-              lastLogin: new Date(),
-            });
-
-            // Close loading state and show success
-            Swal.close();
-            router.push("/");
-          } catch (error) {
-            console.error("Login error:", error);
-            Swal.fire({
-              title: "Login Failed",
-              text: "Invalid register ID or password",
-              icon: "error",
-              confirmButtonColor: "#ef4444",
-              background: currentTheme === "dark" ? "#1f2937" : "#ffffff",
-              customClass: {
-                popup: "rounded-xl",
-                title: currentTheme === "dark" ? "text-white" : "text-gray-800",
-              },
-            });
-          }
-        }
-      });
+      router.push("/otherform");
     };
 
     // Load theme on mounted

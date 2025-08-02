@@ -376,7 +376,7 @@ export default {
           }
 
           
-          const voteCollections = ["voteMajorKing", "voteMajorQueen", "voteUniversityKing", "voteUniversityQueen"];
+          const voteCollections = ["results","voteMajorKing", "voteMajorQueen", "voteUniversityKing", "voteUniversityQueen"];
           for (const collection of voteCollections) {
             const votesSnapshot = await db.collection(collection).get();
             const votesBatch = db.batch();

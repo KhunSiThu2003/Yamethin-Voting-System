@@ -26,11 +26,13 @@ let deadLine = (type) => {
             hourString.value = "00";
             minString.value = "00";
             secString.value = "00";
+            votingEnd.value = true; // If no end date, consider voting ended
             return;
         }
 
         const now = new Date().getTime();
-        const distance = new Date(endDate) - now;
+        const endTime = new Date(endDate).getTime();
+        const distance = endTime - now;
 
         // If countdown reaches zero, stop the timer
         if (distance <= 0) {
@@ -49,6 +51,7 @@ let deadLine = (type) => {
 
             return;
         } else {
+            votingEnd.value = false; // Voting is still active
             if (type === "major") {
                 localStorage.removeItem("majorEnded");
             } 
@@ -59,9 +62,11 @@ let deadLine = (type) => {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Progress calculation
-        const totalDays = Math.ceil((new Date(endDate) - new Date(new Date(endDate).setHours(0, 0, 0, 0)) / (1000 * 60 * 60 * 24)));
-        remainingDays.value = (days / totalDays) * 100;
+        // Fixed progress calculation
+        const totalDuration = endTime - new Date().setHours(0, 0, 0, 0); // Duration from start of day to end
+        const remainingDuration = distance;
+        
+        remainingDays.value = Math.min((days / 30) * 100, 100); // Assuming max 30 days
         remainingHours.value = (hours / 24) * 100;
         remainingMinutes.value = (minutes / 60) * 100;
         remainingSeconds.value = (seconds / 60) * 100;

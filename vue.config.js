@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
-    host: '10.10.10.198',
+    host: '0.0.0.0',
     port: 8080,
     allowedHosts: 'all',
   },

@@ -126,7 +126,6 @@
 import Loading from "../components/Loading";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import teacherRegister from "@/composables/teacherRegister";
 import { db } from "@/firebase/config";
 
 export default {
@@ -150,7 +149,7 @@ export default {
         const matchError = ref("");
         const error = ref("");
 
-        const { registerTeacher, isPending } = teacherRegister();
+        const isPending = ref(false);
         const router = useRouter();
 
         // Helper Functions
@@ -203,21 +202,38 @@ export default {
                 return;
             }
 
+            // Check if teacher already exists
+            const existingTeacher = await db.collection("teachers")
+                .where("registerId", "==", registerId.value)
+                .limit(1)
+                .get();
+
+            if (!existingTeacher.empty) {
+                error.value = "Registration ID already exists.";
+                return;
+            }
+
             const teacherData = {
                 name: fullname.value,
                 registerId: registerId.value,
                 major: selectedMajor.value,
-                password: password.value
+                password: password.value,
+                createdAt: new Date(),
+                status: "active",
+                role: "teacher",
+                lastLogin: null,
+                profileImage: null
             };
 
             try {
-                const teacherId = await registerTeacher(teacherData);
-                if (teacherId) {
+                const docRef = await db.collection("teachers").add(teacherData);
+                if (docRef.id) {
                     registeredUser.value = true;
                     isRegister.value = false;
                 }
             } catch (err) {
-                error.value = err.message;
+                error.value = "Registration failed. Please try again.";
+                console.error(err);
             }
         };
 
