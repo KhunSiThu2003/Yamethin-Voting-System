@@ -1,125 +1,157 @@
 <template>
   <div>
     <SideBar />
-    <div
-      class="sm:ml-64 bg-gray-100 text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200"
-    >
-      <!-- Page Header -->
-      <section class="bg-white dark:bg-gray-800 text-center py-10">
-        <h1 class="text-3xl sm:text-4xl font-bold mb-4">Manage Users</h1>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-          View and manage all user information.
-        </p>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2">
-          Total Users: {{ totalUsers }} ({{ students.length }} students,
-          {{ teachers.length }} teachers, {{ otherUsers.length }} others)
-        </p>
-      </section>
-
-      <!-- Loading State -->
-      <div
-        v-if="isLoading"
-        class="flex items-center justify-center w-full py-20"
-      >
-        <div role="status">
-          <svg
-            aria-hidden="true"
-            class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-              fill="currentColor"
-            />
-            <path
-              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-              fill="currentFill"
-            />
-          </svg>
-          <span class="sr-only">Loading...</span>
+    <div class="sm:ml-64 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200 min-h-screen">
+      <!-- Header -->
+      <div class="bg-white dark:bg-gray-700 text-black dark:text-white">
+        <div class="px-6 py-8 relative overflow-hidden">
+          <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="flex items-center gap-4">
+              <div class="bg-white dark:bg-gray-600 rounded-2xl p-4 shadow-lg">
+                <svg class="w-8 h-8 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                </svg>
+              </div>
+              <div>
+                <h1 class="text-3xl font-bold mb-2">Manage Users</h1>
+                <p class="text-gray-700 dark:text-gray-300 text-lg">View and manage all user information</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                  Total Users: {{ totalUsers }} ({{ students?.length || 0 }} students,
+                  {{ teachers?.length || 0 }} teachers, {{ otherUsers?.length || 0 }} others)
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Main Content -->
-      <section v-else class="py-8 px-4 sm:px-8 bg-gray-100 dark:bg-gray-900">
-        <!-- Menu Buttons -->
-        <div class="flex flex-wrap gap-4 mb-8">
-          <button
-            @click="setActiveSection('controlUser')"
-            :class="[
-              'px-6 py-2 rounded-md font-semibold transition-all',
-              activeSection === 'controlUser'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-800',
-            ]"
-          >
-            Student Limits
-          </button>
-          <button
-            @click="setActiveSection('allStudents')"
-            :class="[
-              'px-6 py-2 rounded-md font-semibold transition-all',
-              activeSection === 'allStudents'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-800',
-            ]"
-          >
-            All Students
-          </button>
-          <button
-            @click="setActiveSection('generateId')"
-            :class="[
-              'px-6 py-2 rounded-md font-semibold transition-all',
-              activeSection === 'generateId'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-800',
-            ]"
-          >
-            Generate Registration ID
-          </button>
-          <button
-            @click="setActiveSection('allTeachers')"
-            :class="[
-              'px-6 py-2 rounded-md font-semibold transition-all',
-              activeSection === 'allTeachers'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-800',
-            ]"
-          >
-            All Teachers
-          </button>
-          <button
-            @click="setActiveSection('otherUser')"
-            :class="[
-              'px-6 py-2 rounded-md font-semibold transition-all',
-              activeSection === 'otherUser'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-800',
-            ]"
-          >
-            Other Users
-          </button>
-          <button
-            @click="setActiveSection('searchPassword')"
-            :class="[
-              'px-6 py-2 rounded-md font-semibold transition-all',
-              activeSection === 'searchPassword'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-800',
-            ]"
-          >
-            Search User Password
-          </button>
-        </div>
+      <div class="px-6 py-8">
+        <div class="max-w-7xl mx-auto">
+          <!-- Loading State -->
+          <div v-if="isLoading" class="flex items-center justify-center w-full py-20">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+              <div class="flex items-center gap-4">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span class="text-gray-600 dark:text-gray-300 font-medium">Loading users...</span>
+              </div>
+            </div>
+          </div>
 
-        <!-- Generate Registration ID Section -->
-        <section
-          v-if="activeSection === 'generateId'"
-          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-        >
-          <h1 class="text-2xl font-bold mb-4">Generate Registration ID</h1>
+          <!-- Main Content -->
+          <div v-else>
+            <!-- Menu Buttons -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 mb-8">
+              <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">User Management Sections</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <button
+                  @click="setActiveSection('controlUser')"
+                  :class="[
+                    'px-4 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    activeSection === 'controlUser'
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                      : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600',
+                  ]"
+                >
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    Student Limits
+                  </div>
+                </button>
+                <button
+                  @click="setActiveSection('allStudents')"
+                  :class="[
+                    'px-4 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    activeSection === 'allStudents'
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                      : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600',
+                  ]"
+                >
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    All Students
+                  </div>
+                </button>
+                <button
+                  @click="setActiveSection('generateId')"
+                  :class="[
+                    'px-4 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    activeSection === 'generateId'
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                      : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600',
+                  ]"
+                >
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    Generate Registration ID
+                  </div>
+                </button>
+                <button
+                  @click="setActiveSection('allTeachers')"
+                  :class="[
+                    'px-4 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    activeSection === 'allTeachers'
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                      : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600',
+                  ]"
+                >
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                    </svg>
+                    All Teachers
+                  </div>
+                </button>
+                <button
+                  @click="setActiveSection('otherUser')"
+                  :class="[
+                    'px-4 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    activeSection === 'otherUser'
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                      : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600',
+                  ]"
+                >
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    Other Users
+                  </div>
+                </button>
+                <button
+                  @click="setActiveSection('searchPassword')"
+                  :class="[
+                    'px-4 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    activeSection === 'searchPassword'
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
+                      : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600',
+                  ]"
+                >
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    Search User Password
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Generate Registration ID Section -->
+            <section
+              v-if="activeSection === 'generateId'"
+              class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
+            >
+                      <div class="p-6">
+              <h1 class="text-2xl font-bold mb-4">Generate Registration ID</h1>
 
           <div class="mb-6">
             <div class="mb-4">
@@ -271,14 +303,16 @@
               </button>
             </div>
           </div>
-        </section>
+            </div>
+          </section>
 
-        <!-- Student Limits Section -->
-        <section
-          v-if="activeSection === 'controlUser'"
-          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-        >
-          <h1 class="text-2xl font-bold mb-4">Students Limit</h1>
+            <!-- Student Limits Section -->
+            <section
+              v-if="activeSection === 'controlUser'"
+              class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
+            >
+                      <div class="p-6">
+              <h1 class="text-2xl font-bold mb-4">Students Limit</h1>
           <div class="overflow-x-auto">
             <table
               class="table-auto w-full text-center border-collapse border border-gray-300 dark:border-gray-700"
@@ -332,15 +366,17 @@
               </tbody>
             </table>
           </div>
-        </section>
+            </div>
+          </section>
 
-        <!-- All Students Section -->
-        <section
-          v-if="activeSection === 'allStudents'"
-          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-        >
-          <div class="flex justify-between items-center mb-4">
-            <h1 class="text-2xl font-bold">All Students</h1>
+            <!-- All Students Section -->
+            <section
+              v-if="activeSection === 'allStudents'"
+              class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
+            >
+                      <div class="p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h1 class="text-2xl font-bold">All Students</h1>
             <div class="flex items-center space-x-4">
               <input
                 v-model="searchQueryStudents"
@@ -495,15 +531,17 @@
               </button>
             </div>
           </div>
-        </section>
+            </div>
+          </section>
 
-        <!-- All Teachers Section -->
-        <section
-          v-if="activeSection === 'allTeachers'"
-          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-        >
-          <div class="flex justify-between items-center mb-4">
-            <h1 class="text-2xl font-bold">All Teachers</h1>
+            <!-- All Teachers Section -->
+            <section
+              v-if="activeSection === 'allTeachers'"
+              class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
+            >
+                      <div class="p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h1 class="text-2xl font-bold">All Teachers</h1>
             <div class="flex items-center space-x-4">
               <input
                 v-model="searchQueryTeachers"
@@ -648,15 +686,17 @@
               </button>
             </div>
           </div>
-        </section>
+            </div>
+          </section>
 
-        <!-- Other Users Section -->
-        <section
-          v-if="activeSection === 'otherUser'"
-          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-        >
-          <div class="flex justify-between items-center mb-4">
-            <h1 class="text-2xl font-bold">Other Users</h1>
+            <!-- Other Users Section -->
+            <section
+              v-if="activeSection === 'otherUser'"
+              class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
+            >
+                      <div class="p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h1 class="text-2xl font-bold">Other Users</h1>
             <div class="flex items-center space-x-4">
               <input
                 v-model="searchQueryOtherUsers"
@@ -792,14 +832,16 @@
               </button>
             </div>
           </div>
-        </section>
+            </div>
+          </section>
 
-        <!-- Search User Password Section -->
-        <section
-          v-if="activeSection === 'searchPassword'"
-          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-        >
-          <h1 class="text-2xl font-bold mb-4">Search User Password</h1>
+            <!-- Search User Password Section -->
+            <section
+              v-if="activeSection === 'searchPassword'"
+              class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
+            >
+                      <div class="p-6">
+              <h1 class="text-2xl font-bold mb-4">Search User Password</h1>
           <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
             Search for user passwords by Roll Number (students) or Registration ID (teachers/others)
           </p>
@@ -962,9 +1004,12 @@
               </div>
             </div>
           </div>
-        </section>
-      </section>
-    </div>
+            </div>
+          </section>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <!-- Delete Confirmation Modal -->
     <div
@@ -1232,7 +1277,7 @@ export default {
 
     const totalUsers = computed(() => {
       return (
-        students.value.length + teachers.value.length + otherUsers.value.length
+        (students.value?.length || 0) + (teachers.value?.length || 0) + (otherUsers.value?.length || 0)
       );
     });
 
@@ -1636,5 +1681,44 @@ export default {
 </script>
 
 <style scoped>
-/* Add custom styles if needed */
+/* Custom styles for enhanced animations */
+.hover\:shadow-xl:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Enhanced table styling */
+.table-auto {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.table-auto th {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.dark .table-auto th {
+  background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+}
+
+/* Enhanced button styling */
+button:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #3b82f6;
+}
+
+/* Enhanced input styling */
+input:focus, select:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #3b82f6;
+  border-color: #3b82f6;
+}
 </style>

@@ -19,19 +19,4 @@ const firebaseConfig = {
   const storage = firebase.storage();
   let timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-  // Function to ensure collections exist by creating a dummy doc if missing
-  async function ensureVoteUniversityCollections() {
-    const collections = ["voteUniversityKing", "voteUniversityQueen"];
-    for (const col of collections) {
-      const snapshot = await db.collection(col).limit(1).get();
-      if (snapshot.empty) {
-        // Create a dummy doc to ensure the collection exists
-        await db.collection(col).doc("init").set({ initialized: true });
-      }
-    }
-  }
-
-  // Call the function on startup
-  ensureVoteUniversityCollections();
-
   export {db,timestamp,storage};

@@ -1,242 +1,268 @@
 <template>
   <div>
     <SideBar />
-    <div class="sm:ml-64 min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-200 p-0">
+    <div class="sm:ml-64 min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
       <!-- Header -->
-      <div class="flex items-center gap-4 px-8 py-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-b-3xl shadow-lg mb-8 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10"></div>
-        <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/10 rounded-full -ml-20 -mb-20"></div>
-        <div class="bg-white/20 backdrop-blur-sm rounded-full p-3 shadow-lg z-10">
-          <i class="fas fa-comment-dots fa-2x text-white"></i>
-        </div>
-        <div class="z-10">
-          <h1 class="text-3xl font-bold text-white mb-1">Contact Messages</h1>
-          <p class="text-base text-blue-100/90">View and manage messages from users</p>
+      <div class="bg-white dark:bg-gray-700 text-black dark:text-white">
+        <div class="px-6 py-8 relative overflow-hidden">
+          <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="flex items-center gap-4">
+              <div class="bg-white dark:bg-gray-600 rounded-2xl p-4 shadow-lg">
+                <svg class="w-8 h-8 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+              </div>
+              <div>
+                <h1 class="text-3xl font-bold mb-2">Contact Messages</h1>
+                  <p class="text-gray-700 dark:text-gray-300 text-lg">Manage and respond to user inquiries</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Main Content -->
-      <div class="px-4 md:px-8 pb-12">
-        <!-- Loading State -->
-        <div v-if="isLoading" class="flex items-center justify-center w-full py-20">
-          <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-            <div class="flex items-center gap-4">
-              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span class="text-gray-600 dark:text-gray-300">Loading messages...</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Main Content -->
-        <div v-else>
-          <!-- Stats Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
+      <div class="px-6 py-8">
+        <div class="max-w-7xl mx-auto">
+          <!-- Loading State -->
+          <div v-if="isLoading" class="flex items-center justify-center w-full py-20">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
               <div class="flex items-center gap-4">
-                <div class="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-xl">
-                  <i class="fas fa-inbox fa-lg text-blue-600 dark:text-blue-400"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Total Messages</p>
-                  <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ messages.length }}</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div class="flex items-center gap-4">
-                <div class="bg-red-100 dark:bg-red-900/50 p-3 rounded-xl">
-                  <i class="fas fa-exclamation-circle fa-lg text-red-600 dark:text-red-400"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Unread</p>
-                  <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ unreadCount }}</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div class="flex items-center gap-4">
-                <div class="bg-green-100 dark:bg-green-900/50 p-3 rounded-xl">
-                  <i class="fas fa-check-circle fa-lg text-green-600 dark:text-green-400"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Replied</p>
-                  <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ repliedCount }}</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div class="flex items-center gap-4">
-                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-xl">
-                  <i class="fas fa-eye fa-lg text-gray-600 dark:text-gray-400"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Read</p>
-                  <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ readCount }}</p>
-                </div>
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span class="text-gray-600 dark:text-gray-300 font-medium">Loading messages...</span>
               </div>
             </div>
           </div>
 
-          <!-- Messages List -->
-          <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden">
-            <!-- Header -->
-            <div class="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-              <div class="grid grid-cols-12 gap-4 font-semibold text-gray-700 dark:text-gray-300">
-                <div class="col-span-1">Status</div>
-                <div class="col-span-3">Name</div>
-                <div class="col-span-4 hidden lg:block">Email</div>
-                <div class="col-span-2 hidden lg:block">Date</div>
-                <div class="col-span-2">Actions</div>
-              </div>
-            </div>
-
-            <!-- Messages -->
-            <div class="divide-y divide-gray-200 dark:divide-gray-700">
-              <div 
-                v-for="message in paginatedMessages" 
-                :key="message.id"
-                class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200"
-                :class="{
-                  'bg-blue-50 dark:bg-blue-900/20': selectedMessage?.id === message.id,
-                  'border-l-4 border-red-500': message.status === 'unread'
-                }"
-              >
-                <div class="grid grid-cols-12 gap-4 items-center">
-                  <!-- Status -->
-                  <div class="col-span-1">
-                    <div class="flex items-center gap-2">
-                      <span 
-                        class="w-3 h-3 rounded-full"
-                        :class="{
-                          'bg-red-500': message.status === 'unread',
-                          'bg-green-500': message.status === 'replied',
-                          'bg-gray-400': message.status === 'read'
-                        }"
-                      ></span>
-                      <span class="text-xs font-medium hidden sm:block"
-                            :class="{
-                              'text-red-600 dark:text-red-400': message.status === 'unread',
-                              'text-green-600 dark:text-green-400': message.status === 'replied',
-                              'text-gray-500 dark:text-gray-400': message.status === 'read'
-                            }">
-                        {{ message.status }}
-                      </span>
-                    </div>
+          <!-- Main Content -->
+          <div v-else>
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center gap-4">
+                  <div class="bg-blue-100 dark:bg-blue-900/30 p-4 rounded-xl">
+                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                    </svg>
                   </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Messages</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ messages.length }}</p>
+                  </div>
+                </div>
+              </div>
 
-                  <!-- Name -->
-                  <div class="col-span-3">
-                    <div class="flex items-center gap-3">
-                      <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                        {{ message.name ? message.name.charAt(0).toUpperCase() : '?' }}
-                      </div>
-                      <div>
-                        <h3 class="font-medium text-gray-900 dark:text-white">{{ message.name || 'Unknown' }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 lg:hidden">{{ message.email || 'No email' }}</p>
+              <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center gap-4">
+                  <div class="bg-red-100 dark:bg-red-900/30 p-4 rounded-xl">
+                    <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Unread</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ unreadCount }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center gap-4">
+                  <div class="bg-green-100 dark:bg-green-900/30 p-4 rounded-xl">
+                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Replied</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ repliedCount }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center gap-4">
+                  <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-xl">
+                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Read</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ readCount }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Messages List -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+              <!-- Header -->
+              <div class="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="grid grid-cols-12 gap-4 font-semibold text-gray-700 dark:text-gray-300">
+                  <div class="col-span-1">Status</div>
+                  <div class="col-span-3">Name</div>
+                  <div class="col-span-4 hidden lg:block">Email</div>
+                  <div class="col-span-2 hidden lg:block">Date</div>
+                  <div class="col-span-2">Actions</div>
+                </div>
+              </div>
+
+              <!-- Messages -->
+              <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                <div 
+                  v-for="message in paginatedMessages" 
+                  :key="message.id"
+                  class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200"
+                  :class="{
+                    'bg-blue-50 dark:bg-blue-900/20': selectedMessage?.id === message.id,
+                    'border-l-4 border-red-500': message.status === 'unread'
+                  }"
+                >
+                  <div class="grid grid-cols-12 gap-4 items-center">
+                    <!-- Status -->
+                    <div class="col-span-1">
+                      <div class="flex items-center gap-2">
+                        <span 
+                          class="w-3 h-3 rounded-full"
+                          :class="{
+                            'bg-red-500': message.status === 'unread',
+                            'bg-green-500': message.status === 'replied',
+                            'bg-gray-400': message.status === 'read'
+                          }"
+                        ></span>
+                        <span class="text-xs font-medium hidden sm:block"
+                              :class="{
+                                'text-red-600 dark:text-red-400': message.status === 'unread',
+                                'text-green-600 dark:text-green-400': message.status === 'replied',
+                                'text-gray-500 dark:text-gray-400': message.status === 'read'
+                              }">
+                          {{ message.status }}
+                        </span>
                       </div>
                     </div>
-                  </div>
 
-                  <!-- Email -->
-                  <div class="col-span-4 hidden lg:block">
-                    <a :href="`mailto:${message.email}`" class="text-blue-600 dark:text-blue-400 hover:underline">
-                      {{ message.email || 'No email' }}
-                    </a>
-                  </div>
+                    <!-- Name -->
+                    <div class="col-span-3">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-lg">
+                          {{ message.name ? message.name.charAt(0).toUpperCase() : '?' }}
+                        </div>
+                        <div>
+                          <h3 class="font-medium text-gray-900 dark:text-white">{{ message.name || 'Unknown' }}</h3>
+                          <p class="text-sm text-gray-500 dark:text-gray-400 lg:hidden">{{ message.email || 'No email' }}</p>
+                        </div>
+                      </div>
+                    </div>
 
-                  <!-- Date -->
-                  <div class="col-span-2 hidden lg:block">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ formatDate(message.createdAt) }}</p>
-                  </div>
+                    <!-- Email -->
+                    <div class="col-span-4 hidden lg:block">
+                      <a :href="`mailto:${message.email}`" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">
+                        {{ message.email || 'No email' }}
+                      </a>
+                    </div>
 
-                  <!-- Actions -->
-                  <div class="col-span-2">
-                    <div class="flex items-center gap-2">
-                      <button 
-                        @click="viewMessage(message)"
-                        class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-all duration-200"
-                        title="View Message"
-                      >
-                        <i class="fas fa-eye"></i>
-                      </button>
-                      <button 
-                        @click="quickReply(message)"
-                        class="p-2 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-all duration-200"
-                        title="Quick Reply"
-                      >
-                        <i class="fas fa-reply"></i>
-                      </button>
-                      <button 
-                        @click="copyContactInfo(message)"
-                        class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
-                        title="Copy Contact Info"
-                      >
-                        <i class="fas fa-copy"></i>
-                      </button>
-                      <button 
-                        @click="toggleReplyStatus(message)"
-                        class="p-2 rounded-lg transition-all duration-200"
-                        :class="{
-                          'text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30': message.status !== 'replied',
-                          'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700': message.status === 'replied'
-                        }"
-                        :title="message.status === 'replied' ? 'Mark as Read' : 'Mark as Replied'"
-                      >
-                        <i :class="message.status === 'replied' ? 'fas fa-check' : 'fas fa-reply-all'" class="mr-2"></i>
-                      </button>
+                    <!-- Date -->
+                    <div class="col-span-2 hidden lg:block">
+                      <p class="text-sm text-gray-500 dark:text-gray-400">{{ formatDate(message.createdAt) }}</p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="col-span-2">
+                      <div class="flex items-center gap-2">
+                        <button 
+                          @click="viewMessage(message)"
+                          class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-all duration-200"
+                          title="View Message"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                          </svg>
+                        </button>
+                        <button 
+                          @click="copyContactInfo(message)"
+                          class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
+                          title="Copy Contact Info"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                          </svg>
+                        </button>
+                        <button 
+                          @click="toggleReplyStatus(message)"
+                          class="p-2 rounded-lg transition-all duration-200"
+                          :class="{
+                            'text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30': message.status !== 'replied',
+                            'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700': message.status === 'replied'
+                          }"
+                          :title="message.status === 'replied' ? 'Mark as Read' : 'Mark as Replied'"
+                        >
+                          <svg v-if="message.status === 'replied'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
+                          <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Empty State -->
-            <div v-if="messages.length === 0" class="p-12 text-center">
-              <div class="w-24 h-24 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                <i class="fas fa-inbox text-3xl text-gray-400"></i>
+              <!-- Empty State -->
+              <div v-if="messages.length === 0" class="p-12 text-center">
+                <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                  <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No messages found</h3>
+                <p class="text-gray-500 dark:text-gray-400">
+                  No messages have been received yet. They will appear here once users start contacting you.
+                </p>
               </div>
-              <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No messages found</h3>
-              <p class="text-gray-500 dark:text-gray-400">
-                No messages have been received yet
-              </p>
             </div>
-          </div>
 
-          <!-- Pagination -->
-          <div v-if="messages.length > 0" class="flex justify-between items-center mt-8">
-            <div class="text-sm text-gray-600 dark:text-gray-400">
-              Showing {{ startItem }} to {{ endItem }} of {{ messages.length }} messages
-            </div>
-            <div class="flex gap-2">
-              <button 
-                @click="prevPage"
-                :disabled="currentPage === 1"
-                :class="[
-                  'px-4 py-2 rounded-lg transition-all duration-200',
-                  currentPage === 1
-                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-                    : 'bg-blue-500 text-white hover:bg-blue-600 shadow-md'
-                ]"
-              >
-                <i class="fas fa-chevron-left mr-2"></i>
-                Previous
-              </button>
-              <button 
-                @click="nextPage"
-                :disabled="currentPage === totalPages"
-                :class="[
-                  'px-4 py-2 rounded-lg transition-all duration-200',
-                  currentPage === totalPages
-                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-                    : 'bg-blue-500 text-white hover:bg-blue-600 shadow-md'
-                ]"
-              >
-                Next
-                <i class="fas fa-chevron-right ml-2"></i>
-              </button>
+            <!-- Pagination -->
+            <div v-if="messages.length > 0" class="flex justify-between items-center mt-8">
+              <div class="text-sm text-gray-600 dark:text-gray-400">
+                Showing {{ startItem }} to {{ endItem }} of {{ messages.length }} messages
+              </div>
+              <div class="flex gap-2">
+                <button 
+                  @click="prevPage"
+                  :disabled="currentPage === 1"
+                  :class="[
+                    'px-4 py-2 rounded-lg transition-all duration-200 font-medium',
+                    currentPage === 1
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
+                      : 'bg-blue-500 text-white hover:bg-blue-600 shadow-md hover:shadow-lg'
+                  ]"
+                >
+                  <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                  Previous
+                </button>
+                <button 
+                  @click="nextPage"
+                  :disabled="currentPage === totalPages"
+                  :class="[
+                    'px-4 py-2 rounded-lg transition-all duration-200 font-medium',
+                    currentPage === totalPages
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
+                      : 'bg-blue-500 text-white hover:bg-blue-600 shadow-md hover:shadow-lg'
+                  ]"
+                >
+                  Next
+                  <svg class="w-4 h-4 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -244,11 +270,11 @@
 
       <!-- Message Detail Modal -->
       <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
           <div class="p-6">
             <div class="flex justify-between items-start mb-6">
               <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-lg">
                   {{ selectedMessage.name ? selectedMessage.name.charAt(0).toUpperCase() : '?' }}
                 </div>
                 <div>
@@ -257,7 +283,9 @@
                 </div>
               </div>
               <button @click="closeModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
-                <i class="fas fa-times text-xl"></i>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
               </button>
             </div>
 
@@ -269,7 +297,7 @@
                 </div>
                 <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl">
                   <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Email</label>
-                  <a :href="`mailto:${selectedMessage.email}`" class="text-blue-600 dark:text-blue-400 hover:underline">
+                  <a :href="`mailto:${selectedMessage.email}`" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">
                     {{ selectedMessage.email || 'No email' }}
                   </a>
                 </div>
@@ -288,33 +316,33 @@
               <div class="flex justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <button
                   @click="closeModal"
-                  class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-200"
+                  class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-200 font-medium"
                 >
                   Close
                 </button>
                 <button
                   @click="copyContactInfo(selectedMessage)"
-                  class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200"
+                  class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200 font-medium"
                 >
-                  <i class="fas fa-copy mr-2"></i>
+                  <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
                   Copy Contact Info
                 </button>
                 <button
-                  @click="quickReply(selectedMessage)"
-                  class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-200"
-                >
-                  <i class="fas fa-reply mr-2"></i>
-                  Quick Reply
-                </button>
-                <button
                   @click="toggleReplyStatus(selectedMessage)"
-                  class="px-6 py-3 rounded-lg transition-all duration-200"
+                  class="px-6 py-3 rounded-lg transition-all duration-200 font-medium"
                   :class="{
                     'bg-green-500 text-white hover:bg-green-600': selectedMessage.status !== 'replied',
                     'bg-gray-500 text-white hover:bg-gray-600': selectedMessage.status === 'replied'
                   }"
                 >
-                  <i :class="selectedMessage.status === 'replied' ? 'fas fa-check' : 'fas fa-reply-all'" class="mr-2"></i>
+                  <svg v-if="selectedMessage.status === 'replied'" class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  <svg v-else class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                  </svg>
                   {{ selectedMessage.status === 'replied' ? '✓ Replied' : 'Mark as Replied' }}
                 </button>
               </div>
@@ -474,10 +502,6 @@ export default {
         });
     };
 
-    const quickReply = (message) => {
-      // Implementation of quick reply logic
-    };
-
     const nextPage = () => {
       if (currentPage.value < totalPages.value) {
         currentPage.value++;
@@ -521,13 +545,22 @@ export default {
       copyContactInfo,
       formatDate,
       nextPage,
-      prevPage,
-      quickReply
+      prevPage
     };
   }
 };
 </script>
 
 <style scoped>
-/* Custom styles if needed */
+/* Custom styles for enhanced animations */
+.hover\:shadow-xl:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
 </style>

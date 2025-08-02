@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mt-8 w-full max-w-xl mx-auto">
+  <div class="rounded-lg shadow p-6 mt-8 w-full max-w-xl mx-auto">
     <h2 class="text-lg font-semibold mb-4 text-center text-gray-800 dark:text-gray-100">User Distribution</h2>
     <Pie :data="chartData" :options="chartOptions" />
   </div>

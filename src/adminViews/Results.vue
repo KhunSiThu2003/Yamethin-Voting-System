@@ -1,65 +1,178 @@
 <template>
 <SideBar></SideBar>
 
-<div v-if="voteResultsWholeKing.length > 0 && voteResultsMajorQueen.length > 0" class="sm:ml-64 bg-gray-100 text-gray-900 rounded-lg dark:bg-gray-900 dark:text-gray-200 min-h-screen">
+<div class="sm:ml-64 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200 min-h-screen">
     <!-- Hero Section -->
-    <section class="py-8 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center rounded-lg">
-        <h1 class="text-3xl sm:text-5xl font-bold mb-2">Voting Results</h1>
-        <p class="text-lg">Explore the results of the voting for King & Queen by category and department.</p>
+    <section class="py-8 px-4 bg-white dark:bg-gray-700 text-black dark:text-white text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl sm:text-5xl font-bold mb-4">Voting Results Dashboard</h1>
+            <p class="text-lg opacity-90">Real-time results for King & Queen elections by category and department</p>
+        </div>
     </section>
 
-    <!-- Filter Buttons -->
-    <section class="py-6 px-4">
-        <ul class="flex flex-wrap justify-center gap-4">
-            <li>
-                <button @click="filterResult('whole')" class="px-6 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 focus:ring focus:ring-blue-300 transition">
-                    Overall King & Queen
-                </button>
-            </li>
-            <li>
-                <button @click="filterResult('EC')" class="px-6 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 focus:ring focus:ring-blue-300 transition">
-                    Electronic Engineering
-                </button>
-            </li>
-            <li>
-                <button @click="filterResult('EP')" class="px-6 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 focus:ring focus:ring-blue-300 transition">
-                    Electrical Power Engineering
-                </button>
-            </li>
-            <li>
-                <button @click="filterResult('C')" class="px-6 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 focus:ring focus:ring-blue-300 transition">
-                    Civil Engineering
-                </button>
-            </li>
-            <li>
-                <button @click="filterResult('MECH')" class="px-6 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 focus:ring focus:ring-blue-300 transition">
-                    Mechanical Engineering
-                </button>
-            </li>
-        </ul>
-    </section>
+    <!-- Loading State -->
+    <div v-if="isLoading" class="flex items-center justify-center min-h-[60vh]">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p class="text-lg text-gray-600 dark:text-gray-400">Loading voting results...</p>
+        </div>
+    </div>
 
-    <!-- Results Display Section -->
-    <section class="py-8 px-4">
+    <!-- Main Content -->
+    <div v-else>
+        <!-- Filter Buttons -->
+        <section class="py-6 px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Filter Results</h2>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button 
+                        @click="filterResult('whole')" 
+                        class="px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        :class="wholeShow ? 
+                            'bg-blue-600 text-white shadow-lg shadow-blue-500/50' : 
+                            'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'"
+                    >
+                        <span class="flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Overall Results
+                        </span>
+                    </button>
+                    <button 
+                        @click="filterResult('EC')" 
+                        class="px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        :class="ECShow ? 
+                            'bg-blue-600 text-white shadow-lg shadow-blue-500/50' : 
+                            'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'"
+                    >
+                        Electronic Engineering
+                    </button>
+                    <button 
+                        @click="filterResult('EP')" 
+                        class="px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        :class="EPShow ? 
+                            'bg-blue-600 text-white shadow-lg shadow-blue-500/50' : 
+                            'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'"
+                    >
+                        Electrical Power Engineering
+                    </button>
+                    <button 
+                        @click="filterResult('C')" 
+                        class="px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        :class="CShow ? 
+                            'bg-blue-600 text-white shadow-lg shadow-blue-500/50' : 
+                            'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'"
+                    >
+                        Civil Engineering
+                    </button>
+                    <button 
+                        @click="filterResult('MECH')" 
+                        class="px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        :class="MECHShow ? 
+                            'bg-blue-600 text-white shadow-lg shadow-blue-500/50' : 
+                            'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'"
+                    >
+                        Mechanical Engineering
+                    </button>
+                </div>
+            </div>
+        </section>
 
-        <ShowResult v-if="wholeShow" title="Over All Results" table="university" :allResults="allResults" :king="king.whole" :queen="queen.whole" :resultsKing="voteResultsWholeKing" :resultsQueen="voteResultsWholeQueen"></ShowResult>
+        <!-- Empty State -->
+        <div v-if="!hasData" class="flex items-center justify-center min-h-[50vh] px-4">
+            <div class="text-center max-w-md">
+                <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">No Results Available</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">There are currently no voting results to display. Results will appear here once voting begins.</p>
+                <div class="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                    <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                    <span>Waiting for voting data...</span>
+                </div>
+            </div>
+        </div>
 
-        <ShowResult v-if="ECShow" title="Electronic Engineering Major Results" :allResults="allResults" table="EC" :king="king.EC" :queen="queen.EC" :resultsKing="ECKing" :resultsQueen="ECQueen"></ShowResult>
+        <!-- Results Display Section -->
+        <section v-else class="py-8 px-4">
+            <div class="max-w-7xl mx-auto">
+                <!-- Overall Results -->
+                <ShowResult 
+                    v-if="wholeShow && hasWholeData" 
+                    title="Overall King & Queen Results" 
+                    table="university" 
+                    :allResults="allResults" 
+                    :king="king.whole" 
+                    :queen="queen.whole" 
+                    :resultsKing="voteResultsWholeKing" 
+                    :resultsQueen="voteResultsWholeQueen"
+                />
 
-        <ShowResult v-if="EPShow" title="Electrical Power Engineering Major Results" :allResults="allResults" table="EP" :king="king.EP" :queen="queen.EP" :resultsKing="EPKing" :resultsQueen="EPQueen"></ShowResult>
+                <!-- EC Results -->
+                <ShowResult 
+                    v-if="ECShow && hasECData" 
+                    title="Electronic Engineering Major Results" 
+                    :allResults="allResults" 
+                    table="EC" 
+                    :king="king.EC" 
+                    :queen="queen.EC" 
+                    :resultsKing="ECKing" 
+                    :resultsQueen="ECQueen"
+                />
 
-        <ShowResult v-if="CShow" title="Civil Engineering Major Results" :allResults="allResults" table="C" :king="king.C" :queen="queen.C" :resultsKing="CKing" :resultsQueen="CQueen"></ShowResult>
+                <!-- EP Results -->
+                <ShowResult 
+                    v-if="EPShow && hasEPData" 
+                    title="Electrical Power Engineering Major Results" 
+                    :allResults="allResults" 
+                    table="EP" 
+                    :king="king.EP" 
+                    :queen="queen.EP" 
+                    :resultsKing="EPKing" 
+                    :resultsQueen="EPQueen"
+                />
 
-        <ShowResult v-if="MECHShow" title="Mechanical Engineering
-            Major Results" table="MECH" :allResults="allResults" :king="king.MECH" :queen="queen.MECH" :resultsKing="MECHKing" :resultsQueen="MECHQueen"></ShowResult>
+                <!-- Civil Results -->
+                <ShowResult 
+                    v-if="CShow && hasCData" 
+                    title="Civil Engineering Major Results" 
+                    :allResults="allResults" 
+                    table="C" 
+                    :king="king.C" 
+                    :queen="queen.C" 
+                    :resultsKing="CKing" 
+                    :resultsQueen="CQueen"
+                />
 
-    </section>
+                <!-- Mechanical Results -->
+                <ShowResult 
+                    v-if="MECHShow && hasMECHData" 
+                    title="Mechanical Engineering Major Results" 
+                    table="MECH" 
+                    :allResults="allResults" 
+                    :king="king.MECH" 
+                    :queen="queen.MECH" 
+                    :resultsKing="MECHKing" 
+                    :resultsQueen="MECHQueen"
+                />
 
-
-
+                <!-- No Data for Selected Filter -->
+                <div v-if="!hasDataForCurrentFilter" class="text-center py-12">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                        <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">No Results for Selected Category</h3>
+                    <p class="text-gray-600 dark:text-gray-400">There are no voting results available for this category yet.</p>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
-
-<Loading v-else></Loading>
 </template>
 
 <script>
@@ -85,12 +198,12 @@ export default {
     },
 
     setup() {
-     
         // Define reactive variables
         const voteResultsWholeKing = ref([]);
         const voteResultsWholeQueen = ref([]);
         const voteResultsMajorKing = ref([]);
         const voteResultsMajorQueen = ref([]);
+        const isLoading = ref(true);
 
         const wholeShow = ref(true);
         const ECShow = ref(false);
@@ -117,6 +230,43 @@ export default {
         const year = new Date().getFullYear().toString(); // Current year
         const allResults = getResults(year, (updatedResults) => {
             console.log("Updated Results via Callback:", updatedResults);
+        });
+
+        // Computed properties for data availability
+        const hasData = computed(() => {
+            return voteResultsWholeKing.value.length > 0 || 
+                   voteResultsWholeQueen.value.length > 0 || 
+                   voteResultsMajorKing.value.length > 0 || 
+                   voteResultsMajorQueen.value.length > 0;
+        });
+
+        const hasWholeData = computed(() => {
+            return voteResultsWholeKing.value.length > 0 || voteResultsWholeQueen.value.length > 0;
+        });
+
+        const hasECData = computed(() => {
+            return ECKing.value.length > 0 || ECQueen.value.length > 0;
+        });
+
+        const hasEPData = computed(() => {
+            return EPKing.value.length > 0 || EPQueen.value.length > 0;
+        });
+
+        const hasCData = computed(() => {
+            return CKing.value.length > 0 || CQueen.value.length > 0;
+        });
+
+        const hasMECHData = computed(() => {
+            return MECHKing.value.length > 0 || MECHQueen.value.length > 0;
+        });
+
+        const hasDataForCurrentFilter = computed(() => {
+            if (wholeShow.value) return hasWholeData.value;
+            if (ECShow.value) return hasECData.value;
+            if (EPShow.value) return hasEPData.value;
+            if (CShow.value) return hasCData.value;
+            if (MECHShow.value) return hasMECHData.value;
+            return false;
         });
 
         // Computed properties for filtered results by major
@@ -166,26 +316,39 @@ export default {
 
         // Real-time fetching using onSnapshot
         const fetchResults = async () => {
+            let dataLoaded = 0;
+            const totalCollections = 4;
+            
+            const checkLoadingComplete = () => {
+                dataLoaded++;
+                if (dataLoaded >= totalCollections) {
+                    isLoading.value = false;
+                }
+            };
             
             // Set up listeners for real-time updates
            getAllVote ("voteUniversityKing", (results) => {
                 voteResultsWholeKing.value = results;
                 updateTopCandidates();
+                checkLoadingComplete();
             });
 
            getAllVote ("voteUniversityQueen", (results) => {
                 voteResultsWholeQueen.value = results;
                 updateTopCandidates();
+                checkLoadingComplete();
             });
 
            getAllVote ("voteMajorKing", (results) => {
                 voteResultsMajorKing.value = results;
                 updateTopCandidates();
+                checkLoadingComplete();
             });
 
            getAllVote ("voteMajorQueen", (results) => {
                 voteResultsMajorQueen.value = results;
                 updateTopCandidates();
+                checkLoadingComplete();
             });
         };
 
@@ -227,14 +390,13 @@ export default {
             await fetchResults();
         });
 
-
-
         return {
             allResults,
             voteResultsWholeKing,
             voteResultsWholeQueen,
             voteResultsMajorKing,
             voteResultsMajorQueen,
+            isLoading,
 
             ECKing,
             ECQueen,
@@ -254,9 +416,28 @@ export default {
 
             king,
             queen,
+            
+            // Computed properties
+            hasData,
+            hasWholeData,
+            hasECData,
+            hasEPData,
+            hasCData,
+            hasMECHData,
+            hasDataForCurrentFilter,
         };
     },
 };
 </script>
 
-<style></style>
+<style scoped>
+/* Custom animations */
+@keyframes bounce-on-hover {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.animate-bounce-on-hover:hover {
+    animation: bounce-on-hover 1s ease-in-out infinite;
+}
+</style>
