@@ -113,6 +113,7 @@ import Loading from "../components/Loading";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { db } from "@/firebase/config";
+import otherRegister from "@/composables/otherRegister";
 
 export default {
     components: {
@@ -136,6 +137,7 @@ export default {
 
         const isPending = ref(false);
         const router = useRouter();
+        const { registerOtherStaff, error: otherRegisterError, isPending: otherRegisterPending } = otherRegister();
 
         // Helper Functions
         const togglePasswordVisibility = (type) => {
@@ -187,36 +189,24 @@ export default {
                 return;
             }
 
-            // Check if staff already exists
-            const existingStaff = await db.collection("otherStaff")
-                .where("registerId", "==", registerId.value)
-                .limit(1)
-                .get();
-
-            if (!existingStaff.empty) {
-                error.value = "Registration ID already exists.";
-                return;
-            }
-
             const staffData = {
                 name: fullname.value,
                 registerId: registerId.value,
-                password: password.value,
-                createdAt: new Date(),
-                status: "active",
-                role: "other",
-                lastLogin: null,
-                profileImage: null
+                password: password.value
             };
 
             try {
-                const docRef = await db.collection("otherStaff").add(staffData);
-                if (docRef.id) {
+                const docRefId = await registerOtherStaff(staffData);
+                if (docRefId) {
                     registeredUser.value = true;
                     isRegister.value = false;
                 }
             } catch (err) {
-                error.value = "Registration failed. Please try again.";
+                if (otherRegisterError.value) {
+                    error.value = otherRegisterError.value;
+                } else {
+                    error.value = "Registration failed. Please try again.";
+                }
                 console.error(err);
             }
         };

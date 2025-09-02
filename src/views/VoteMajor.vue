@@ -20,12 +20,12 @@
           />
           <img
             v-if="currentUser.major === 'Mechanical Engineering'"
-            src="@/Images/CE.png"
+            src="@/Images/ME.png"
             alt="Mechanical Engineering"
           />
           <img
             v-if="currentUser.major === 'Civil Engineering'"
-            src="@/Images/ME.png"
+            src="@/Images/CE.png"
             alt="Civil Engineering"
           />
         </div>
