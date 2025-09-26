@@ -25,8 +25,6 @@ const getEndDate = (type, callback) => {
                     const isoDate = date.toISOString();
                     localStorage.setItem(`${type}EndDate`, isoDate);
 
-                    return isoDate; // Return the ISO date
-
                     if (callback) {
                         callback(isoDate); // Pass the ISO date to the callback
                     }

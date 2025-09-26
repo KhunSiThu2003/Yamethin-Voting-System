@@ -26,7 +26,8 @@ let deadLine = (type) => {
             hourString.value = "00";
             minString.value = "00";
             secString.value = "00";
-            votingEnd.value = true; // If no end date, consider voting ended
+            // Do not mark voting as ended before the deadline is fetched
+            // This prevents a false "ended" state while Firestore data loads
             return;
         }
 
