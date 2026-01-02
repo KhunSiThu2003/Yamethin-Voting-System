@@ -48,9 +48,8 @@
                   Phone
                 </h3>
                 <p class="text-gray-600 dark:text-gray-300">
-                  +95 9 799 194 383
+                  +95 9944074981
                 </p>
-
               </div>
             </div>
 
@@ -77,7 +76,7 @@
                   Email
                 </h3>
                 <p class="text-gray-600 dark:text-gray-300">
-                  lwinkowin12@gmail.com
+                  khunsithuaung65@gmail.com
                 </p>
               </div>
             </div>
@@ -217,7 +216,6 @@
           </form>
         </div>
       </div>
-      
 
       <!-- Map -->
       <div
@@ -237,8 +235,8 @@
   </div>
   <Footer></Footer>
 </template>
-  
-  <script>
+
+<script>
 import Footer from "@/components/Footer.vue";
 import NavBar from "@/components/NavBar.vue";
 import { db } from "@/firebase/config";
@@ -311,8 +309,8 @@ export default {
   },
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
 button:disabled {
   opacity: 0.7;
   cursor: not-allowed;

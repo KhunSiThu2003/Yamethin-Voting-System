@@ -52,14 +52,14 @@
             Contact Info
           </h4>
           <div class="text-sm text-gray-600 dark:text-gray-300 space-y-2">
-            <p>Phone: +959799194383</p> 
+            <p>Phone: +95 9944074981</p> 
             <p>
               Email :
               <a
-                href="mailto:lwinkowin12@gmail.com"
+                href="mailto:khunsithuaung65@gmail.com"
                 class="text-blue-500 hover:underline"
               >
-                lwinkowin12@gmail.com
+                khunsithuaung65@gmail.com
               </a>
             </p>
           </div>
@@ -68,14 +68,11 @@
             Follow Us
           </h4>
           <div class="flex space-x-6">
-            <a href="#" class="footer-icon" aria-label="Facebook">
+            <a href="https://www.facebook.com/khunsithu27" class="footer-icon" aria-label="Facebook">
               <i class="fab fa-facebook text-xl"></i>
             </a>
-            <a href="#" class="footer-icon" aria-label="Twitter">
-              <i class="fab fa-twitter text-xl"></i>
-            </a>
-            <a href="#" class="footer-icon" aria-label="Instagram">
-              <i class="fab fa-instagram text-xl"></i>
+            <a href="https://t.me/khun_27" class="footer-icon" aria-label="Twitter">
+              <i class="fab fa-telegram text-xl"></i>
             </a>
           </div>
         </div>
